@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Photon.Pun;
 using DG.Tweening;
 
 public enum PanelsUI { MainMenu = 0, SelectCar = 1, SelectLevel = 2, Settings = 3, _NetworkRoom = 4}
@@ -21,6 +22,7 @@ public class MainMenuManager : MonoBehaviour
     public AudioSource[] tracks;
     public Text cashAmount;
     [SerializeField] private GameObject versionApp;
+    public GameObject network_manager_active;
     //public GameObject maxSpeedActive;
 
     #region isChecked static bool
@@ -366,6 +368,7 @@ public class MainMenuManager : MonoBehaviour
         {
 
             case PanelsUI.MainMenu:
+                network_manager_active.SetActive(true);
                 menuPanels.MainMenu.SetActive(true);
                 menuPanels.SelectCar.SetActive(false);
                 menuPanels.SelectLevel.SetActive(false);
@@ -385,8 +388,10 @@ public class MainMenuManager : MonoBehaviour
                 menuPanels.SelectLevel.SetActive(true);
                 menuPanels._NetworkRoom.SetActive(false);
                 Amplitude.Instance.logEvent("SelectLevel");
+                
                 break;
             case PanelsUI._NetworkRoom:
+                
                 menuPanels.MainMenu.SetActive(false);
                 menuPanels.SelectCar.SetActive(false);
                 menuPanels.SelectLevel.SetActive(false);
@@ -3613,6 +3618,7 @@ public class MainMenuManager : MonoBehaviour
     {
         Amplitude.Instance.logEvent("NetworkRoom");
         menuPanels._NetworkRoom.SetActive(true);
+        network_manager_active.SetActive(true);
         /*
         Amplitude.Instance.logEvent("levelBattleOnline");
         SceneManager.LoadScene("battle_online");
@@ -3620,6 +3626,12 @@ public class MainMenuManager : MonoBehaviour
         LoadHandlingOnSelectedCar();
         LoadBrakeOnSelectedCar();
         */
+    }
+
+    public void DeactiveNetwork()
+    {
+        network_manager_active.SetActive(false);
+        
     }
     #endregion
 
@@ -3688,7 +3700,6 @@ public class MainMenuManager : MonoBehaviour
         #endregion
 
     }
-
     void Start()
     {
         if (PlayerPrefs.GetInt("NoAds") != 0)
@@ -3697,22 +3708,19 @@ public class MainMenuManager : MonoBehaviour
         }
         //config
         menuGUI.RUSure.SetActive(false);
+        network_manager_active.SetActive(false);
        // GameObject versionApp = GameObject.Find("ver");
        // versionApp.GetComponent<Text>().text = "v" ;
     }
- 
-
     public void GetMoney()
     {
         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 100000f);
     }
-
     public void DeleteAll()
     {
         PlayerPrefs.DeleteAll();
         SceneManager.LoadScene(Application.loadedLevel);
     }
-
     public void TuningButton()
     {
         Amplitude.Instance.logEvent("Tuning");
@@ -3726,6 +3734,7 @@ public class MainMenuManager : MonoBehaviour
     }
     void Update()
     {
+        
         LoadUpgradeOnAwake();
         LoadUpgrade();
         LoadUpgradeHandling();

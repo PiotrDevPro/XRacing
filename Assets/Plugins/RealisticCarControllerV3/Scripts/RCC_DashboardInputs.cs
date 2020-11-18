@@ -8,12 +8,13 @@
 
 using UnityEngine;
 using System.Collections;
+using Photon.Pun;
 
 [AddComponentMenu("BoneCracker Games/Realistic Car Controller/UI/Dashboard Inputs")]
 public class RCC_DashboardInputs : MonoBehaviour {
 
 	public RCC_CarControllerV3 currentCarController;
-
+	private PhotonView photonView;
 	public GameObject RPMNeedle;
 	public GameObject KMHNeedle;
 	public GameObject turboGauge;
@@ -50,27 +51,29 @@ public class RCC_DashboardInputs : MonoBehaviour {
 
 	}
 	
-	public void GetVehicle(RCC_CarControllerV3 rcc){
+	//public void GetVehicle(RCC_CarControllerV3 rcc){
 
-		currentCarController = rcc;
-		RCC_UIDashboardButton[] buttons = GameObject.FindObjectsOfType<RCC_UIDashboardButton>();
+	//	currentCarController = rcc;
+	//	RCC_UIDashboardButton[] buttons = GameObject.FindObjectsOfType<RCC_UIDashboardButton>();
 
-		foreach(RCC_UIDashboardButton button in buttons)
-			button.Check();
+	//	foreach(RCC_UIDashboardButton button in buttons)
+	//		button.Check();
 
-	}
+	//}
 
 	void GetValues(){
 
-		if(!currentCarController)
+
+		if (!RCC_SceneManager.Instance.activePlayerVehicle)
 			return;
 
-		if(!currentCarController.canControl || currentCarController.AIController){
+		if(!RCC_SceneManager.Instance.activePlayerVehicle.canControl || RCC_SceneManager.Instance.activePlayerVehicle.AIController)
+		{
 			return;
 		}
 
 		if(NOSGauge){
-			if(currentCarController.useNOS){
+			if(RCC_SceneManager.Instance.activePlayerVehicle.useNOS){
 				if(!NOSGauge.activeSelf)
 					NOSGauge.SetActive(true);
 			}else{
@@ -80,7 +83,7 @@ public class RCC_DashboardInputs : MonoBehaviour {
 		}
 
 		if(turboGauge){
-			if(currentCarController.useTurbo){
+			if(RCC_SceneManager.Instance.activePlayerVehicle.useTurbo){
 				if(!turboGauge.activeSelf)
 					turboGauge.SetActive(true);
 			}else{
@@ -89,36 +92,36 @@ public class RCC_DashboardInputs : MonoBehaviour {
 			}
 		}
 		
-		RPM = currentCarController.engineRPM;
-		KMH = currentCarController.speed;
-		direction = currentCarController.direction;
-		Gear = currentCarController.currentGear;
+		RPM = RCC_SceneManager.Instance.activePlayerVehicle.engineRPM;
+		KMH = RCC_SceneManager.Instance.activePlayerVehicle.speed;
+		direction = RCC_SceneManager.Instance.activePlayerVehicle.direction;
+		Gear = RCC_SceneManager.Instance.activePlayerVehicle.currentGear;
 
-		NGear = currentCarController.changingGear;
+		NGear = RCC_SceneManager.Instance.activePlayerVehicle.changingGear;
 		
-		ABS = currentCarController.ABSAct;
-		ESP = currentCarController.ESPAct;
-		Park = currentCarController.handbrakeInput > .1f ? true : false;
-		Headlights = currentCarController.lowBeamHeadLightsOn || currentCarController.highBeamHeadLightsOn;
-		indicators = currentCarController.indicatorsOn;
+		ABS = RCC_SceneManager.Instance.activePlayerVehicle.ABSAct;
+		ESP = RCC_SceneManager.Instance.activePlayerVehicle.ESPAct;
+		Park = RCC_SceneManager.Instance.activePlayerVehicle.handbrakeInput > .1f ? true : false;
+		Headlights = RCC_SceneManager.Instance.activePlayerVehicle.lowBeamHeadLightsOn || RCC_SceneManager.Instance.activePlayerVehicle.highBeamHeadLightsOn;
+		indicators = RCC_SceneManager.Instance.activePlayerVehicle.indicatorsOn;
 
 		if(RPMNeedle){
-			RPMNeedleRotation = (currentCarController.engineRPM / 50f);
+			RPMNeedleRotation = (RCC_SceneManager.Instance.activePlayerVehicle.engineRPM / 50f);
 			RPMNeedle.transform.eulerAngles = new Vector3(RPMNeedle.transform.eulerAngles.x ,RPMNeedle.transform.eulerAngles.y, -RPMNeedleRotation);
 		}
 		if(KMHNeedle){
 			if(RCC_Settings.Instance.units == RCC_Settings.Units.KMH)
-				KMHNeedleRotation = (currentCarController.speed);
+				KMHNeedleRotation = (RCC_SceneManager.Instance.activePlayerVehicle.speed);
 			else
-				KMHNeedleRotation = (currentCarController.speed * 0.62f);
+				KMHNeedleRotation = (RCC_SceneManager.Instance.activePlayerVehicle.speed * 0.62f);
 			KMHNeedle.transform.eulerAngles = new Vector3(KMHNeedle.transform.eulerAngles.x ,KMHNeedle.transform.eulerAngles.y, -KMHNeedleRotation);
 		}
 		if(BoostNeedle){
-			BoostNeedleRotation = (currentCarController.turboBoost / 30f) * 270f;
+			BoostNeedleRotation = (RCC_SceneManager.Instance.activePlayerVehicle.turboBoost / 30f) * 270f;
 			BoostNeedle.transform.eulerAngles = new Vector3(BoostNeedle.transform.eulerAngles.x ,BoostNeedle.transform.eulerAngles.y, -BoostNeedleRotation);
 		}
 		if(NoSNeedle){
-			NoSNeedleRotation = (currentCarController.NoS / 100f) * 270f;
+			NoSNeedleRotation = (RCC_SceneManager.Instance.activePlayerVehicle.NoS / 100f) * 270f;
 			NoSNeedle.transform.eulerAngles = new Vector3(NoSNeedle.transform.eulerAngles.x ,NoSNeedle.transform.eulerAngles.y, -NoSNeedleRotation);
 		}
 			

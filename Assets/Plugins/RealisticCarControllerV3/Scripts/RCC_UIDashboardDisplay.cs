@@ -322,6 +322,14 @@ public class RCC_UIDashboardDisplay : MonoBehaviour
         inputs = GetComponent<RCC_DashboardInputs>();
         StartCoroutine("LateDisplay");
 
+        if (!inputs)
+        {
+
+            enabled = false;
+            return;
+
+        }
+
     }
 
     void OnEnable()
@@ -339,74 +347,76 @@ public class RCC_UIDashboardDisplay : MonoBehaviour
         {
 
             yield return new WaitForSeconds(.04f);
-
-            if (RPMLabel)
+            if (RCC_SceneManager.Instance.activePlayerVehicle)
             {
-                RPMLabel.text = inputs.RPM.ToString("0");
-            }
+                if (RPMLabel)
+                {
+                    RPMLabel.text = inputs.RPM.ToString("0");
+                }
 
-            if (KMHLabel)
-            {
-                if (RCC_Settings.Instance.units == RCC_Settings.Units.KMH)
-                    KMHLabel.text = inputs.KMH.ToString("0") + "\nKMH";
-                else
-                    KMHLabel.text = (inputs.KMH * 0.62f).ToString("0") + "\nMPH";
-            }
+                if (KMHLabel)
+                {
+                    if (RCC_Settings.Instance.units == RCC_Settings.Units.KMH)
+                        KMHLabel.text = inputs.KMH.ToString("0") + "\nKMH";
+                    else
+                        KMHLabel.text = (inputs.KMH * 0.62f).ToString("0") + "\nMPH";
+                }
 
-            if (GearLabel)
-            {
-                if (!inputs.NGear)
-                    GearLabel.text = inputs.direction == 1 ? (inputs.Gear + 1).ToString("0") : "R";
-                else
-                    GearLabel.text = "N";
-            }
+                if (GearLabel)
+                {
+                    if (!inputs.NGear)
+                        GearLabel.text = inputs.direction == 1 ? (inputs.Gear + 1).ToString("0") : "R";
+                    else
+                        GearLabel.text = "N";
+                }
 
-            if (ABS)
-                ABS.color = inputs.ABS == true ? Color.red : Color.white;
-            if (ESP)
-                ESP.color = inputs.ESP == true ? Color.yellow : Color.white;
-            if (Park)
-                Park.color = inputs.Park == true ? Color.red : Color.white;
-            if (Headlights)
-                Headlights.color = inputs.Headlights == true ? Color.green : Color.white;
-            if (rpmIndicator)
-                rpmIndicator.color = inputs.RPM > 6500f ? Color.red : new Color(.1f, 0f, 0f);
-            if (engineIndicator && inputs.RPM > 5300f)
-                engineIndicator.color = inputs.RPM > 5300f ? Color.yellow : Color.white;
-            if (engineIndicator && inputs.RPM > 6500f)
-                engineIndicator.color = inputs.RPM > 6500f ? Color.red : Color.white;
-            if (engineIndicator && inputs.RPM < 5300f)
-                engineIndicator.color = inputs.RPM < 5300f ? Color.white : Color.white;
-            if (engineIndicator && inputs.RPM > 7100f)
-                engineIndicator.color = inputs.RPM > 7100f ? Color.cyan : Color.white;
+                if (ABS)
+                    ABS.color = inputs.ABS == true ? Color.red : Color.white;
+                if (ESP)
+                    ESP.color = inputs.ESP == true ? Color.yellow : Color.white;
+                if (Park)
+                    Park.color = inputs.Park == true ? Color.red : Color.white;
+                if (Headlights)
+                    Headlights.color = inputs.Headlights == true ? Color.green : Color.white;
+                if (rpmIndicator)
+                    rpmIndicator.color = inputs.RPM > 6500f ? Color.red : new Color(.1f, 0f, 0f);
+                if (engineIndicator && inputs.RPM > 5300f)
+                    engineIndicator.color = inputs.RPM > 5300f ? Color.yellow : Color.white;
+                if (engineIndicator && inputs.RPM > 6500f)
+                    engineIndicator.color = inputs.RPM > 6500f ? Color.red : Color.white;
+                if (engineIndicator && inputs.RPM < 5300f)
+                    engineIndicator.color = inputs.RPM < 5300f ? Color.white : Color.white;
+                if (engineIndicator && inputs.RPM > 7100f)
+                    engineIndicator.color = inputs.RPM > 7100f ? Color.cyan : Color.white;
 
-            if (leftIndicator && rightIndicator)
-            {
-
-                switch (inputs.indicators)
+                if (leftIndicator && rightIndicator)
                 {
 
-                    case RCC_CarControllerV3.IndicatorsOn.Left:
-                        leftIndicator.color = new Color(1f, .5f, 0f);
-                        rightIndicator.color = new Color(.5f, .25f, 0f);
-                        break;
-                    case RCC_CarControllerV3.IndicatorsOn.Right:
-                        leftIndicator.color = new Color(.5f, .25f, 0f);
-                        rightIndicator.color = new Color(1f, .5f, 0f);
-                        break;
-                    case RCC_CarControllerV3.IndicatorsOn.All:
-                        leftIndicator.color = new Color(1f, .5f, 0f);
-                        rightIndicator.color = new Color(1f, .5f, 0f);
-                        break;
-                    case RCC_CarControllerV3.IndicatorsOn.Off:
-                        leftIndicator.color = new Color(.5f, .25f, 0f);
-                        rightIndicator.color = new Color(.5f, .25f, 0f);
-                        break;
+                    switch (inputs.indicators)
+                    {
+
+                        case RCC_CarControllerV3.IndicatorsOn.Left:
+                            leftIndicator.color = new Color(1f, .5f, 0f);
+                            rightIndicator.color = new Color(.5f, .25f, 0f);
+                            break;
+                        case RCC_CarControllerV3.IndicatorsOn.Right:
+                            leftIndicator.color = new Color(.5f, .25f, 0f);
+                            rightIndicator.color = new Color(1f, .5f, 0f);
+                            break;
+                        case RCC_CarControllerV3.IndicatorsOn.All:
+                            leftIndicator.color = new Color(1f, .5f, 0f);
+                            rightIndicator.color = new Color(1f, .5f, 0f);
+                            break;
+                        case RCC_CarControllerV3.IndicatorsOn.Off:
+                            leftIndicator.color = new Color(.5f, .25f, 0f);
+                            rightIndicator.color = new Color(.5f, .25f, 0f);
+                            break;
+                    }
+
                 }
 
             }
-
-        }
+        }  
     }
 }
 

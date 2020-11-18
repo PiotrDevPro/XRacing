@@ -34,7 +34,7 @@ public class RCC_WheelCollider : MonoBehaviour {
 	public Transform wheelModel;
 
 	private float wheelRotation = 0f;
-	private float camber = 0f;
+	public float camber = 0f;
 	private PhysicMaterial groundMaterial;
 
 	internal float steerAngle = 0f;

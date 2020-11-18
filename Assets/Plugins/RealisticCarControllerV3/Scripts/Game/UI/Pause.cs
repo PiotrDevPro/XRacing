@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Photon.Pun;
 using UnityEngine;
 
 public class Pause : MonoBehaviour
@@ -14,6 +15,8 @@ public class Pause : MonoBehaviour
 
     public Toggle vibroToggle,Steeringwheel,buttonControltgl,musicToggle;
 
+    private GameObject _player;
+    int count = 0;
 
     void Awake()
     {
@@ -26,12 +29,23 @@ public class Pause : MonoBehaviour
 
     void Start()
     {
+        
         if (PlayerPrefs.GetInt("Soundtrack") == 0)
         {
                 tracks[Random.Range(0, 4)].Play();
         }
         PausePanel.SetActive(false);
         
+    }
+
+    private void Update()
+    {
+        count += 1;
+        if (count == 1)
+        {
+            _player = GameObject.FindGameObjectWithTag("Player");
+        }
+
     }
 
     public void PausePressed()
@@ -59,6 +73,7 @@ public class Pause : MonoBehaviour
 
     public void MainMenu()
     {
+        PhotonNetwork.Destroy(_player.gameObject);
         Amplitude.Instance.logEvent("MainMenu");
         SceneManager.LoadScene("garage");
         Time.timeScale = 1f;
