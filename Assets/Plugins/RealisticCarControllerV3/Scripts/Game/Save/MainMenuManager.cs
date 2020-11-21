@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using DG.Tweening;
 
-public enum PanelsUI { MainMenu = 0, SelectCar = 1, SelectLevel = 2, Settings = 3, _NetworkRoom = 4}
+public enum PanelsUI { MainMenu = 0, SelectCar = 1, SelectLevel = 2, Settings = 3, _NetworkRoom = 4, Auth = 5}
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -111,6 +111,7 @@ public class MainMenuManager : MonoBehaviour
         public GameObject _NetworkRoom;
         public GameObject EnoughMoney;
         public GameObject Settings;
+        public GameObject Auth;
     }
 
     [System.Serializable]
@@ -388,7 +389,14 @@ public class MainMenuManager : MonoBehaviour
                 menuPanels.SelectLevel.SetActive(true);
                 menuPanels._NetworkRoom.SetActive(false);
                 Amplitude.Instance.logEvent("SelectLevel");
-                
+                break;
+            case PanelsUI.Auth:
+                menuPanels.MainMenu.SetActive(false);
+                menuPanels.SelectCar.SetActive(false);
+                menuPanels.SelectLevel.SetActive(false);
+                menuPanels._NetworkRoom.SetActive(false);
+                menuPanels.Auth.SetActive(true);
+                Amplitude.Instance.logEvent("AuthPanel");
                 break;
             case PanelsUI._NetworkRoom:
                 
@@ -3619,13 +3627,12 @@ public class MainMenuManager : MonoBehaviour
         Amplitude.Instance.logEvent("NetworkRoom");
         menuPanels._NetworkRoom.SetActive(true);
         network_manager_active.SetActive(true);
-        /*
-        Amplitude.Instance.logEvent("levelBattleOnline");
-        SceneManager.LoadScene("battle_online");
-        LoadEngineUpgradeOnSelectedCar();
-        LoadHandlingOnSelectedCar();
-        LoadBrakeOnSelectedCar();
-        */
+    }
+
+    public void AuthNetwork()
+    {
+        Amplitude.Instance.logEvent("AuthRoom");
+        menuPanels.Auth.SetActive(true);
     }
 
     public void DeactiveNetwork()
@@ -3671,8 +3678,8 @@ public class MainMenuManager : MonoBehaviour
         LoadHandlingOnSelectedCar();
         LoadEngineUpgradeOnSelectedCar();
         LoadBrakeOnAwake();
+        //LoadUpgradeOnAwake();
         LoadBrakeOnSelectedCar();
-        LoadUpgradeOnAwake();
         CarSettingBuyNosTurboState();
         ActiveCurrentColor();
         LoadWheelDriveOnAwake();
@@ -3706,6 +3713,7 @@ public class MainMenuManager : MonoBehaviour
         {
             menuGUI.NoAdsBtn.SetActive(false);
         }
+        
         //config
         menuGUI.RUSure.SetActive(false);
         network_manager_active.SetActive(false);
@@ -3734,7 +3742,6 @@ public class MainMenuManager : MonoBehaviour
     }
     void Update()
     {
-        
         LoadUpgradeOnAwake();
         LoadUpgrade();
         LoadUpgradeHandling();

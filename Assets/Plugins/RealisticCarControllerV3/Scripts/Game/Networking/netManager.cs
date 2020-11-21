@@ -1,5 +1,6 @@
 ﻿using Photon.Pun;
 using Photon.Realtime;
+using Photon.Chat;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ using UnityEngine.UI;
 public class netManager : MonoBehaviourPunCallbacks
 {
     public static netManager manage;
+    public ChatClient chatClient;
     public GameObject[] CarsPrefabs;
     public Transform spawnPoint;
     public Transform PlayerCarPoint;
@@ -392,8 +394,6 @@ public class netManager : MonoBehaviourPunCallbacks
 
             }
         }
-
-       /// print(newVehicle.GetComponent<RCC_CarControllerV3>().maxspeed.ToString());
     }
     public void Leave()
     {
@@ -406,7 +406,6 @@ public class netManager : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         SceneManager.LoadScene("garage");
-        
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)

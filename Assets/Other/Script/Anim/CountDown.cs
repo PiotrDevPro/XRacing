@@ -31,26 +31,16 @@ public class CountDown : MonoBehaviour
         if (count == 1)
         {
             CarControlActive = GameObject.FindGameObjectWithTag("Player");
-
-            if (SceneManager.GetActiveScene().name != "battle_online")
-            {
-                CarControlActive.GetComponent<PhotonTransformView>().enabled = false;
-            }
-            else
-            {
-                CarControlActive.GetComponent<PhotonTransformView>().enabled = true;
-            }
         }
     }
 
     void Start()
     {
         if (SceneManager.GetActiveScene().name != "battle_online")
-        { print("Yes");}
+        {
+            StartCoroutine(CountStart());
+        }
 
-        
-        StartCoroutine(CountStart());
-        
     }
 
     IEnumerator CountStart()
