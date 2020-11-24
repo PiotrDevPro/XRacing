@@ -1,13 +1,4 @@
-﻿//----------------------------------------------
-//            Realistic Car Controller
-//
-// Copyright © 2014 - 2019 BoneCracker Games
-// http://www.bonecrackergames.com
-// Buğra Özdoğanlar
-//
-//----------------------------------------------
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using Photon.Pun;
