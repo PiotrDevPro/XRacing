@@ -186,6 +186,19 @@ public class netManager : MonoBehaviourPunCallbacks
         }
         #endregion
 
+        #region Traction 
+        if (PlayerPrefs.GetInt("Traction" + PlayerPrefs.GetInt("CurrentCar")) == 1 && PlayerPrefs.GetInt("selectTraction" + PlayerPrefs.GetInt("CurrentCar")) == 1)
+        {
+            newVehicle.GetComponent<RCC_CarControllerV3>().tractionHelperStrength = PlayerPrefs.GetFloat("TractionSetup" + PlayerPrefs.GetInt("CurrentCar"));
+            newVehicle.GetComponent<RCC_CarControllerV3>().tractionHelper = true;
+        }
+        else
+        {
+            newVehicle.GetComponent<RCC_CarControllerV3>().tractionHelper = false;
+        }
+
+        #endregion
+
         #region load Car Config
         if (!MainMenuManager.NOSisChecked)
         {

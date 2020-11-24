@@ -43,7 +43,6 @@ public class DriftManager : MonoBehaviour
 
     void FixedUpdate()
     {
-
         if (playerCar.GetComponent<RCC_CarControllerV3>().speed > 10f && playerCar.GetComponent<RCC_CarControllerV3>().driftingNow)
         {
             txDriftX.GetComponent<Animator>().StartPlayback();

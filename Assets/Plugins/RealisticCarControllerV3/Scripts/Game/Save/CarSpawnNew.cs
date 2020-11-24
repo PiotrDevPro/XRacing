@@ -41,14 +41,14 @@ public class CarSpawnNew : MonoBehaviour
         #endregion
 
         #region Load Wheel Susspens
-        if (PlayerPrefs.GetInt("WheelSussp" + PlayerPrefs.GetInt("CurrentCar")) != 0)
+        if (PlayerPrefs.GetInt("WheelSussp" + PlayerPrefs.GetInt("CurrentCar")) == 1)
         {
             InstantiatedCar.GetComponent<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspFront" + PlayerPrefs.GetInt("CurrentCar"));
             InstantiatedCar.GetComponent<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspFront" + PlayerPrefs.GetInt("CurrentCar"));
 
             InstantiatedCar.GetComponent<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspRear" + PlayerPrefs.GetInt("CurrentCar"));
             InstantiatedCar.GetComponent<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspRear" + PlayerPrefs.GetInt("CurrentCar"));
-        } else
+        } else if (PlayerPrefs.GetInt("WheelSussp" + PlayerPrefs.GetInt("CurrentCar")) == 0)
         {
             InstantiatedCar.GetComponent<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
             InstantiatedCar.GetComponent<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
@@ -67,6 +67,19 @@ public class CarSpawnNew : MonoBehaviour
         else
         {
             InstantiatedCar.GetComponent<RCC_CarControllerV3>().TCS = false;
+        }
+
+        #endregion
+
+        #region Traction 
+        if (PlayerPrefs.GetInt("Traction" + PlayerPrefs.GetInt("CurrentCar")) == 1 && PlayerPrefs.GetInt("selectTraction" + PlayerPrefs.GetInt("CurrentCar")) == 1)
+        {
+            InstantiatedCar.GetComponent<RCC_CarControllerV3>().tractionHelperStrength = PlayerPrefs.GetFloat("TractionSetup" + PlayerPrefs.GetInt("CurrentCar"));
+            InstantiatedCar.GetComponent<RCC_CarControllerV3>().tractionHelper = true;
+        }
+        else
+        {
+            InstantiatedCar.GetComponent<RCC_CarControllerV3>().tractionHelper = false;
         }
 
         #endregion
@@ -365,13 +378,11 @@ public class CarSpawnNew : MonoBehaviour
             }
             #endregion
 
-
         }
     }
 
     void Update()
     {
-        
         maxspd.text = "MAX:" + InstantiatedCar.GetComponent<RCC_CarControllerV3>().maxspeed.ToString() + "KM/H";
         if (InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed > 30f)
         {
@@ -382,10 +393,5 @@ public class CarSpawnNew : MonoBehaviour
 
             }
         }
-
-        //print(PlayerPrefs.GetFloat("TractionSetup" + PlayerPrefs.GetInt("CurrentCar")));
-        //print(PlayerPrefs.GetInt("Traction" + PlayerPrefs.GetInt("CurrentCar")));
-
-
     }
 }

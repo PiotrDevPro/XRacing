@@ -44,6 +44,7 @@ public class Checkpoint : MonoBehaviour
     private GameObject point5;
     private GameObject point6;
     private GameObject finish;
+    private GameObject CheckPointNetwork;
     private GameObject AnimBonus;
     private GameObject cashRegSnd;
 
@@ -65,7 +66,9 @@ public class Checkpoint : MonoBehaviour
         }
         else
         {
-            anim.SetActive(false);
+            CheckPointNetwork = GameObject.Find("Finish_point");
+            //anim.SetActive(false);
+
         }
 
         point1 = GameObject.Find("point1");
@@ -75,20 +78,25 @@ public class Checkpoint : MonoBehaviour
         point5 = GameObject.Find("point5");
         point6 = GameObject.Find("point6");
         finish = GameObject.Find("finish");
-        coinAddAnim = GameObject.Find("CoinzPlus");
         cashSnd = GameObject.Find("ch");
-        cashRegSnd = GameObject.Find("CashReg");
-        cashTx = GameObject.Find("cash");
         checkpointSound = GameObject.Find("checkpointSnd");
-        checkPointlb = GameObject.Find("point_num");
-        AnimBonus = GameObject.Find("WinPanel");
+        if (SceneManager.GetActiveScene().name != "battle_online")
+        {
+            coinAddAnim = GameObject.Find("CoinzPlus");
+            cashRegSnd = GameObject.Find("CashReg");
+            cashTx = GameObject.Find("cash");
+            
+            checkPointlb = GameObject.Find("point_num");
+            AnimBonus = GameObject.Find("WinPanel");
 
-        loseSnd = GameObject.Find("TimeOut");
-        winSnd = GameObject.Find("Winner");
-        winSnd2 = GameObject.Find("winwin");
+            loseSnd = GameObject.Find("TimeOut");
+            winSnd = GameObject.Find("Winner");
+            winSnd2 = GameObject.Find("winwin");
 
-        losePanel.SetActive(false);
-        winPanel.SetActive(false);
+            losePanel.SetActive(false);
+            winPanel.SetActive(false);
+        }
+        
         PlayerPrefs.SetInt("erndcoin", 0);
         SaveManager.laps = 0;
 
@@ -114,12 +122,15 @@ public class Checkpoint : MonoBehaviour
     }
     private void Update()
     {
-
-        if (CountDown.manage.isStartTime && SceneManager.GetActiveScene().name != "battle_online")
+        if (SceneManager.GetActiveScene().name != "battle_online")
         {
-            Timer();
-            anim.GetComponent<Text>().text = curr.ToString("0");
+            if (CountDown.manage.isStartTime)
+            {
+                Timer();
+                anim.GetComponent<Text>().text = curr.ToString("0");
+            }
         }
+        
 
         countUpd += 1;
         if (countUpd == 1)
@@ -134,11 +145,7 @@ public class Checkpoint : MonoBehaviour
             countPlayerEnter += 1;
             if (countPass == 0 && countPlayerEnter == 1)
             {
-                PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
-                print(PlayerPrefs.GetFloat("DriftCoin"));
-                checkpointSound.GetComponent<AudioSource>().Play();
-                countPass += 1;
-                totalPoint += 1;
+                
 
                 if (SceneManager.GetActiveScene().name == "level_lap6")
                 {
@@ -153,41 +160,46 @@ public class Checkpoint : MonoBehaviour
                 }
                 if (SceneManager.GetActiveScene().name == "battle_online")
                 {
-                    curr += 40f;
-                    Amplitude.Instance.logEvent("BattleOnline");
+                   // curr += 40f;
+                    Amplitude.Instance.logEvent("Battle_Online_Checkpoint1");
+                    CheckPointNetwork.transform.position = point2.transform.position;
                 }
-                coinAddAnim.GetComponent<Animator>().SetBool("push", true);
-                cashSnd.GetComponent<AudioSource>().Play();
-                anim.GetComponent<Animator>().SetBool("push", false);
-                
-                
-                erndCoin += 150;
-                checkPointlb.GetComponent<Text>().text = totalPoint.ToString();
+                else if (SceneManager.GetActiveScene().name != "battle_online") 
+                {
+                    PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
+                    //print(PlayerPrefs.GetFloat("DriftCoin"));
+                    checkpointSound.GetComponent<AudioSource>().Play();
+                    totalPoint += 1;
+                    coinAddAnim.GetComponent<Animator>().SetBool("push", true);
+                    anim.GetComponent<Animator>().SetBool("push", false);
+                    erndCoin += 150;
+                    checkPointlb.GetComponent<Text>().text = totalPoint.ToString();
+                    StopAllCoroutines();
+                }
+                countPass += 1;
                 count = 0;
                 countPlayerEnter = 0;
-                StopAllCoroutines();
+                cashSnd.GetComponent<AudioSource>().Play();
+                checkpointSound.GetComponent<AudioSource>().Play();
                 point1.transform.position = point2.transform.position;
                 
             }
 
             if (countPass == 1 && countPlayerEnter == 1)
             {
-                PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
-                Amplitude.Instance.logEvent("CheckpointMode2");
-                checkpointSound.GetComponent<AudioSource>().Play();
-                countPass += 1;
-                totalPoint += 1;
-                curr += 25f;
-                coinAddAnim.GetComponent<Animator>().SetBool("push", true);
-                cashSnd.GetComponent<AudioSource>().Play();
-                anim.GetComponent<Animator>().SetBool("push", false); 
-                erndCoin += 150;
-                checkPointlb.GetComponent<Text>().text = totalPoint.ToString();
-                StopAllCoroutines();
-                count = 0;
-                countPlayerEnter = 0;
-                point1.transform.position = point3.transform.position;
-                
+                if (SceneManager.GetActiveScene().name != "battle_online")
+                {
+                    PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
+                    Amplitude.Instance.logEvent("CheckpointMode2");
+                    countPass += 1;
+                    totalPoint += 1;
+                    curr += 25f;
+                    coinAddAnim.GetComponent<Animator>().SetBool("push", true);
+                    anim.GetComponent<Animator>().SetBool("push", false);
+                    erndCoin += 150;
+                    checkPointlb.GetComponent<Text>().text = totalPoint.ToString();
+                    StopAllCoroutines();
+                }
                 if (SceneManager.GetActiveScene().name == "level_top_speed_test")
                 {
                     Amplitude.Instance.logEvent("TopSpeedModeWin");
@@ -195,17 +207,24 @@ public class Checkpoint : MonoBehaviour
                     pauza.tracks[1].Stop();
                     pauza.tracks[2].Stop();
                     pauza.tracks[3].Stop();
+                    pauza.tracks[4].Stop();
+                    pauza.tracks[5].Stop();
+                    pauza.tracks[6].Stop();
+                    pauza.tracks[7].Stop();
+                    pauza.tracks[8].Stop();
                     Invoke("Win", 1f);
                 }
                 if (SceneManager.GetActiveScene().name == "battle_online")
                 {
-                    Amplitude.Instance.logEvent("BattleOnline");
-                    pauza.tracks[0].Stop();
-                    pauza.tracks[1].Stop();
-                    pauza.tracks[2].Stop();
-                    pauza.tracks[3].Stop();
-                    Invoke("Win", 1f);
+                    Amplitude.Instance.logEvent("Battle_Online_Checkpoint2");
+                    CheckPointNetwork.transform.position = point3.transform.position;
                 }
+
+                count = 0;
+                countPlayerEnter = 0;
+                checkpointSound.GetComponent<AudioSource>().Play();
+                cashSnd.GetComponent<AudioSource>().Play();
+                point1.transform.position = point3.transform.position;
             }
 
             if (countPass == 2 && countPlayerEnter == 1)
@@ -373,6 +392,11 @@ public class Checkpoint : MonoBehaviour
                 pauza.tracks[1].Stop();
                 pauza.tracks[2].Stop();
                 pauza.tracks[3].Stop();
+                pauza.tracks[4].Stop();
+                pauza.tracks[5].Stop();
+                pauza.tracks[6].Stop();
+                pauza.tracks[7].Stop();
+                pauza.tracks[8].Stop();
                 carController.KillOrStartEngine();
                 Invoke("Win", 1f);
 
@@ -381,6 +405,7 @@ public class Checkpoint : MonoBehaviour
     }
     private void OnTriggerExit(Collider col)
     {
+      if (SceneManager.GetActiveScene().name != "battle_online")
         if (col.gameObject.tag == "Player")
         {
             coinAddAnim.GetComponent<Animator>().SetBool("push", false);
@@ -446,6 +471,7 @@ public class Checkpoint : MonoBehaviour
         GameObject lapsCounter = GameObject.Find("lapNum");
         lapsCounter.GetComponent<Text>().text = SaveManager.laps.ToString();
         carController.KillOrStartEngine();
+        Invoke("EngineRunning", 1f);
 
     }
 
@@ -464,11 +490,17 @@ public class Checkpoint : MonoBehaviour
         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 1000f);
         carController.KillOrStartEngine();
         Invoke("WinSound",0.2f);
+        Invoke("EngineRunning",2f);
     }
 
     void WinSound()
     {
         cashRegSnd.GetComponent<AudioSource>().Play();
+    }
+
+    void EngineRunning()
+    {
+        carController.KillOrStartEngine();
     }
 
     public void Restart()

@@ -32,7 +32,7 @@ public class Pause : MonoBehaviour
         
         if (PlayerPrefs.GetInt("Soundtrack") == 0)
         {
-                tracks[Random.Range(0, 4)].Play();
+                tracks[Random.Range(0, 8)].Play();
         }
         PausePanel.SetActive(false);
         
@@ -68,6 +68,10 @@ public class Pause : MonoBehaviour
             tracks[2].Stop();
             tracks[3].Stop();
             tracks[4].Stop();
+            tracks[5].Stop();
+            tracks[6].Stop();
+            tracks[7].Stop();
+            tracks[8].Stop();
         }
     }
 
@@ -120,7 +124,7 @@ public class Pause : MonoBehaviour
         if (toggle.isOn)
         {
             PlayerPrefs.SetInt("Soundtrack", 0);
-            tracks[Random.Range(0, 4)].GetComponent<AudioSource>().Play();
+            tracks[Random.Range(0, 8)].GetComponent<AudioSource>().Play();
         }
         else
         {
@@ -130,6 +134,10 @@ public class Pause : MonoBehaviour
             tracks[2].GetComponent<AudioSource>().Stop();
             tracks[3].GetComponent<AudioSource>().Stop();
             tracks[4].GetComponent<AudioSource>().Stop();
+            tracks[5].GetComponent<AudioSource>().Stop();
+            tracks[6].GetComponent<AudioSource>().Stop();
+            tracks[7].GetComponent<AudioSource>().Stop();
+            tracks[8].GetComponent<AudioSource>().Stop();
         }
     }
 
@@ -138,18 +146,4 @@ public class Pause : MonoBehaviour
         Application.Quit();
     }
 }
-
-    //public void DisableSound (Toggle toggle)
-    //{
-    //    if (toggle.isOn)
-    //    {
-    //        AudioListener.volume = 0;
-    //        PlayerPrefs.SetInt("MusicActive", 0);
-    //    }
-    //    else
-    //    {
-    //        AudioListener.volume = 1;
-    //        PlayerPrefs.SetInt("MusicActive", 1);
-    //    }
-    //}
 

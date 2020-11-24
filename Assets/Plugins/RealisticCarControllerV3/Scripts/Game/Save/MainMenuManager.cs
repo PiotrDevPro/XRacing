@@ -450,7 +450,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if (toggle.isOn)
         {
-            tracks[Random.Range(0, 4)].Play();
+            tracks[Random.Range(0, 8)].Play();
             PlayerPrefs.SetInt("MusicActive", 0);
         }
         else
@@ -460,6 +460,10 @@ public class MainMenuManager : MonoBehaviour
             tracks[2].Stop();
             tracks[3].Stop();
             tracks[4].Stop();
+            tracks[5].Stop();
+            tracks[6].Stop();
+            tracks[7].Stop();
+            tracks[8].Stop();
             PlayerPrefs.SetInt("MusicActive", 1);
         }
     }
@@ -518,7 +522,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("MusicActive") != 1)
         {
-            tracks[Random.Range(0, 4)].GetComponent<AudioSource>().Play();
+            tracks[Random.Range(0, 8)].GetComponent<AudioSource>().Play();
         }
     }
 
@@ -3064,6 +3068,8 @@ public class MainMenuManager : MonoBehaviour
         if (PlayerPrefs.GetFloat("DriftCoin") >= carSetting[currentCarNumber].WheelSusspensionPrice[0])
         {
             PlayerPrefs.SetInt("WheelSussp" + PlayerPrefs.GetInt("CurrentCar").ToString(), 1);
+            PlayerPrefs.SetFloat("WheelSusspFront" + PlayerPrefs.GetInt("CurrentCar"), 0.2f);
+            PlayerPrefs.SetFloat("WheelSusspRear" + PlayerPrefs.GetInt("CurrentCar"), 0.2f);
             PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - carSetting[currentCarNumber].WheelSusspensionPrice[0]);
             menuGUI.lockedWheelSusspF.SetActive(false);
             menuGUI.lockedWheelSusspR.SetActive(false);
@@ -3079,6 +3085,7 @@ public class MainMenuManager : MonoBehaviour
             menuPanels.EnoughMoney.SetActive(true);
             Amplitude.Instance.logEvent("EnoughMoney");
             PlayerPrefs.SetInt("WheelSussp" + PlayerPrefs.GetInt("CurrentCar").ToString(), 0);
+            
             menuGUI.lockedWheelSusspF.SetActive(true);
             menuGUI.lockedWheelSusspR.SetActive(true);
             menuGUI.WheelSusspPriceF.gameObject.SetActive(true);
@@ -3095,6 +3102,7 @@ public class MainMenuManager : MonoBehaviour
         if (PlayerPrefs.GetFloat("DriftCoin") >= carSetting[currentCarNumber].TCSPrice[0])
         {
             PlayerPrefs.SetInt("TCS" + PlayerPrefs.GetInt("CurrentCar").ToString(), 1);
+            PlayerPrefs.SetFloat("TCSsetup" + PlayerPrefs.GetInt("CurrentCar"), 0.25f);
             PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - carSetting[currentCarNumber].TCSPrice[0]);
             menuGUI.lockedTCS.SetActive(false);
             menuGUI.TCSPrice.gameObject.SetActive(false);
@@ -3122,6 +3130,7 @@ public class MainMenuManager : MonoBehaviour
         if (PlayerPrefs.GetFloat("DriftCoin") >= carSetting[currentCarNumber].ESPPrice[0])
         {
             PlayerPrefs.SetInt("ESP" + PlayerPrefs.GetInt("CurrentCar").ToString(), 1);
+            PlayerPrefs.SetFloat("ESPsetup" + PlayerPrefs.GetInt("CurrentCar"), 0.25f);
             PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - carSetting[currentCarNumber].ESPPrice[0]);
             menuGUI.lockedESP.SetActive(false);
             menuGUI.ESPPrice.gameObject.SetActive(false);
@@ -3151,6 +3160,7 @@ public class MainMenuManager : MonoBehaviour
         if (PlayerPrefs.GetFloat("DriftCoin") >= carSetting[currentCarNumber].TractionPrice[0])
         {
             PlayerPrefs.SetInt("Traction" + PlayerPrefs.GetInt("CurrentCar").ToString(), 1);
+            PlayerPrefs.SetFloat("TractionSetup" + PlayerPrefs.GetInt("CurrentCar"), 0.1f);
             PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - carSetting[currentCarNumber].TractionPrice[0]);
             menuGUI.lockedTraction.SetActive(false);
             menuGUI.TractionPrice.gameObject.SetActive(false);
@@ -3603,7 +3613,7 @@ public class MainMenuManager : MonoBehaviour
 
     #endregion
 
-    #region Level
+    #region Level & UI
     public void loadlevel()
     {
         Amplitude.Instance.logEvent("CheckpointsLevel");
@@ -3631,7 +3641,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void AuthNetwork()
     {
-        Amplitude.Instance.logEvent("AuthRoom");
+        Amplitude.Instance.logEvent("AuthRoomEnter");
         menuPanels.Auth.SetActive(true);
     }
 
@@ -3639,6 +3649,12 @@ public class MainMenuManager : MonoBehaviour
     {
         network_manager_active.SetActive(false);
         
+    }
+
+    public void AuthPanel()
+    {
+        menuPanels.Auth.SetActive(false);
+        Amplitude.Instance.logEvent("AuthRoomExit");
     }
     #endregion
 

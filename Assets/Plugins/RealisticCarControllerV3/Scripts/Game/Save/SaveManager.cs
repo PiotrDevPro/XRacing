@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class SaveManager : MonoBehaviour
@@ -33,33 +34,37 @@ public class SaveManager : MonoBehaviour
 
     void Start()
     {
-        min = PlayerPrefs.GetInt("MinuteSave");
-        sec = PlayerPrefs.GetInt("SecondSave");
-        milli = PlayerPrefs.GetFloat("MilliSave");
-        laps = PlayerPrefs.GetInt("LapSave");
-        drift = PlayerPrefs.GetInt("DriftScore");
-        drifthigh = PlayerPrefs.GetInt("DriftHighScore");
-        driftcoin = PlayerPrefs.GetFloat("DriftCoin");
-        //PlayerPrefs.DeleteAll();
-
-        DriftDisplay.text = drifthigh.ToString();
-        //cashDisplay.text = driftcoin.ToString() + "$";
-
-        minCount = min;
-        secCount = sec;
-        milliCount = milli;
-        driftCount = drifthigh;
-
-        MinDisplay.GetComponent<Text>().text = "" + minCount + ":";
-        if (sec < 10)
+        if (SceneManager.GetActiveScene().name != "battle_online")
         {
-            SecDisplay.GetComponent<Text>().text = "0" + secCount + ".";
-        } else
-        {
-            SecDisplay.GetComponent<Text>().text = "" + secCount + ".";
+            min = PlayerPrefs.GetInt("MinuteSave");
+            sec = PlayerPrefs.GetInt("SecondSave");
+            milli = PlayerPrefs.GetFloat("MilliSave");
+            laps = PlayerPrefs.GetInt("LapSave");
+            drift = PlayerPrefs.GetInt("DriftScore");
+            drifthigh = PlayerPrefs.GetInt("DriftHighScore");
+            driftcoin = PlayerPrefs.GetFloat("DriftCoin");
+            //PlayerPrefs.DeleteAll();
+
+            DriftDisplay.text = drifthigh.ToString();
+            //cashDisplay.text = driftcoin.ToString() + "$";
+
+            minCount = min;
+            secCount = sec;
+            milliCount = milli;
+            driftCount = drifthigh;
+
+            MinDisplay.GetComponent<Text>().text = "" + minCount + ":";
+            if (sec < 10)
+            {
+                SecDisplay.GetComponent<Text>().text = "0" + secCount + ".";
+            }
+            else
+            {
+                SecDisplay.GetComponent<Text>().text = "" + secCount + ".";
+            }
+
+            MilliDisplay.GetComponent<Text>().text = "" + milliCount;
         }
-
-        MilliDisplay.GetComponent<Text>().text = "" + milliCount;
     }
 
     public static void UpdateMin()
