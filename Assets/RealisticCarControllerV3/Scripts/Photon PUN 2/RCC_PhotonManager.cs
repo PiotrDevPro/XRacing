@@ -10,7 +10,6 @@ using UnityEngine.SceneManagement;
 [AddComponentMenu("BoneCracker Games/Realistic Car Controller/Network/Photon/RCC Photon Scene Manager")]
 public class RCC_PhotonManager : Photon.Pun.MonoBehaviourPunCallbacks {
 
-	//public InputField playerName;
 
 	void Start () {
 

@@ -34,7 +34,6 @@ public class UserNameConnected : MonoBehaviour
         UChat chatNewComponent = FindObjectOfType<UChat>();
         chatNewComponent.UserName = this.idInput.text.Trim();
         chatNewComponent.Connect();
-        MainMenuManager.manage.levelBattleOnline();
         //enabled = false;
 
         if (this.idInput.text == null)
@@ -45,7 +44,6 @@ public class UserNameConnected : MonoBehaviour
         {
             PlayerPrefs.SetString(UserNamePlayerPref, chatNewComponent.UserName);
         }
-        
-        MainMenuManager.manage.levelBattleOnline();
+            MainMenuManager.manage.levelBattleOnline();
     }
 }

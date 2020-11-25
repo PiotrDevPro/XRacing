@@ -23,6 +23,7 @@ public class MainMenuManager : MonoBehaviour
     public Text cashAmount;
     [SerializeField] private GameObject versionApp;
     public GameObject network_manager_active;
+    public bool isCityNetworkRoom;
     //public GameObject maxSpeedActive;
 
     #region isChecked static bool
@@ -109,6 +110,7 @@ public class MainMenuManager : MonoBehaviour
         public GameObject SelectCar;
         public GameObject SelectLevel;
         public GameObject _NetworkRoom;
+        public GameObject _NetworkRoomCity;
         public GameObject EnoughMoney;
         public GameObject Settings;
         public GameObject Auth;
@@ -3634,21 +3636,22 @@ public class MainMenuManager : MonoBehaviour
 
     public void levelBattleOnline()
     {
-        Amplitude.Instance.logEvent("NetworkRoom");
+        Amplitude.Instance.logEvent("NetworkRoomHighway");
         menuPanels._NetworkRoom.SetActive(true);
         network_manager_active.SetActive(true);
     }
 
+
     public void AuthNetwork()
     {
-        Amplitude.Instance.logEvent("AuthRoomEnter");
-        menuPanels.Auth.SetActive(true);
+        Amplitude.Instance.logEvent("AuthRoomHighwayEnter");
+        menuPanels.Auth.SetActive(true);  
     }
+
 
     public void DeactiveNetwork()
     {
         network_manager_active.SetActive(false);
-        
     }
 
     public void AuthPanel()

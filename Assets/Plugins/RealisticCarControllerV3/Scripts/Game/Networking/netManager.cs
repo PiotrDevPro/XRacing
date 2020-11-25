@@ -38,9 +38,16 @@ public class netManager : MonoBehaviourPunCallbacks
         if (RCC_SceneManager.Instance.activePlayerVehicle)
             PhotonNetwork.Destroy(RCC_SceneManager.Instance.activePlayerVehicle.gameObject);
 
-
-        newVehicle = PhotonNetwork.Instantiate("Cars/" + CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")].name,new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)) , spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>(); ;
-        Amplitude.Instance.logEvent("LevelNetworkStart");
+        if (PhotonNetwork.CurrentRoom.Name == "Highway")
+        {
+            Amplitude.Instance.logEvent("HighwayLevelNetworkStart");
+            newVehicle = PhotonNetwork.Instantiate("Cars/" + CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")].name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>(); 
+        } 
+        else if (PhotonNetwork.CurrentRoom.Name == "City")
+        {
+            Amplitude.Instance.logEvent("CityLevelNetworkStart");
+            newVehicle = PhotonNetwork.Instantiate("Cars/" + CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")].name, new Vector3(Random.Range(0f, -100.19f), Random.Range(1f, 2f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+        }
 
         RCC.RegisterPlayerVehicle(newVehicle);
         RCC.SetControl(newVehicle, true);
