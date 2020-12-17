@@ -106,42 +106,46 @@ public class RCC_PhotonNetwork : Photon.Pun.MonoBehaviourPunCallbacks, IPunObser
 
     void Start()
 	{
-		if (SceneManager.GetActiveScene().name != "battle_online")
+		if (SceneManager.GetActiveScene().name != "city_online" & SceneManager.GetActiveScene().name != "battle_online")
 			return;
 		// Getting RCC, Rigidbody. 
-		carController = GetComponent<RCC_CarControllerV3>();
-		wheelColliders = GetComponentsInChildren<RCC_WheelCollider>();
-		cambers = new float[wheelColliders.Length];
-		rigid = GetComponent<Rigidbody>();
+			carController = GetComponent<RCC_CarControllerV3>();
+			wheelColliders = GetComponentsInChildren<RCC_WheelCollider>();
+			cambers = new float[wheelColliders.Length];
+			rigid = GetComponent<Rigidbody>();
 
-		if (!gameObject.GetComponent<PhotonView>().ObservedComponents.Contains(this))
-			gameObject.GetComponent<PhotonView>().ObservedComponents.Add(this);
+			if (!gameObject.GetComponent<PhotonView>().ObservedComponents.Contains(this))
+				gameObject.GetComponent<PhotonView>().ObservedComponents.Add(this);
 
-		gameObject.GetComponent<PhotonView>().Synchronization = ViewSynchronization.Unreliable;
+			gameObject.GetComponent<PhotonView>().Synchronization = ViewSynchronization.Unreliable;
 
-		GetValues();
+			GetValues();
 
-		// If we are the owner of this vehicle, disable external controller and enable controller of the vehicle. Do opposite if we don't own this.
-		if (photonView.IsMine)
-		{
+			// If we are the owner of this vehicle, disable external controller and enable controller of the vehicle. Do opposite if we don't own this.
+			if (photonView.IsMine)
+			{
 
-			carController.AIController = false;
-			carController.canControl = true;
+				carController.AIController = false;
+				carController.canControl = true;
 
-		}
-		else
-		{
+			}
+			else
+			{
 
-			carController.AIController = true;
-			carController.canControl = false;
+				carController.AIController = true;
+				carController.canControl = false;
 
-		}
+			}
 
-		// Setting name of the gameobject with Photon View ID.
-		gameObject.name = gameObject.name + photonView.ViewID;
+			// Setting name of the gameobject with Photon View ID.
+			gameObject.name = gameObject.name + photonView.ViewID;
 
-		//		PhotonNetwork.SendRate = 60;
-		//		PhotonNetwork.SerializationRate = 60;
+			//		PhotonNetwork.SendRate = 60;
+			//		PhotonNetwork.SerializationRate = 60;
+
+		
+		
+		
 
 	}
 

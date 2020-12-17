@@ -20,6 +20,9 @@ public class LapTimeManager : MonoBehaviour
     private void Awake()
     {
         manage = this;
+        MinuteCount = 0;
+        SecondCount = 0;
+        MilliCount = 0;
     }
 
     void Update()

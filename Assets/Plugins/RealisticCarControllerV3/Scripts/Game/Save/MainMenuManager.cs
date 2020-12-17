@@ -23,7 +23,8 @@ public class MainMenuManager : MonoBehaviour
     public Text cashAmount;
     [SerializeField] private GameObject versionApp;
     public GameObject network_manager_active;
-    public bool isCityNetworkRoom;
+    public bool isFreerideActive = false;
+    //public bool isCityNetworkRoom;
     //public GameObject maxSpeedActive;
 
     #region isChecked static bool
@@ -3625,6 +3626,16 @@ public class MainMenuManager : MonoBehaviour
         LoadBrakeOnSelectedCar();
     }
 
+    public void loadlevelFreeride()
+    {
+        Amplitude.Instance.logEvent("FreerideLevel");
+        isFreerideActive = true;
+        SceneManager.LoadScene("level_lap6");
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+    }
+
     public void levelTopSpeed()
     {
         Amplitude.Instance.logEvent("TopSpeedLevel");
@@ -3728,16 +3739,14 @@ public class MainMenuManager : MonoBehaviour
     }
     void Start()
     {
-        if (PlayerPrefs.GetInt("NoAds") != 0)
-        {
-            menuGUI.NoAdsBtn.SetActive(false);
-        }
+        //if (PlayerPrefs.GetInt("NoAds") != 0)
+        //{
+        //    menuGUI.NoAdsBtn.SetActive(false);
+        //}
         
         //config
         menuGUI.RUSure.SetActive(false);
         network_manager_active.SetActive(false);
-       // GameObject versionApp = GameObject.Find("ver");
-       // versionApp.GetComponent<Text>().text = "v" ;
     }
     public void GetMoney()
     {

@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
+    public static SaveManager manage;
     public const string MinSave = "MinuteSave";
     public const string SecSave = "SecondSave";
     public const string MilliSave = "MilliSave";
@@ -31,6 +32,11 @@ public class SaveManager : MonoBehaviour
     public GameObject MilliDisplay;
     public Text DriftDisplay;
     //public Text cashDisplay;
+
+    private void Awake()
+    {
+        manage = this;
+    }
 
     void Start()
     {

@@ -38,7 +38,9 @@ public class CountDown : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name != "battle_online")
         {
+            
             StartCoroutine(CountStart());
+
         }
 
     }

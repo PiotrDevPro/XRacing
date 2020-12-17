@@ -10,6 +10,8 @@ public class ironSourceManager : MonoBehaviour
     {
         manage = this;
     }
+
+    /*
     void Start()
     {
 #if UNITY_ANDROID
@@ -226,7 +228,7 @@ public class ironSourceManager : MonoBehaviour
     }
 
     /************* RewardedVideo DemandOnly Delegates *************/
-
+    /*
     void RewardedVideoAdLoadedDemandOnlyEvent(string instanceId)
     {
         Debug.Log("unity-script: I got RewardedVideoAdLoadedDemandOnlyEvent for instance: " + instanceId);
@@ -326,9 +328,9 @@ public class ironSourceManager : MonoBehaviour
         IronSource.Agent.loadInterstitial();
 
     }
-
+    
     /************* Interstitial DemandOnly Delegates *************/
-
+    /*
     void InterstitialAdReadyDemandOnlyEvent(string instanceId)
     {
         Debug.Log("unity-script: I got InterstitialAdReadyDemandOnlyEvent for instance: " + instanceId);
@@ -419,4 +421,6 @@ public class ironSourceManager : MonoBehaviour
         }
     }
     #endregion
+
+    */
 }

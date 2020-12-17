@@ -11,6 +11,7 @@ public class Checkpoint : MonoBehaviour
     private Pause pauza;
     private RCC_CarControllerV3 carController;
     private GameObject _player;
+    private GameObject ArrowActive;
     [SerializeField] private GameObject losePanel;
     [SerializeField] private GameObject winPanel;
     private float starttime = 45f;
@@ -36,6 +37,7 @@ public class Checkpoint : MonoBehaviour
     private GameObject erndCoinTx;
     [SerializeField] Text maxPointNumberWinPanel;
     [SerializeField] Text maxPointNumberLosePanel;
+    [SerializeField] GameObject CheckpointContainer;
     private GameObject checkPointlb;
     private GameObject point1;
     private GameObject point2;
@@ -60,13 +62,15 @@ public class Checkpoint : MonoBehaviour
         carController = FindObjectOfType<RCC_CarControllerV3>();
         curr = starttime;
 
-        if (SceneManager.GetActiveScene().name != "battle_online")
+        if (SceneManager.GetActiveScene().name != "battle_online" && !MainMenuManager.manage.isFreerideActive)
         {
         anim = GameObject.Find("Tm");
+        
         }
         else
         {
             CheckPointNetwork = GameObject.Find("Finish_point");
+            
             //anim.SetActive(false);
 
         }
@@ -80,7 +84,7 @@ public class Checkpoint : MonoBehaviour
         finish = GameObject.Find("finish");
         cashSnd = GameObject.Find("ch");
         checkpointSound = GameObject.Find("checkpointSnd");
-        if (SceneManager.GetActiveScene().name != "battle_online")
+        if (SceneManager.GetActiveScene().name != "battle_online" && !MainMenuManager.manage.isFreerideActive)
         {
             coinAddAnim = GameObject.Find("CoinzPlus");
             cashRegSnd = GameObject.Find("CashReg");
@@ -103,8 +107,8 @@ public class Checkpoint : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "level_top_speed_test")
         {
             curr += 55f;
-            maxPointNumberWinPanel.text = "/10";
-            maxPointNumberLosePanel.text = "/10";
+            maxPointNumberWinPanel.text = "/2";
+            maxPointNumberLosePanel.text = "/2";
         }
 
         if (SceneManager.GetActiveScene().name == "level_lap6")
@@ -122,7 +126,7 @@ public class Checkpoint : MonoBehaviour
     }
     private void Update()
     {
-        if (SceneManager.GetActiveScene().name != "battle_online")
+        if (SceneManager.GetActiveScene().name != "battle_online" && !MainMenuManager.manage.isFreerideActive)
         {
             if (CountDown.manage.isStartTime)
             {
@@ -136,6 +140,19 @@ public class Checkpoint : MonoBehaviour
         if (countUpd == 1)
         {
             _player = GameObject.FindGameObjectWithTag("Player");
+            ArrowActive = GameObject.FindGameObjectWithTag("ArrowActive");
+            if (MainMenuManager.manage.isFreerideActive)
+            {
+                ArrowActive.SetActive(false);
+                point1.SetActive(false);
+                point2.SetActive(false);
+                point3.SetActive(false);
+                point4.SetActive(false);
+                point5.SetActive(false);
+                point6.SetActive(false);
+                CheckpointContainer.SetActive(false);
+            }
+            
         }
     }
     void OnTriggerEnter(Collider col)
@@ -509,7 +526,8 @@ public class Checkpoint : MonoBehaviour
         Amplitude.Instance.logEvent("Restart");
         if (PlayerPrefs.GetInt("NoAds") != 1)
         {
-            ironSourceManager.manage.ShowRewardedVideoButtonClicked();
+            //ironSourceManager.manage.ShowRewardedVideoButtonClicked();
+            //AppDealManager.manage.ShowRewardedAds20Video();
         }
         SceneManager.LoadScene(Application.loadedLevel);
         AudioListener.pause = false;
@@ -520,13 +538,14 @@ public class Checkpoint : MonoBehaviour
     {
         Time.timeScale = 1;
         Amplitude.Instance.logEvent("Menu");
+        MainMenuManager.manage.isFreerideActive = false;
         PhotonNetwork.Destroy(_player.gameObject);
         if (PlayerPrefs.GetInt("NoAds") != 1)
         {
-            ironSourceManager.manage.ShowRewardedVideoButtonClicked();
+            //ironSourceManager.manage.ShowRewardedVideoButtonClicked();
+            //AppDealManager.manage.ShowInterstatial();
         }
         SceneManager.LoadScene("garage");
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 0);
         
     }
 
