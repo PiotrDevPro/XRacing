@@ -23,7 +23,8 @@ public class MainMenuManager : MonoBehaviour
     public Text cashAmount;
     [SerializeField] private GameObject versionApp;
     public GameObject network_manager_active;
-    public bool isCityNetworkRoom;
+    public bool isFreerideActive = false;
+    //public bool isCityNetworkRoom;
     //public GameObject maxSpeedActive;
 
     #region isChecked static bool
@@ -3619,6 +3620,16 @@ public class MainMenuManager : MonoBehaviour
     public void loadlevel()
     {
         Amplitude.Instance.logEvent("CheckpointsLevel");
+        SceneManager.LoadScene("level_lap6");
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+    }
+
+    public void loadlevelFreeride()
+    {
+        Amplitude.Instance.logEvent("FreerideLevel");
+        isFreerideActive = true;
         SceneManager.LoadScene("level_lap6");
         LoadEngineUpgradeOnSelectedCar();
         LoadHandlingOnSelectedCar();

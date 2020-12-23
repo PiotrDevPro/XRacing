@@ -12,6 +12,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public Button createRoomHighway;
     public Button createRoomCity;
     public ChatClient chatClient;
+    public GameObject connectToServerMsg;
+    public GameObject loading;
     int count = 0;
     private GameObject _player;
     private void Awake()
@@ -30,7 +32,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
-
+        loading.SetActive(false);
+        connectToServerMsg.SetActive(true);
     }
 
     private void Update()
@@ -51,42 +54,45 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        print("Connected to master server");
+        Amplitude.Instance.logEvent("ConnectedToMasterServer");
         createRoomHighway.interactable = true;
         createRoomCity.interactable = true;
+        connectToServerMsg.SetActive(false);
 
     }
 
     public void CreateRoom()
     {
         PhotonNetwork.CreateRoom("Highway", new Photon.Realtime.RoomOptions { MaxPlayers = 10 });
-        print("CreateRoomHighway");
+        Amplitude.Instance.logEvent("CreateRoomHighway");
 
     }
 
     public void CreateRoomCity()
     {
         PhotonNetwork.CreateRoom("City", new Photon.Realtime.RoomOptions { MaxPlayers = 10 });
-        print("CreateRoomCity");
+        Amplitude.Instance.logEvent("CreateRoomCity");
     }
 
     public void JoinRoom()
     {
         PhotonNetwork.JoinRoom("Highway");
+        Amplitude.Instance.logEvent("JoinRoomHighway");
         //PhotonNetwork.JoinRandomRoom();
     }
 
     public void JoinRoomCity()
     {
         PhotonNetwork.JoinRoom("City");
+        Amplitude.Instance.logEvent("JoinRoomCity");
     }
 
     public override void OnJoinedRoom()
     {
-        print("Joined the room");
         
         if (PhotonNetwork.CurrentRoom.Name == "Highway")
         {
+            loading.SetActive(true);
             createRoomHighway.interactable = false;
             print(PhotonNetwork.CurrentRoom);
             PhotonNetwork.LoadLevel("battle_online");
@@ -121,6 +127,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         LogText.text = "LOG:" + "";
         count = 0;
         Amplitude.Instance.logEvent("QuitNetworkRoom");
+        connectToServerMsg.SetActive(true);
         createRoomHighway.interactable = false;
         _player.GetComponent<PhotonView>().enabled = false;
         print(PhotonNetwork.NetworkClientState);

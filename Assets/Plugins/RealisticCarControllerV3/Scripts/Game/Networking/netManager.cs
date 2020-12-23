@@ -17,12 +17,13 @@ public class netManager : MonoBehaviourPunCallbacks
     public GameObject nosButton;
     public Slider noslevel;
     public Text maxspd;
+    public bool DangerSpeed;
     int count = 0;
     private float starttime = 5f;
     private float curr = 0;
     
 
-    RCC_CarControllerV3 newVehicle;
+    public RCC_CarControllerV3 newVehicle;
 
 
     private void Awake()
@@ -38,15 +39,15 @@ public class netManager : MonoBehaviourPunCallbacks
         if (RCC_SceneManager.Instance.activePlayerVehicle)
             PhotonNetwork.Destroy(RCC_SceneManager.Instance.activePlayerVehicle.gameObject);
 
-        if (PhotonNetwork.CurrentRoom.Name == "Highway")
+        if (PhotonNetwork.CurrentRoom.Name == "Highway") 
         {
-            Amplitude.Instance.logEvent("HighwayLevelNetworkStart");
+            Amplitude.Instance.logEvent("HighwayLevelNetwork");
             newVehicle = PhotonNetwork.Instantiate("Cars/" + CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")].name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>(); 
         } 
         else if (PhotonNetwork.CurrentRoom.Name == "City")
         {
-            Amplitude.Instance.logEvent("CityLevelNetworkStart");
-            newVehicle = PhotonNetwork.Instantiate("Cars/" + CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")].name, new Vector3(Random.Range(0f, -100.19f), Random.Range(1f, 2f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+            Amplitude.Instance.logEvent("CityLevelNetwork");
+            newVehicle = PhotonNetwork.Instantiate("Cars/" + CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")].name, new Vector3(Random.Range(-755f, -757f), Random.Range(2f,4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
         }
 
         RCC.RegisterPlayerVehicle(newVehicle);
@@ -407,12 +408,19 @@ public class netManager : MonoBehaviourPunCallbacks
         maxspd.text = "MAX:" + newVehicle.GetComponent<RCC_CarControllerV3>().maxspeed.ToString() + "KM/H";
         if (newVehicle.GetComponent<RCC_CarControllerV3>().speed > 30f)
         {
+            DangerSpeed = true;
+
             count += 1;
             if (count == 1)
             {
                 Amplitude.Instance.logEvent("StartRide > 30 kmh");
 
             }
+
+        } 
+        else
+        {
+            DangerSpeed = false;
         }
     }
     public void Leave()

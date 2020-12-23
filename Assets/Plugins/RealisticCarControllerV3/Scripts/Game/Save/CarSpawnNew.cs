@@ -16,7 +16,7 @@ public class CarSpawnNew : MonoBehaviour
 
     public GameObject nosButton;
     public Slider noslevel;
-    private GameObject InstantiatedCar;
+    public GameObject InstantiatedCar;
 
     void Awake()
     {

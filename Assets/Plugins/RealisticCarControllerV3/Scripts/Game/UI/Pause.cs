@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Photon.Pun;
+using UnityStandardAssets.ImageEffects;
 using UnityEngine;
 
 public class Pause : MonoBehaviour
@@ -11,11 +12,14 @@ public class Pause : MonoBehaviour
     public GameObject PausePanel;
     public GameObject steeringWheelControl;
     public GameObject buttonControl;
+    public GameObject Traffic;
+    public GameObject peopleAI;
     public AudioSource[] tracks;
 
-    public Toggle vibroToggle,Steeringwheel,buttonControltgl,musicToggle;
+    public Toggle vibroToggle,Steeringwheel,buttonControltgl,musicToggle,cameraMotionBlur, traff, people;
 
     private GameObject _player;
+    private CameraMotionBlur _blur;
     int count = 0;
 
     void Awake()
@@ -25,17 +29,33 @@ public class Pause : MonoBehaviour
         Steeringwheel.isOn = (PlayerPrefs.GetInt("SteeringWheel") == 0) ? true : false;
         buttonControltgl.isOn = (PlayerPrefs.GetInt("ButtonMode") == 0) ? true : false;
         musicToggle.isOn = (PlayerPrefs.GetInt("Soundtrack") == 0) ? true : false;
+        if (SceneManager.GetActiveScene().name == "battle_online" || SceneManager.GetActiveScene().name == "city_online")
+        {
+            traff.isOn = (PlayerPrefs.GetInt("Traffic") == 0) ? true : false;
+            people.isOn = (PlayerPrefs.GetInt("PeopleAI") == 0) ? true : false;
+        }
+            
     }
 
     void Start()
     {
         
+
         if (PlayerPrefs.GetInt("Soundtrack") == 0)
         {
                 tracks[Random.Range(0, 8)].Play();
         }
+
+        if (SceneManager.GetActiveScene().name == "city_online")
+        {
+            if (PlayerPrefs.GetInt("Soundtrack") == 1)
+            {
+                tracks[9].Play();
+            }
+        }
         PausePanel.SetActive(false);
-        
+        _blur = FindObjectOfType<CameraMotionBlur>();
+
     }
 
     private void Update()
@@ -44,6 +64,7 @@ public class Pause : MonoBehaviour
         if (count == 1)
         {
             _player = GameObject.FindGameObjectWithTag("Player");
+            cameraMotionBlur.isOn = (PlayerPrefs.GetInt("Blur") == 0) ? true : false;
         }
 
     }
@@ -79,6 +100,7 @@ public class Pause : MonoBehaviour
     {
         PhotonNetwork.Destroy(_player.gameObject);
         Amplitude.Instance.logEvent("MainMenu");
+        MainMenuManager.manage.isFreerideActive = false;
         SceneManager.LoadScene("garage");
         Time.timeScale = 1f;
         
@@ -94,6 +116,48 @@ public class Pause : MonoBehaviour
         {
             steeringWheelControl.SetActive(false);
             PlayerPrefs.SetInt("SteeringWheel", 1);
+        }
+    }
+
+    public void DisableBlur(Toggle toggle)
+    {
+        if (toggle.isOn)
+        {
+            _blur.enabled = true;
+            PlayerPrefs.SetInt("Blur", 0);
+        }
+        else
+        {
+            _blur.enabled = false;
+            PlayerPrefs.SetInt("Blur", 1);
+        }
+    }
+
+    public void DisableTraffic(Toggle toggle)
+    {
+        if (toggle.isOn)
+        {
+            Traffic.SetActive(true);
+            PlayerPrefs.SetInt("Traffic", 0);
+        }
+        else
+        {
+            Traffic.SetActive(false);
+            PlayerPrefs.SetInt("Traffic", 1);
+        }
+    }
+
+    public void DisablePeople(Toggle toggle)
+    {
+        if (toggle.isOn)
+        {
+            peopleAI.SetActive(true);
+            PlayerPrefs.SetInt("PeopleAI", 0);
+        }
+        else
+        {
+            peopleAI.SetActive(false);
+            PlayerPrefs.SetInt("PeopleAI", 1);
         }
     }
 
@@ -125,6 +189,10 @@ public class Pause : MonoBehaviour
         {
             PlayerPrefs.SetInt("Soundtrack", 0);
             tracks[Random.Range(0, 8)].GetComponent<AudioSource>().Play();
+            if (SceneManager.GetActiveScene().name == "city_online")
+            {
+                tracks[9].GetComponent<AudioSource>().Stop();
+            }
         }
         else
         {
@@ -138,6 +206,11 @@ public class Pause : MonoBehaviour
             tracks[6].GetComponent<AudioSource>().Stop();
             tracks[7].GetComponent<AudioSource>().Stop();
             tracks[8].GetComponent<AudioSource>().Stop();
+            if (SceneManager.GetActiveScene().name == "city_online")
+            {
+                tracks[9].GetComponent<AudioSource>().Play();
+            }
+            
         }
     }
 
