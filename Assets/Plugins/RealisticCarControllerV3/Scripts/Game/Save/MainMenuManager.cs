@@ -453,7 +453,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if (toggle.isOn)
         {
-            tracks[Random.Range(0, 8)].Play();
+            tracks[Random.Range(0, 6)].Play();
             PlayerPrefs.SetInt("MusicActive", 0);
         }
         else
@@ -465,8 +465,6 @@ public class MainMenuManager : MonoBehaviour
             tracks[4].Stop();
             tracks[5].Stop();
             tracks[6].Stop();
-            tracks[7].Stop();
-            tracks[8].Stop();
             PlayerPrefs.SetInt("MusicActive", 1);
         }
     }
@@ -3739,16 +3737,14 @@ public class MainMenuManager : MonoBehaviour
     }
     void Start()
     {
-        if (PlayerPrefs.GetInt("NoAds") != 0)
-        {
-            menuGUI.NoAdsBtn.SetActive(false);
-        }
+        //if (PlayerPrefs.GetInt("NoAds") != 0)
+        //{
+        //    menuGUI.NoAdsBtn.SetActive(false);
+        //}
         
         //config
         menuGUI.RUSure.SetActive(false);
         network_manager_active.SetActive(false);
-       // GameObject versionApp = GameObject.Find("ver");
-       // versionApp.GetComponent<Text>().text = "v" ;
     }
     public void GetMoney()
     {

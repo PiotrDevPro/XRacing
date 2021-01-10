@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using AppodealAds.Unity.Common;
+//using AppodealAds.Unity.Common;
 using UnityEngine;
 
 public class Restart : MonoBehaviour

@@ -34,6 +34,11 @@ public class Pause : MonoBehaviour
             traff.isOn = (PlayerPrefs.GetInt("Traffic") == 0) ? true : false;
             people.isOn = (PlayerPrefs.GetInt("PeopleAI") == 0) ? true : false;
         }
+
+        if (SceneManager.GetActiveScene().name == "level_top_speed_test")
+        {
+            traff.isOn = (PlayerPrefs.GetInt("Traffic") == 0) ? true : false;
+        }
             
     }
 
@@ -43,18 +48,19 @@ public class Pause : MonoBehaviour
 
         if (PlayerPrefs.GetInt("Soundtrack") == 0)
         {
-                tracks[Random.Range(0, 8)].Play();
+                tracks[Random.Range(0, 6)].Play();
         }
 
         if (SceneManager.GetActiveScene().name == "city_online")
         {
             if (PlayerPrefs.GetInt("Soundtrack") == 1)
             {
-                tracks[9].Play();
+                tracks[7].Play();
             }
         }
         PausePanel.SetActive(false);
         _blur = FindObjectOfType<CameraMotionBlur>();
+        print(_blur);
 
     }
 
@@ -65,6 +71,7 @@ public class Pause : MonoBehaviour
         {
             _player = GameObject.FindGameObjectWithTag("Player");
             cameraMotionBlur.isOn = (PlayerPrefs.GetInt("Blur") == 0) ? true : false;
+            print(_blur);
         }
 
     }
@@ -74,6 +81,7 @@ public class Pause : MonoBehaviour
         PausePanel.SetActive(true);
         Time.timeScale = 0f;
         AudioListener.pause = true;
+        Amplitude.Instance.logEvent("Pause");
     }
 
     public void Resume()
@@ -81,6 +89,7 @@ public class Pause : MonoBehaviour
         PausePanel.SetActive(false);
         Time.timeScale = 1f;
         AudioListener.pause = false;
+        Amplitude.Instance.logEvent("Resume");
 
         if (PlayerPrefs.GetInt("Soundtrack") == 1)
         {
@@ -91,13 +100,12 @@ public class Pause : MonoBehaviour
             tracks[4].Stop();
             tracks[5].Stop();
             tracks[6].Stop();
-            tracks[7].Stop();
-            tracks[8].Stop();
         }
     }
 
     public void MainMenu()
     {
+        
         PhotonNetwork.Destroy(_player.gameObject);
         Amplitude.Instance.logEvent("MainMenu");
         MainMenuManager.manage.isFreerideActive = false;
@@ -125,11 +133,13 @@ public class Pause : MonoBehaviour
         {
             _blur.enabled = true;
             PlayerPrefs.SetInt("Blur", 0);
+            Amplitude.Instance.logEvent("BlurON");
         }
         else
         {
             _blur.enabled = false;
             PlayerPrefs.SetInt("Blur", 1);
+            Amplitude.Instance.logEvent("BlurFalse");
         }
     }
 
@@ -188,10 +198,10 @@ public class Pause : MonoBehaviour
         if (toggle.isOn)
         {
             PlayerPrefs.SetInt("Soundtrack", 0);
-            tracks[Random.Range(0, 8)].GetComponent<AudioSource>().Play();
+            tracks[Random.Range(0, 7)].GetComponent<AudioSource>().Play();
             if (SceneManager.GetActiveScene().name == "city_online")
             {
-                tracks[9].GetComponent<AudioSource>().Stop();
+                tracks[7].GetComponent<AudioSource>().Stop();
             }
         }
         else
@@ -204,11 +214,9 @@ public class Pause : MonoBehaviour
             tracks[4].GetComponent<AudioSource>().Stop();
             tracks[5].GetComponent<AudioSource>().Stop();
             tracks[6].GetComponent<AudioSource>().Stop();
-            tracks[7].GetComponent<AudioSource>().Stop();
-            tracks[8].GetComponent<AudioSource>().Stop();
             if (SceneManager.GetActiveScene().name == "city_online")
             {
-                tracks[9].GetComponent<AudioSource>().Play();
+                tracks[7].GetComponent<AudioSource>().Play();
             }
             
         }

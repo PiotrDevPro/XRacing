@@ -227,8 +227,6 @@ public class Checkpoint : MonoBehaviour
                     pauza.tracks[4].Stop();
                     pauza.tracks[5].Stop();
                     pauza.tracks[6].Stop();
-                    pauza.tracks[7].Stop();
-                    pauza.tracks[8].Stop();
                     Invoke("Win", 1f);
                 }
                 if (SceneManager.GetActiveScene().name == "battle_online")
@@ -412,8 +410,6 @@ public class Checkpoint : MonoBehaviour
                 pauza.tracks[4].Stop();
                 pauza.tracks[5].Stop();
                 pauza.tracks[6].Stop();
-                pauza.tracks[7].Stop();
-                pauza.tracks[8].Stop();
                 carController.KillOrStartEngine();
                 Invoke("Win", 1f);
 
