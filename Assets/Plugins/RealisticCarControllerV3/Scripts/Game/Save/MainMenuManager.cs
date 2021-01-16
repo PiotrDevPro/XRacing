@@ -24,6 +24,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject versionApp;
     public GameObject network_manager_active;
     public bool isFreerideActive = false;
+    public bool isAllvsYou = false;
     //public bool isCityNetworkRoom;
     //public GameObject maxSpeedActive;
 
@@ -3628,6 +3629,16 @@ public class MainMenuManager : MonoBehaviour
     {
         Amplitude.Instance.logEvent("FreerideLevel");
         isFreerideActive = true;
+        SceneManager.LoadScene("level_lap6");
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+    }
+
+    public void loadlevelVsYou()
+    {
+        Amplitude.Instance.logEvent("AllVsYou");
+        isAllvsYou = true;
         SceneManager.LoadScene("level_lap6");
         LoadEngineUpgradeOnSelectedCar();
         LoadHandlingOnSelectedCar();

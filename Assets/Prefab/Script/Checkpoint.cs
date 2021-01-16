@@ -10,6 +10,8 @@ public class Checkpoint : MonoBehaviour
     public static Checkpoint manage;
     private Pause pauza;
     private RCC_CarControllerV3 carController;
+    private RCC_AIWaypointsContainer _waypointsContainer;
+    private RCC_AICarController _ai_carController;
     private GameObject _player;
     private GameObject ArrowActive;
     [SerializeField] private GameObject losePanel;
@@ -17,7 +19,7 @@ public class Checkpoint : MonoBehaviour
     private float starttime = 45f;
     private float curr = 0f;
 
-    
+
     private int count = 0;
     private int countUpd = 0;
     private int countPlayerEnter = 0;
@@ -38,6 +40,8 @@ public class Checkpoint : MonoBehaviour
     [SerializeField] Text maxPointNumberWinPanel;
     [SerializeField] Text maxPointNumberLosePanel;
     [SerializeField] GameObject CheckpointContainer;
+    [SerializeField] Text energy;
+    [SerializeField] GameObject EnergyBar;
     private GameObject checkPointlb;
     private GameObject point1;
     private GameObject point2;
@@ -50,7 +54,7 @@ public class Checkpoint : MonoBehaviour
     private GameObject AnimBonus;
     private GameObject cashRegSnd;
 
-
+    private GameObject[] carAi1;
     private void Awake()
     {
         manage = this;
@@ -60,9 +64,11 @@ public class Checkpoint : MonoBehaviour
     {
         pauza = FindObjectOfType<Pause>();
         carController = FindObjectOfType<RCC_CarControllerV3>();
+        _waypointsContainer = FindObjectOfType<RCC_AIWaypointsContainer>();
         curr = starttime;
+        
 
-        if (SceneManager.GetActiveScene().name != "battle_online" && !MainMenuManager.manage.isFreerideActive)
+        if (SceneManager.GetActiveScene().name != "battle_online" && !MainMenuManager.manage.isFreerideActive && !MainMenuManager.manage.isAllvsYou)
         {
         anim = GameObject.Find("Tm");
         
@@ -84,7 +90,7 @@ public class Checkpoint : MonoBehaviour
         finish = GameObject.Find("finish");
         cashSnd = GameObject.Find("ch");
         checkpointSound = GameObject.Find("checkpointSnd");
-        if (SceneManager.GetActiveScene().name != "battle_online" && !MainMenuManager.manage.isFreerideActive)
+        if (SceneManager.GetActiveScene().name != "battle_online" && !MainMenuManager.manage.isFreerideActive && !MainMenuManager.manage.isAllvsYou)
         {
             coinAddAnim = GameObject.Find("CoinzPlus");
             cashRegSnd = GameObject.Find("CashReg");
@@ -100,6 +106,8 @@ public class Checkpoint : MonoBehaviour
             losePanel.SetActive(false);
             winPanel.SetActive(false);
         }
+
+        
         
         PlayerPrefs.SetInt("erndcoin", 0);
         SaveManager.laps = 0;
@@ -126,7 +134,7 @@ public class Checkpoint : MonoBehaviour
     }
     private void Update()
     {
-        if (SceneManager.GetActiveScene().name != "battle_online" && !MainMenuManager.manage.isFreerideActive)
+        if (SceneManager.GetActiveScene().name != "battle_online" && !MainMenuManager.manage.isFreerideActive && !MainMenuManager.manage.isAllvsYou)
         {
             if (CountDown.manage.isStartTime)
             {
@@ -140,8 +148,9 @@ public class Checkpoint : MonoBehaviour
         if (countUpd == 1)
         {
             _player = GameObject.FindGameObjectWithTag("Player");
+            carAi1 = GameObject.FindGameObjectsWithTag("CarAI");
             ArrowActive = GameObject.FindGameObjectWithTag("ArrowActive");
-            if (MainMenuManager.manage.isFreerideActive)
+            if (MainMenuManager.manage.isFreerideActive || MainMenuManager.manage.isAllvsYou)
             {
                 ArrowActive.SetActive(false);
                 point1.SetActive(false);
@@ -151,6 +160,15 @@ public class Checkpoint : MonoBehaviour
                 point5.SetActive(false);
                 point6.SetActive(false);
                 CheckpointContainer.SetActive(false);
+            }
+            if (MainMenuManager.manage.isAllvsYou)
+            {
+                EnergyBar.SetActive(true);
+                
+                _waypointsContainer.target = _player.transform;
+                carAi1[0].GetComponent<RCC_AICarController>()._AIType = RCC_AICarController.AIType.ChasePlayer;
+                carAi1[1].GetComponent<RCC_AICarController>()._AIType = RCC_AICarController.AIType.ChasePlayer;
+                carAi1[2].GetComponent<RCC_AICarController>()._AIType = RCC_AICarController.AIType.ChasePlayer;
             }
             
         }
@@ -535,6 +553,7 @@ public class Checkpoint : MonoBehaviour
         Time.timeScale = 1;
         Amplitude.Instance.logEvent("Menu");
         MainMenuManager.manage.isFreerideActive = false;
+        MainMenuManager.manage.isAllvsYou = false;
         PhotonNetwork.Destroy(_player.gameObject);
         if (PlayerPrefs.GetInt("NoAds") != 1)
         {

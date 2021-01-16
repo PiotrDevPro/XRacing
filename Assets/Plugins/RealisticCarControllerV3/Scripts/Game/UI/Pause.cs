@@ -20,6 +20,7 @@ public class Pause : MonoBehaviour
 
     private GameObject _player;
     private CameraMotionBlur _blur;
+    
     int count = 0;
 
     void Awake()
@@ -60,7 +61,6 @@ public class Pause : MonoBehaviour
         }
         PausePanel.SetActive(false);
         _blur = FindObjectOfType<CameraMotionBlur>();
-        print(_blur);
 
     }
 
@@ -71,7 +71,6 @@ public class Pause : MonoBehaviour
         {
             _player = GameObject.FindGameObjectWithTag("Player");
             cameraMotionBlur.isOn = (PlayerPrefs.GetInt("Blur") == 0) ? true : false;
-            print(_blur);
         }
 
     }
