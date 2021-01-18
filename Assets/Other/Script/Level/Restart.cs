@@ -10,6 +10,8 @@ public class Restart : MonoBehaviour
     {
         
         Time.timeScale = 1f;
+        
+        PlayerPrefs.SetInt("crashed", 0);
         //ironSourceManager.manage.ShowInterstitialButtonClicked();
         //AppDealManager.manage.ShowInterstatial();
         Invoke("latency", 0.1f);
@@ -26,6 +28,9 @@ public class Restart : MonoBehaviour
         LapTimeManagerAI.MilliCount = 0;
         AudioListener.pause = false;
         SaveManager.laps = 0;
+        PlayerPrefs.SetInt("AiCrashed", 0);
+        PlayerPrefs.SetInt("AiCrashed1", 0);
+        PlayerPrefs.SetInt("AiCrashed2", 0);
         Application.LoadLevel(Application.loadedLevel);
         
 

@@ -1,24 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using UnityEngine;
 
-public class CarAi : MonoBehaviour
+public class CarAi2 : MonoBehaviour
 {
-    public static CarAi manage;
+    public static CarAi2 manage;
     public GameObject Blow;
     private void Awake()
     {
         manage = this;
     }
     public int energy = 100;
-    public int coin = 0;
     int a = 0;
+    public int coin = 0;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && !CarDamage.manage.isDead)
         {
-            if (MainMenuManager.manage.isAllvsYou)
+            if (MainMenuManager.manage.isAllvsYou )
             {
                 if (GetComponent<RCC_CarControllerV3>().speed > 100)
                 {
@@ -27,10 +26,10 @@ public class CarAi : MonoBehaviour
                     if (energy <= 0)
                     {
                         GetComponent<RCC_CarControllerV3>().KillEngine();
-                        Blow.SetActive(true);
                         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
                         energy = 0;
                         coin += 500;
+                        Blow.SetActive(true);
                         Invoke("latency", 0.01f);
                     }
                 }
@@ -42,10 +41,10 @@ public class CarAi : MonoBehaviour
                     if (energy <= 0)
                     {
                         GetComponent<RCC_CarControllerV3>().KillEngine();
-                        Blow.SetActive(true);
                         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
                         energy = 0;
                         coin += 500;
+                        Blow.SetActive(true);
                         Invoke("latency", 0.01f);
                     }
                 }
@@ -57,10 +56,10 @@ public class CarAi : MonoBehaviour
                     if (energy <= 0)
                     {
                         GetComponent<RCC_CarControllerV3>().KillEngine();
-                        Blow.SetActive(true);
                         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
                         energy = 0;
                         coin += 500;
+                        Blow.SetActive(true);
                         Invoke("latency", 0.01f);
                     }
                 }
@@ -70,17 +69,17 @@ public class CarAi : MonoBehaviour
                     energy -= 100;
                     if (energy <= 0)
                     {
-                            GetComponent<RCC_CarControllerV3>().KillEngine();
-                            Blow.SetActive(true);
-                            PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
-                            energy = 0;
-                            coin += 500;
-                            Invoke("latency",0.01f);
-
+                        GetComponent<RCC_CarControllerV3>().KillEngine();
+                        energy = 0;
+                        coin += 500;
+                        PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
+                        Blow.SetActive(true);
+                        Invoke("latency", 0.01f);
+                        
                     }
-                  }
                 }
             }
+        }
         if (CarDamage.manage.isDead)
         {
             GetComponent<RCC_CarControllerV3>().KillEngine();
@@ -90,5 +89,4 @@ public class CarAi : MonoBehaviour
     {
         GetComponentInChildren<BoxCollider>().tag = "Car";
     }
-
 }

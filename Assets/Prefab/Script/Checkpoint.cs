@@ -65,6 +65,7 @@ public class Checkpoint : MonoBehaviour
         pauza = FindObjectOfType<Pause>();
         carController = FindObjectOfType<RCC_CarControllerV3>();
         _waypointsContainer = FindObjectOfType<RCC_AIWaypointsContainer>();
+        
         curr = starttime;
         
 
@@ -124,16 +125,10 @@ public class Checkpoint : MonoBehaviour
             maxPointNumberLosePanel.text = "/10";
             maxPointNumberWinPanel.text = "/10";
         }
-
-       // if (SceneManager.GetActiveScene().name == "battle_online")
-       // {
-       //     curr += 65f;
-        //    maxPointNumberWinPanel.text = "";
-        //    maxPointNumberLosePanel.text = "";
-       // }
     }
     private void Update()
     {
+
         if (SceneManager.GetActiveScene().name != "battle_online" && !MainMenuManager.manage.isFreerideActive && !MainMenuManager.manage.isAllvsYou)
         {
             if (CountDown.manage.isStartTime)
@@ -142,7 +137,6 @@ public class Checkpoint : MonoBehaviour
                 anim.GetComponent<Text>().text = curr.ToString("0");
             }
         }
-        
 
         countUpd += 1;
         if (countUpd == 1)
@@ -164,13 +158,14 @@ public class Checkpoint : MonoBehaviour
             if (MainMenuManager.manage.isAllvsYou)
             {
                 EnergyBar.SetActive(true);
-                
+                PlayerPrefs.SetInt("AiCrashed", 0);
+                PlayerPrefs.SetInt("AiCrashed1", 0);
+                PlayerPrefs.SetInt("AiCrashed2", 0);
                 _waypointsContainer.target = _player.transform;
                 carAi1[0].GetComponent<RCC_AICarController>()._AIType = RCC_AICarController.AIType.ChasePlayer;
                 carAi1[1].GetComponent<RCC_AICarController>()._AIType = RCC_AICarController.AIType.ChasePlayer;
                 carAi1[2].GetComponent<RCC_AICarController>()._AIType = RCC_AICarController.AIType.ChasePlayer;
-            }
-            
+            } 
         }
     }
     void OnTriggerEnter(Collider col)
@@ -490,8 +485,24 @@ public class Checkpoint : MonoBehaviour
         }
     }
 
+   void Crashed()
+    {
+            Amplitude.Instance.logEvent("Crashed");
+            losePanel.SetActive(true);
+            loseSnd.GetComponent<AudioSource>().Play();
+            erndCoinTx = GameObject.Find("coinNum");
+            erndCoinTx.GetComponent<Text>().text = erndCoin.ToString();
+            GameObject chkPointCounter = GameObject.Find("pointNumCurr");
+            chkPointCounter.GetComponent<Text>().text = totalPoint.ToString();
+            GameObject lapsCounter = GameObject.Find("lapNum");
+            lapsCounter.GetComponent<Text>().text = SaveManager.laps.ToString();
+            carController.KillOrStartEngine();
+            Invoke("EngineRunning", 1f);
+    }
+
     void Lose()
     {
+        
         Amplitude.Instance.logEvent("TimeOver");
         losePanel.SetActive(true);
         loseSnd.GetComponent<AudioSource>().Play();

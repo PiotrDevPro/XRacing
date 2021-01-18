@@ -148,11 +148,13 @@ public class Pause : MonoBehaviour
         {
             Traffic.SetActive(true);
             PlayerPrefs.SetInt("Traffic", 0);
+            Amplitude.Instance.logEvent("TrafficEnable");
         }
         else
         {
             Traffic.SetActive(false);
             PlayerPrefs.SetInt("Traffic", 1);
+            Amplitude.Instance.logEvent("TrafficDisable");
         }
     }
 
@@ -162,11 +164,13 @@ public class Pause : MonoBehaviour
         {
             peopleAI.SetActive(true);
             PlayerPrefs.SetInt("PeopleAI", 0);
+            Amplitude.Instance.logEvent("PeopleEnable");
         }
         else
         {
             peopleAI.SetActive(false);
             PlayerPrefs.SetInt("PeopleAI", 1);
+            Amplitude.Instance.logEvent("PeopleDisable");
         }
     }
 
@@ -176,6 +180,7 @@ public class Pause : MonoBehaviour
         {
             buttonControl.SetActive(true);
             PlayerPrefs.SetInt("ButtonMode",0);
+            
         }
         else
         {
@@ -187,9 +192,16 @@ public class Pause : MonoBehaviour
     public void DisableVibro(Toggle toggle)
     {
         if (toggle.isOn)
+        {
             PlayerPrefs.SetInt("VibrationActive", 0);
+            Amplitude.Instance.logEvent("VibroEnable");
+        }
         else
+        {
             PlayerPrefs.SetInt("VibrationActive", 1);
+            Amplitude.Instance.logEvent("VibroDisable");
+        }
+            
     }
 
     public void DisableSoundButton(Toggle toggle)
@@ -198,6 +210,7 @@ public class Pause : MonoBehaviour
         {
             PlayerPrefs.SetInt("Soundtrack", 0);
             tracks[Random.Range(0, 7)].GetComponent<AudioSource>().Play();
+            Amplitude.Instance.logEvent("SoundeEnable");
             if (SceneManager.GetActiveScene().name == "city_online")
             {
                 tracks[7].GetComponent<AudioSource>().Stop();
@@ -213,6 +226,7 @@ public class Pause : MonoBehaviour
             tracks[4].GetComponent<AudioSource>().Stop();
             tracks[5].GetComponent<AudioSource>().Stop();
             tracks[6].GetComponent<AudioSource>().Stop();
+            Amplitude.Instance.logEvent("SoundeDisable");
             if (SceneManager.GetActiveScene().name == "city_online")
             {
                 tracks[7].GetComponent<AudioSource>().Play();
