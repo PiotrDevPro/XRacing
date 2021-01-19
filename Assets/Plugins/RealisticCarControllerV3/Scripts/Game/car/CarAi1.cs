@@ -20,18 +20,18 @@ public class CarAi1 : MonoBehaviour
         {
             if (MainMenuManager.manage.isAllvsYou )
             {
-                if (GetComponent<RCC_CarControllerV3>().speed > 100)
+                if (GetComponent<RCC_CarControllerV3>().speed > 90)
                 {
                     PlayerPrefs.SetInt("damage", 15);
                     energy -= 5;
-                    if (energy <= 0)
+                    if (energy <= 0 && !CarDamage.manage.AiIsDead1)
                     {
                         GetComponent<RCC_CarControllerV3>().KillEngine();
                         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
                         coin += 500;
-                        energy = 0;
                         Blow.SetActive(true);
-                        Invoke("latency", 0.01f);
+                        energy = 0;
+                        // Invoke("latency", 0.01f);
                     }
                 }
 
@@ -40,14 +40,14 @@ public class CarAi1 : MonoBehaviour
                     PlayerPrefs.SetInt("damage", 25);
                     energy -= 15;
     
-                    if (energy <= 0)
+                    if (energy <= 0 && !CarDamage.manage.AiIsDead1)
                     {
                         GetComponent<RCC_CarControllerV3>().KillEngine();
                         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
-                        energy = 0;
                         coin += 500;
                         Blow.SetActive(true);
-                        Invoke("latency", 0.01f);
+                        energy = 0;
+                        // Invoke("latency", 0.01f);
                     }
                 }
 
@@ -55,29 +55,29 @@ public class CarAi1 : MonoBehaviour
                 {
                     PlayerPrefs.SetInt("damage", 35);
                     energy -= 25;
-                    if (energy <= 0)
+                    if (energy <= 0 && !CarDamage.manage.AiIsDead1)
                     {
                         GetComponent<RCC_CarControllerV3>().KillEngine();
                         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
-                        energy = 0;
                         coin += 500;
                         Blow.SetActive(true);
-                        Invoke("latency", 0.01f);
+                        energy = 0;
+                        // Invoke("latency", 0.01f);
                     }
                 }
-                else
+                else if(!CarDamage.manage.AiIsDead1)
                 {
                     PlayerPrefs.SetInt("damage", 0);
-                    energy -= 100;
+                    energy -= 2;
 
                     if (energy <= 0)
                         {
                             GetComponent<RCC_CarControllerV3>().KillEngine();
-                            energy = 0;
                             coin += 500;
                             Blow.SetActive(true);
                             PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
-                            Invoke("latency", 0.01f);
+                            energy = 0;
+                        // Invoke("latency", 0.01f);
                     }
                     }
                 }
@@ -89,7 +89,7 @@ public class CarAi1 : MonoBehaviour
 }
     void latency()
     {
-        GetComponentInChildren<BoxCollider>().tag = "Car";
+      //  GetComponentInChildren<BoxCollider>().tag = "Car";
     }
 
 }

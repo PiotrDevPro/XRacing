@@ -10,9 +10,17 @@ public class CarManager : MonoBehaviour
     public GameObject Win;
     public AudioSource loseSnd;
     public AudioSource winSnd;
-    public Text erndMoney;
+    public Text erndMoneyWin;
+    public Text erndMoneyLose;
+    public Text carDisplayWin;
+    public Text carDisplayLose;
     public GameObject LapTimer;
     public GameObject Laps;
+    public GameObject FinishLine;
+    public GameObject AiCars1;
+    public GameObject AiCars2;
+    public GameObject AiCars3;
+
 
     private void Awake()
     {
@@ -27,6 +35,14 @@ public class CarManager : MonoBehaviour
         {
             LapTimer.SetActive(false);
             Laps.SetActive(false);
+            FinishLine.SetActive(false);
+            //AiCars.transform.position = new Vector3(-164,4,162);
+            AiCars1.transform.eulerAngles = new Vector3(-2.5f,360,2);
+            AiCars1.transform.position = new Vector3(55f,4.07f,100);
+            AiCars2.transform.eulerAngles = new Vector3(-2.5f, 360, 2);
+            AiCars2.transform.position = new Vector3(50f, 4.07f, 100);
+            AiCars3.transform.eulerAngles = new Vector3(-2.5f, 360, 2);
+            AiCars3.transform.position = new Vector3(46, 4.07f, 100);
         }
     }
 
@@ -38,19 +54,22 @@ public class CarManager : MonoBehaviour
     public void Winner()
     {
         Invoke("LatencyWin",0.5f);
-        PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 2500f);
+        PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 5000f);
         print("Winner");
     }
 
     void LatencyWin()
     {
         Win.SetActive(true);
-        erndMoney.text = (CarAi.manage.coin + CarAi1.manage.coin + CarAi2.manage.coin).ToString();
+        erndMoneyWin.text = (CarAi.manage.coin + CarAi1.manage.coin + CarAi2.manage.coin).ToString();
+        carDisplayWin.text = (CarDamage.manage.frag).ToString();
         winSnd.Play();
     }
 
     void LatencyLose()
     {
+        erndMoneyLose.text = (CarAi.manage.coin + CarAi1.manage.coin + CarAi2.manage.coin).ToString();
+        carDisplayLose.text = (CarDamage.manage.frag).ToString();
         lose.SetActive(true);
         loseSnd.Play();
     }

@@ -524,7 +524,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("MusicActive") != 1)
         {
-            tracks[Random.Range(0, 8)].GetComponent<AudioSource>().Play();
+            tracks[Random.Range(0, 6)].GetComponent<AudioSource>().Play();
         }
     }
 

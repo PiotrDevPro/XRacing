@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class Pause : MonoBehaviour
 {
-    
+    public static Pause manage;
     public GameObject PausePanel;
     public GameObject steeringWheelControl;
     public GameObject buttonControl;
@@ -25,7 +25,7 @@ public class Pause : MonoBehaviour
 
     void Awake()
     {
-        
+        manage = this;
         vibroToggle.isOn = (PlayerPrefs.GetInt("VibrationActive") == 0) ? true : false;
         Steeringwheel.isOn = (PlayerPrefs.GetInt("SteeringWheel") == 0) ? true : false;
         buttonControltgl.isOn = (PlayerPrefs.GetInt("ButtonMode") == 0) ? true : false;

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
 
@@ -26,8 +27,14 @@ public class CarSpawnNew : MonoBehaviour
 
     void Start()
     {
-        // GameObject InstantiatedCar = Instantiate(CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")], spawnPoint.position, spawnPoint.rotation) as GameObject;
-        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")], spawnPoint.position, spawnPoint.rotation) as GameObject;
+        if (MainMenuManager.manage.isAllvsYou)
+        {
+            spawnPoint.position = new Vector3(53, 3.95f, 205f);
+            // GameObject InstantiatedCar = Instantiate(CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")], spawnPoint.position, spawnPoint.rotation) as GameObject;
+            InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")], spawnPoint.position, spawnPoint.rotation);
+        }
+        else
+        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")], spawnPoint.position, spawnPoint.rotation);
         InstantiatedCar.transform.SetParent(PlayerCarPoint);
 
         Amplitude.Instance.logEvent("LevelStart");
