@@ -31,11 +31,11 @@ public class CarAi1 : MonoBehaviour
                         coin += 500;
                         Blow.SetActive(true);
                         energy = 0;
-                        // Invoke("latency", 0.01f);
+                        Amplitude.Instance.logEvent("Bot2KillThePlayer90KMH");
                     }
                 }
 
-                if (GetComponent<RCC_CarControllerV3>().speed > 160)
+                if (GetComponent<RCC_CarControllerV3>().speed > 140)
                 {
                     PlayerPrefs.SetInt("damage", 25);
                     energy -= 15;
@@ -47,7 +47,7 @@ public class CarAi1 : MonoBehaviour
                         coin += 500;
                         Blow.SetActive(true);
                         energy = 0;
-                        // Invoke("latency", 0.01f);
+                        Amplitude.Instance.logEvent("Bot2KillThePlayer140KMH");
                     }
                 }
 
@@ -62,7 +62,7 @@ public class CarAi1 : MonoBehaviour
                         coin += 500;
                         Blow.SetActive(true);
                         energy = 0;
-                        // Invoke("latency", 0.01f);
+                        Amplitude.Instance.logEvent("Bot2KillThePlayer250KMH");
                     }
                 }
                 else if(!CarDamage.manage.AiIsDead1)
@@ -77,7 +77,7 @@ public class CarAi1 : MonoBehaviour
                             Blow.SetActive(true);
                             PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
                             energy = 0;
-                        // Invoke("latency", 0.01f);
+                            Amplitude.Instance.logEvent("Bot2KillThePlayer");
                     }
                     }
                 }
@@ -90,6 +90,20 @@ public class CarAi1 : MonoBehaviour
     void latency()
     {
       //  GetComponentInChildren<BoxCollider>().tag = "Car";
+    }
+
+    public void StartEngine()
+    {
+        if (!CarDamage.manage.AiIsDead1)
+        {
+            Invoke("latencyStartEngine", 1f);
+        }
+        
+    }
+
+    void latencyStartEngine()
+    {
+        GetComponent<RCC_CarControllerV3>().StartEngineNow();
     }
 
 }

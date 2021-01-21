@@ -31,11 +31,11 @@ public class CarAi : MonoBehaviour
                         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
                         coin += 500;
                         energy = 0;
-                      //  Invoke("latency", 0.01f);
+                        Amplitude.Instance.logEvent("Bot1KillThePlayer90KMH");
                     }
                 }
 
-                if (GetComponent<RCC_CarControllerV3>().speed > 160)
+                if (GetComponent<RCC_CarControllerV3>().speed > 140)
                 {
                     PlayerPrefs.SetInt("damage", 25);
                     energy -= 15;
@@ -46,7 +46,7 @@ public class CarAi : MonoBehaviour
                         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
                         coin += 500;
                         energy = 0;
-                        //  Invoke("latency", 0.01f);
+                        Amplitude.Instance.logEvent("Bot1KillThePlayer140KMH");
                     }
                 }
 
@@ -61,7 +61,7 @@ public class CarAi : MonoBehaviour
                         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
                         coin += 500;
                         energy = 0;
-                        // Invoke("latency", 0.01f);
+                        Amplitude.Instance.logEvent("Bot1KillThePlayer250KMH");
                     }
                 }
                 else
@@ -75,8 +75,7 @@ public class CarAi : MonoBehaviour
                             PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
                             coin += 500;
                             energy = 0;
-                        // Invoke("latency",0.01f);
-
+                            Amplitude.Instance.logEvent("Bot1KillThePlayer");
                     }
                   }
                 }
@@ -86,9 +85,19 @@ public class CarAi : MonoBehaviour
             GetComponent<RCC_CarControllerV3>().KillEngine();
         }
     }
-    void latency()
+
+    public void StartEngine()
     {
-      //  GetComponentInChildren<BoxCollider>().tag = "Car";
+        if (!CarDamage.manage.AiIsDead)
+        {
+            Invoke("latencyStartEngine", 1f);
+        }
+
+    }
+
+    void latencyStartEngine()
+    {
+        GetComponent<RCC_CarControllerV3>().StartEngineNow();
     }
 
 }

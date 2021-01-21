@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class CarAi2 : MonoBehaviour
 {
     public static CarAi2 manage;
@@ -30,11 +31,11 @@ public class CarAi2 : MonoBehaviour
                         coin += 500;
                         Blow.SetActive(true);
                         energy = 0;
-                        //  Invoke("latency", 0.01f);
+                        Amplitude.Instance.logEvent("Bot3KillThePlayer90KMH");
                     }
                 }
 
-                if (GetComponent<RCC_CarControllerV3>().speed > 160)
+                if (GetComponent<RCC_CarControllerV3>().speed > 140)
                 {
                     PlayerPrefs.SetInt("damage", 25);
                     energy -= 15;
@@ -45,7 +46,7 @@ public class CarAi2 : MonoBehaviour
                         coin += 500;
                         Blow.SetActive(true);
                         energy = 0;
-                        // Invoke("latency", 0.01f);
+                        Amplitude.Instance.logEvent("Bot3KillThePlayer140KMH");
                     }
                 }
 
@@ -58,10 +59,9 @@ public class CarAi2 : MonoBehaviour
                         GetComponent<RCC_CarControllerV3>().KillEngine();
                         coin += 500;
                         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
-                        
                         Blow.SetActive(true);
                         energy = 0;
-                        //  Invoke("latency", 0.01f);
+                        Amplitude.Instance.logEvent("Bot3KillThePlayer250KMH");
                     }
                 }
                 else
@@ -75,8 +75,6 @@ public class CarAi2 : MonoBehaviour
                         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
                         Blow.SetActive(true);
                         energy = 0;
-                        // Invoke("latency", 0.01f);
-
                     }
                 }
             }
@@ -86,8 +84,23 @@ public class CarAi2 : MonoBehaviour
             GetComponent<RCC_CarControllerV3>().KillEngine();
         }
     }
-    void latency()
+
+    public static Vector3 SetPosZero()
     {
-      //  GetComponentInChildren<BoxCollider>().tag = "Car";
+        return Vector3.zero;
+    }
+
+    public void StartEngine()
+    {
+        if (!CarDamage.manage.AiIsDead2)
+        {
+            Invoke("latencyStartEngine",1f);
+        }
+
+    }
+
+    void latencyStartEngine()
+    {
+        GetComponent<RCC_CarControllerV3>().StartEngineNow();
     }
 }

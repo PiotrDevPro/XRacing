@@ -73,4 +73,16 @@ public class CarManager : MonoBehaviour
         lose.SetActive(true);
         loseSnd.Play();
     }
+
+    public void EnergyForAds()
+    {
+        CarDamage.manage.energy = CarDamage.manage.energy + 25;
+        CarDamage.manage.energyBarProgress.GetComponent<Text>().text = CarDamage.manage.energy.ToString();
+        CarDamage.manage.StartEngine();
+        CarDamage.manage.isDead = false;
+        CarAi.manage.StartEngine();
+        CarAi1.manage.StartEngine();
+        CarAi2.manage.StartEngine();
+        lose.SetActive(false);
+    }
 }

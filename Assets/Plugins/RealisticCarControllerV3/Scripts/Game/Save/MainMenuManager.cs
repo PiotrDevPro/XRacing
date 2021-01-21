@@ -3637,7 +3637,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void loadlevelVsYou()
     {
-        Amplitude.Instance.logEvent("AllVsYou");
+        Amplitude.Instance.logEvent("Battle");
         isAllvsYou = true;
         SceneManager.LoadScene("level_lap6");
         LoadEngineUpgradeOnSelectedCar();

@@ -10,11 +10,12 @@ public class CarDamage : MonoBehaviour
     public int energy = 100;
     public bool isDead = false;
     public bool isWin = false;
+    public bool isAdsShowed = false;
     public bool AiIsDead = false;
     public bool AiIsDead1 = false;
     public bool AiIsDead2 = false;
 
-    private GameObject energyBarProgress;
+    public GameObject energyBarProgress;
     private GameObject enemyDestroy;
 
     private GameObject HP1;
@@ -49,7 +50,6 @@ public class CarDamage : MonoBehaviour
                 lbHP3 = GameObject.Find("carLbl2");
                 PlayerPrefs.SetInt("crashed", 0);
                 print(PlayerPrefs.GetInt("crashed"));
-
             }
         }
     }
@@ -75,7 +75,6 @@ public class CarDamage : MonoBehaviour
                     Pause.manage.tracks[4].Stop();
                     Pause.manage.tracks[5].Stop();
                     Pause.manage.tracks[6].Stop();
-                    //Invoke("Latency",1f);
                 }
 
                 if (CarAi.manage.energy <= 0 && !AiIsDead)
@@ -84,6 +83,8 @@ public class CarDamage : MonoBehaviour
                     frag += 1;
                     enemyDestroy.GetComponent<Text>().text = frag.ToString();
                     AiIsDead = true;
+                    Amplitude.Instance.logEvent("CarIsDead1");
+                    
                 }
 
                 if (CarAi1.manage.energy <= 0 && !AiIsDead1)
@@ -91,6 +92,7 @@ public class CarDamage : MonoBehaviour
                     frag += 1;
                     enemyDestroy.GetComponent<Text>().text = frag.ToString();
                     AiIsDead1 = true;
+                    Amplitude.Instance.logEvent("CarIsDead2");
                 }
 
                 if (CarAi2.manage.energy <= 0 && !AiIsDead2)
@@ -98,12 +100,14 @@ public class CarDamage : MonoBehaviour
                     frag += 1;
                     enemyDestroy.GetComponent<Text>().text = frag.ToString();
                     AiIsDead2 = true;
+                    Amplitude.Instance.logEvent("CarIsDead3");
                 }
 
                 if (CarAi.manage.energy <= 0 && CarAi1.manage.energy <= 0 && CarAi2.manage.energy <= 0)
                 {
                     CarManager.manage.Winner();
                     isWin = true;
+                    Amplitude.Instance.logEvent("PlayerIsWinBattle");
                 }
 
                 #region Car Display
@@ -167,9 +171,10 @@ public class CarDamage : MonoBehaviour
             }
 
     }
-    void Latency()
-    {
-        Pause.manage.tracks[Random.Range(0, 6)].Play();
-    }
 
+    public void StartEngine()
+    {
+        GetComponent<RCC_CarControllerV3>().KillOrStartEngine();
+    }
+    
 }

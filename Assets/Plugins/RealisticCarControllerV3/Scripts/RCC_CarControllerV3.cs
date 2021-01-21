@@ -601,7 +601,13 @@ public class RCC_CarControllerV3 : MonoBehaviour { //, IPunObservable {
 		
 	}
 
-	
+	public void StartEngineNow()
+    {
+		if (!engineStarting)
+		{
+			StartCoroutine("StartEngine");
+		}
+	}
 
 	public IEnumerator StartEngine (){
 
@@ -617,6 +623,8 @@ public class RCC_CarControllerV3 : MonoBehaviour { //, IPunObservable {
 		engineStarting = false;
 
 	}
+
+	
 
 	void DamageInit (){
 
