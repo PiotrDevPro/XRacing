@@ -115,7 +115,7 @@ public class Checkpoint : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "level_top_speed_test")
         {
-            curr += 55f;
+            curr += 35f;
             maxPointNumberWinPanel.text = "/2";
             maxPointNumberLosePanel.text = "/2";
         }

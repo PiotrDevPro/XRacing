@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+//using CarAI1;
+//using CarAI2;
+//using CarAI;
+
 
 public class CarDamage : MonoBehaviour
 {
@@ -33,143 +37,137 @@ public class CarDamage : MonoBehaviour
         manage = this;
     }
 
-    private void Update()
-    {
-        count += 1;
-        if (count == 1)
-        {
-            if (SceneManager.GetActiveScene().name == "level_lap6" && MainMenuManager.manage.isAllvsYou)
-            {
-                energyBarProgress = GameObject.Find("LifeGauge");
-                enemyDestroy = GameObject.Find("currenemy");
-                HP1 = GameObject.Find("LifeCar1");
-                HP2 = GameObject.Find("LifeCar2");
-                HP3 = GameObject.Find("LifeCar3");
-                lbHP1 = GameObject.Find("carLbl");
-                lbHP2 = GameObject.Find("carLbl1");
-                lbHP3 = GameObject.Find("carLbl2");
-                PlayerPrefs.SetInt("crashed", 0);
-                print(PlayerPrefs.GetInt("crashed"));
-            }
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("CarAI") && !isWin)
-        
-            if (MainMenuManager.manage.isAllvsYou && !isDead)
-            {
-                energy -= 1 + PlayerPrefs.GetInt("damage");
-                if (energy <= 0)
-                {
-                    GetComponent<RCC_CarControllerV3>().KillEngine();
-                    PlayerPrefs.SetInt("crashed", 1);
-                    energyBarProgress.GetComponent<Text>().text = "0";
-                    CarManager.manage.Lose();
-                    isDead = true;
-                    Pause.manage.tracks[0].Stop();
-                    Pause.manage.tracks[1].Stop();
-                    Pause.manage.tracks[2].Stop();
-                    Pause.manage.tracks[3].Stop();
-                    Pause.manage.tracks[4].Stop();
-                    Pause.manage.tracks[5].Stop();
-                    Pause.manage.tracks[6].Stop();
-                }
+        if (SceneManager.GetActiveScene().name == "level_lap6")
+        {
+            if (other.CompareTag("CarAI") && !isWin)
 
-                if (CarAi.manage.energy <= 0 && !AiIsDead)
+                if (MainMenuManager.manage.isAllvsYou && !isDead)
                 {
-                    
-                    frag += 1;
-                    enemyDestroy.GetComponent<Text>().text = frag.ToString();
-                    AiIsDead = true;
-                    Amplitude.Instance.logEvent("CarIsDead1");
-                    
-                }
+                    energyBarProgress = GameObject.Find("LifeGauge");
+                    enemyDestroy = GameObject.Find("currenemy");
+                    PlayerPrefs.SetInt("crashed", 0);
+                    HP1 = GameObject.Find("LifeCar1");
+                    HP2 = GameObject.Find("LifeCar2");
+                    HP3 = GameObject.Find("LifeCar3");
+                    lbHP1 = GameObject.Find("carLbl");
+                    lbHP2 = GameObject.Find("carLbl1");
+                    lbHP3 = GameObject.Find("carLbl2");
+                    HP1.GetComponent<Text>().text = (CarAi.manage.energy).ToString();
+                    HP2.GetComponent<Text>().text = (CarAi1.manage.energy).ToString();
+                    HP3.GetComponent<Text>().text = (CarAi2.manage.energy).ToString();
+                    energy -= 1 + PlayerPrefs.GetInt("damage");
 
-                if (CarAi1.manage.energy <= 0 && !AiIsDead1)
-                {
-                    frag += 1;
-                    enemyDestroy.GetComponent<Text>().text = frag.ToString();
-                    AiIsDead1 = true;
-                    Amplitude.Instance.logEvent("CarIsDead2");
-                }
+                    if (energy <= 0)
+                    {
+                        GetComponent<RCC_CarControllerV3>().KillEngine();
+                        PlayerPrefs.SetInt("crashed", 1);
+                        energyBarProgress.GetComponent<Text>().text = "0";
+                        CarManager.manage.Lose();
+                        isDead = true;
+                        Pause.manage.tracks[0].Stop();
+                        Pause.manage.tracks[1].Stop();
+                        Pause.manage.tracks[2].Stop();
+                        Pause.manage.tracks[3].Stop();
+                        Pause.manage.tracks[4].Stop();
+                        Pause.manage.tracks[5].Stop();
+                        Pause.manage.tracks[6].Stop();
+                    }
 
-                if (CarAi2.manage.energy <= 0 && !AiIsDead2)
-                {
-                    frag += 1;
-                    enemyDestroy.GetComponent<Text>().text = frag.ToString();
-                    AiIsDead2 = true;
-                    Amplitude.Instance.logEvent("CarIsDead3");
-                }
+                    if (CarAi.manage.energy <= 0 && !AiIsDead)
+                    {
 
-                if (CarAi.manage.energy <= 0 && CarAi1.manage.energy <= 0 && CarAi2.manage.energy <= 0)
-                {
-                    CarManager.manage.Winner();
-                    isWin = true;
-                    Amplitude.Instance.logEvent("PlayerIsWinBattle");
-                }
+                        frag += 1;
+                        enemyDestroy.GetComponent<Text>().text = frag.ToString();
+                        AiIsDead = true;
+                        Amplitude.Instance.logEvent("CarIsDead1");
 
-                #region Car Display
-                energyBarProgress.GetComponent<Text>().text = energy.ToString();
-                HP1.GetComponent<Text>().text = (CarAi.manage.energy).ToString();
-                if(CarAi.manage.energy < 0)
-                {
-                    CarAi.manage.energy = 0;
-                }
-                if (CarAi.manage.energy > 50)
-                {
-                    lbHP1.GetComponent<Text>().color = Color.green;
-                }
-                if (CarAi.manage.energy < 50)
-                {
-                    lbHP1.GetComponent<Text>().color = Color.yellow;
-                }
+                    }
 
-                if (CarAi.manage.energy < 20)
-                {
-                    lbHP1.GetComponent<Text>().color = Color.red;
-                }
+                    if (CarAi1.manage.energy <= 0 && !AiIsDead1)
+                    {
+                        frag += 1;
+                        enemyDestroy.GetComponent<Text>().text = frag.ToString();
+                        AiIsDead1 = true;
+                        Amplitude.Instance.logEvent("CarIsDead2");
+                    }
 
-                HP2.GetComponent<Text>().text = (CarAi1.manage.energy).ToString();
-                if (CarAi1.manage.energy < 0)
-                {
-                    CarAi1.manage.energy = 0;
-                }
-                if (CarAi1.manage.energy > 50)
-                {
-                    lbHP2.GetComponent<Text>().color = Color.green;
-                }
-                if (CarAi1.manage.energy < 50)
-                {
-                    lbHP2.GetComponent<Text>().color = Color.yellow;
-                }
+                    if (CarAi2.manage.energy <= 0 && !AiIsDead2)
+                    {
+                        frag += 1;
+                        enemyDestroy.GetComponent<Text>().text = frag.ToString();
+                        AiIsDead2 = true;
+                        Amplitude.Instance.logEvent("CarIsDead3");
+                    }
 
-                if (CarAi1.manage.energy < 20)
-                {
-                    lbHP2.GetComponent<Text>().color = Color.red;
-                }
-                HP3.GetComponent<Text>().text = (CarAi2.manage.energy).ToString();
-                if (CarAi2.manage.energy < 0)
-                {
-                    CarAi2.manage.energy = 0;
-                }
-                if (CarAi2.manage.energy > 50)
-                {
-                    lbHP3.GetComponent<Text>().color = Color.green;
-                }
-                if (CarAi2.manage.energy < 50)
-                {
-                    lbHP3.GetComponent<Text>().color = Color.yellow;
-                }
+                    if (CarAi.manage.energy <= 0 && CarAi1.manage.energy <= 0 && CarAi2.manage.energy <= 0)
+                    {
+                        CarManager.manage.Winner();
+                        isWin = true;
+                        Amplitude.Instance.logEvent("PlayerIsWinBattle");
+                    }
 
-                if (CarAi2.manage.energy < 20)
-                {
-                    lbHP3.GetComponent<Text>().color = Color.red;
-                }
-                #endregion
-            }
+                    #region Car Display
+                    energyBarProgress.GetComponent<Text>().text = energy.ToString();
+                    HP1.GetComponent<Text>().text = (CarAi.manage.energy).ToString();
+                    if (CarAi.manage.energy < 0)
+                    {
+                        CarAi.manage.energy = 0;
+                    }
+                    if (CarAi.manage.energy > 50)
+                    {
+                        lbHP1.GetComponent<Text>().color = Color.green;
+                    }
+                    if (CarAi.manage.energy < 50)
+                    {
+                        lbHP1.GetComponent<Text>().color = Color.yellow;
+                    }
 
+                    if (CarAi.manage.energy < 20)
+                    {
+                        lbHP1.GetComponent<Text>().color = Color.red;
+                    }
+
+                    HP2.GetComponent<Text>().text = (CarAi1.manage.energy).ToString();
+                    if (CarAi1.manage.energy < 0)
+                    {
+                        CarAi1.manage.energy = 0;
+                    }
+                    if (CarAi1.manage.energy > 50)
+                    {
+                        lbHP2.GetComponent<Text>().color = Color.green;
+                    }
+                    if (CarAi1.manage.energy < 50)
+                    {
+                        lbHP2.GetComponent<Text>().color = Color.yellow;
+                    }
+
+                    if (CarAi1.manage.energy < 20)
+                    {
+                        lbHP2.GetComponent<Text>().color = Color.red;
+                    }
+                    HP3.GetComponent<Text>().text = (CarAi2.manage.energy).ToString();
+                    if (CarAi2.manage.energy < 0)
+                    {
+                        CarAi2.manage.energy = 0;
+                    }
+                    if (CarAi2.manage.energy > 50)
+                    {
+                        lbHP3.GetComponent<Text>().color = Color.green;
+                    }
+                    if (CarAi2.manage.energy < 50)
+                    {
+                        lbHP3.GetComponent<Text>().color = Color.yellow;
+                    }
+
+                    if (CarAi2.manage.energy < 20)
+                    {
+                        lbHP3.GetComponent<Text>().color = Color.red;
+                    }
+                    #endregion
+                }
+        }
     }
 
     public void StartEngine()

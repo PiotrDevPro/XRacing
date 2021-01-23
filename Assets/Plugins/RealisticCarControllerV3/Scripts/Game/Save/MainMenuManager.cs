@@ -454,7 +454,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if (toggle.isOn)
         {
-            tracks[Random.Range(0, 6)].Play();
+            tracks[Random.Range(0, 5)].Play();
             PlayerPrefs.SetInt("MusicActive", 0);
         }
         else
@@ -465,7 +465,6 @@ public class MainMenuManager : MonoBehaviour
             tracks[3].Stop();
             tracks[4].Stop();
             tracks[5].Stop();
-            tracks[6].Stop();
             PlayerPrefs.SetInt("MusicActive", 1);
         }
     }
@@ -524,7 +523,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("MusicActive") != 1)
         {
-            tracks[Random.Range(0, 6)].GetComponent<AudioSource>().Play();
+            tracks[Random.Range(0, 5)].GetComponent<AudioSource>().Play();
         }
     }
 
