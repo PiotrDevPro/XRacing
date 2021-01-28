@@ -2708,6 +2708,7 @@ public class MainMenuManager : MonoBehaviour
                 VSetting.car.SetActive(true);
                 currentCar = VSetting;
                 PlayerPrefs.SetInt("CurrentCar", currentCarNumber);
+                print(PlayerPrefs.GetInt("CurrentCar"));
                 Amplitude.Instance.logEvent("NextCar>>");
             }
             else
@@ -2731,6 +2732,7 @@ public class MainMenuManager : MonoBehaviour
                 VSetting.car.SetActive(true);
                 currentCar = VSetting;
                 PlayerPrefs.SetInt("CurrentCar", currentCarNumber);
+                print(PlayerPrefs.GetInt("CurrentCar"));
                 Amplitude.Instance.logEvent("<<PrevCar");
             }
             else

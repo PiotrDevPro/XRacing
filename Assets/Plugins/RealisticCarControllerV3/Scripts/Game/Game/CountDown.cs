@@ -41,14 +41,12 @@ public class CountDown : MonoBehaviour
         {
             
             StartCoroutine(CountStart());
-            print("CountStart");
 
         }
 
         if (MainMenuManager.manage.isAllvsYou)
         {
             StartCoroutine(CountStartSurviveMode());
-            print("CountStartSurviveMode");
         }
 
     }

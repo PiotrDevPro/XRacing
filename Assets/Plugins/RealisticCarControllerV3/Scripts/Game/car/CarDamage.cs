@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine;
-//using CarAI1;
-//using CarAI2;
-//using CarAI;
 
 
 public class CarDamage : MonoBehaviour
@@ -43,7 +40,7 @@ public class CarDamage : MonoBehaviour
         {
             if (other.CompareTag("CarAI") && !isWin)
 
-                if (MainMenuManager.manage.isAllvsYou && !isDead)
+                if (MainMenuManager.manage.isFreerideActive && !isDead || MainMenuManager.manage.isAllvsYou && !isDead)
                 {
                     energyBarProgress = GameObject.Find("LifeGauge");
                     enemyDestroy = GameObject.Find("currenemy");
@@ -61,6 +58,7 @@ public class CarDamage : MonoBehaviour
 
                     if (energy <= 0)
                     {
+                        energy = 0;
                         GetComponent<RCC_CarControllerV3>().KillEngine();
                         PlayerPrefs.SetInt("crashed", 1);
                         energyBarProgress.GetComponent<Text>().text = "0";
@@ -73,6 +71,7 @@ public class CarDamage : MonoBehaviour
                         Pause.manage.tracks[4].Stop();
                         Pause.manage.tracks[5].Stop();
                         Pause.manage.tracks[6].Stop();
+                        Amplitude.Instance.logEvent("PlayerIsDead");
                     }
 
                     if (CarAi.manage.energy <= 0 && !AiIsDead)
@@ -168,11 +167,40 @@ public class CarDamage : MonoBehaviour
                     #endregion
                 }
         }
+
+        if (SceneManager.GetActiveScene().name == "level_top_speed_test")
+        {
+            
+            if (other.CompareTag("Car"))
+            {
+                if (GetComponent<RCC_CarControllerV3>().speed > 130)
+                {
+                    GetComponent<RCC_CarControllerV3>().KillEngine();
+                    LevelManager.manage.Lose();
+                    PlayerPrefs.SetInt("crashed", 1);
+                    Invoke("Latency",5f);
+                    Pause.manage.tracks[0].Stop();
+                    Pause.manage.tracks[1].Stop();
+                    Pause.manage.tracks[2].Stop();
+                    Pause.manage.tracks[3].Stop();
+                    Pause.manage.tracks[4].Stop();
+                    Pause.manage.tracks[5].Stop();
+                    Pause.manage.tracks[6].Stop();
+                    Amplitude.Instance.logEvent("PlayerIsDead");
+                }
+            }
+        }
+    }
+
+    void Latency()
+    {
+        Time.timeScale = 0;
+        AudioListener.pause = true;
     }
 
     public void StartEngine()
     {
         GetComponent<RCC_CarControllerV3>().KillOrStartEngine();
     }
-    
+
 }

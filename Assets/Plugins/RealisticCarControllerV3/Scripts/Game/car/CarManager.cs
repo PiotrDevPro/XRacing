@@ -55,7 +55,6 @@ public class CarManager : MonoBehaviour
     {
         Invoke("LatencyWin",0.5f);
         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 5000f);
-        print("Winner");
     }
 
     void LatencyWin()

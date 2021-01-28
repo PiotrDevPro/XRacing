@@ -11,6 +11,8 @@ using UnityEngine;
         public static AppDealManager manage;
         public bool isAdsShop = false;
         public bool isAdsEnergy = false;
+        public bool isAdsForCarCrashed = false;
+        public bool isAdsForSecCheckpoint = false;
         //public bool isCoin4x = false;
         //public bool isSubShow = false;
         //public bool isAdRestart = false;
@@ -21,120 +23,102 @@ using UnityEngine;
 #else
         private const string APP_KEY = "96ef05657cdb77782e1b8746bcefb3d431c0b22a31831a55";
 #endif
-        private void Awake()
+    private void Awake()
+    {
+        manage = this;
+    }
+
+    private void Start()
+    {
+        //Appodeal.setLogLevel(Appodeal.LogLevel.Debug);
+        Intiliaze(true);
+        //ShowBanner();
+
+    }
+
+    private void Intiliaze(bool isTesting)
+    {
+        Appodeal.setTesting(isTesting);
+        Appodeal.muteVideosIfCallsMuted(true);
+        Appodeal.initialize(APP_KEY, Appodeal.INTERSTITIAL | Appodeal.NON_SKIPPABLE_VIDEO | Appodeal.BANNER_VIEW | Appodeal.REWARDED_VIDEO);
+        Appodeal.setBannerCallbacks(this);
+        Appodeal.setInterstitialCallbacks(this);
+        Appodeal.setRewardedVideoCallbacks(this);
+
+    }
+
+    public void ShowInterstatial()
+    {
+        if (PlayerPrefs.GetInt("NoAds") != 1)
         {
-            manage = this;
-        }
 
-        private void Start()
-        {
-            //Appodeal.setLogLevel(Appodeal.LogLevel.Debug);
-            Intiliaze(false);
-            //ShowBanner();
-
-        }
-
-        private void Intiliaze(bool isTesting)
-        {
-            Appodeal.setTesting(isTesting);
-            Appodeal.muteVideosIfCallsMuted(true);
-            Appodeal.initialize(APP_KEY, Appodeal.INTERSTITIAL | Appodeal.NON_SKIPPABLE_VIDEO | Appodeal.BANNER_VIEW | Appodeal.REWARDED_VIDEO);
-            Appodeal.setBannerCallbacks(this);
-            Appodeal.setInterstitialCallbacks(this);
-            Appodeal.setRewardedVideoCallbacks(this);
-
-        }
-
-        public void ShowInterstatial()
-        {
-            if (PlayerPrefs.GetInt("NoAds") != 1)
+            if (Appodeal.isLoaded(Appodeal.INTERSTITIAL))
             {
-
-                if (Appodeal.isLoaded(Appodeal.INTERSTITIAL))
-                {
-                    Appodeal.show(Appodeal.INTERSTITIAL);
-                    Amplitude.Instance.logEvent("ShowInterstatial", Interstitial);
-                    AudioListener.pause = false;
-                }
+                Appodeal.show(Appodeal.INTERSTITIAL);
+                Amplitude.Instance.logEvent("ShowInterstatial", Interstitial);
+                AudioListener.pause = false;
             }
         }
-        public void ShowNonSkipable()
+    }
+    public void ShowNonSkipable()
+    {
+        if (Appodeal.canShow(Appodeal.NON_SKIPPABLE_VIDEO))
         {
-            if (Appodeal.canShow(Appodeal.NON_SKIPPABLE_VIDEO))
-            {
-                Appodeal.show(Appodeal.NON_SKIPPABLE_VIDEO);
-                GameObject ButtnCoin = GameObject.Find("x2Coin");
-                ButtnCoin.SetActive(false);
-                //levelGenerated.manage.levelCoin4xAnalitics();
-                //levelGenerated.manage.Next();
-            }
-            else
-            {
-                //Main.manage.NoWiFi.SetActive(true);
-                //GameObject snd1 = GameObject.Find("Error");
-                //snd1.GetComponent<AudioSource>().Play();
-
-            }
+            Appodeal.show(Appodeal.NON_SKIPPABLE_VIDEO);
+            GameObject ButtnCoin = GameObject.Find("x2Coin");
+            ButtnCoin.SetActive(false);
+            //levelGenerated.manage.levelCoin4xAnalitics();
+            //levelGenerated.manage.Next();
+        }
+        else
+        {
+            //Main.manage.NoWiFi.SetActive(true);
+            //GameObject snd1 = GameObject.Find("Error");
+            //snd1.GetComponent<AudioSource>().Play();
 
         }
-        public void ShowRewardedAds20Video()
-        {
-            if (Appodeal.canShow(Appodeal.REWARDED_VIDEO))
-            {
-                Appodeal.show(Appodeal.REWARDED_VIDEO);
-                isAdsShop = true;
-            }
-            else
-            {
-                //Main.manage.NoWiFi.SetActive(true);
-                //GameObject snd1 = GameObject.Find("Error");
-                //snd1.GetComponent<AudioSource>().Play();
 
-            }
-        }
-        public void ShowRewardedVideoCoin4x()
+    }
+    public void ShowRewardedAds20Video()
+    {
+        if (Appodeal.canShow(Appodeal.REWARDED_VIDEO))
         {
-            if (Appodeal.canShow(Appodeal.REWARDED_VIDEO))
-            {
-                Appodeal.show(Appodeal.REWARDED_VIDEO);
-                //isCoin4x = true;
-                //isAdsShop = false;
-                //levelGenerated.manage.Next();
-            }
-            else
-            {
-                //Main.manage.NoWiFi.SetActive(true);
-                //GameObject snd1 = GameObject.Find("Error");
-                //snd1.GetComponent<AudioSource>().Play();
-            }
+            Appodeal.show(Appodeal.REWARDED_VIDEO);
+            isAdsShop = true;
         }
+        else
+        {
+            //Main.manage.NoWiFi.SetActive(true);
+            //GameObject snd1 = GameObject.Find("Error");
+            //snd1.GetComponent<AudioSource>().Play();
 
-        public void ShowAdsForEnergy()
-        {
-            if (Appodeal.canShow(Appodeal.REWARDED_VIDEO))
-            {
-                Appodeal.show(Appodeal.REWARDED_VIDEO);
-                isAdsEnergy = true;
-            }
         }
-        public void ShowRVforRestart()
+    }
+    public void ShowRewardedAdsForSecCheckpoint()
+    {
+        if (Appodeal.canShow(Appodeal.REWARDED_VIDEO))
         {
-            {
-                if (Appodeal.canShow(Appodeal.REWARDED_VIDEO))
-                {
-                    Appodeal.show(Appodeal.REWARDED_VIDEO);
-                    //isAdRestart = true;
-                }
-                else
-                {
-                    //Main.manage.NoWiFi.SetActive(true);
-                    //GameObject snd1 = GameObject.Find("Error");
-                    //snd1.GetComponent<AudioSource>().Play();
-
-                }
-            }
+            Appodeal.show(Appodeal.REWARDED_VIDEO);
+            isAdsForSecCheckpoint = true;
         }
-        public void ShowRVForMagicBox()
+    }
+    public void ShowAdsForEnergy()
+    {
+        if (Appodeal.canShow(Appodeal.REWARDED_VIDEO))
+        {
+            Appodeal.show(Appodeal.REWARDED_VIDEO);
+            isAdsEnergy = true;
+        }
+    }
+    public void ShowAdsForCarCrashed()
+    {
+        if (Appodeal.canShow(Appodeal.REWARDED_VIDEO))
+        {
+            Appodeal.show(Appodeal.REWARDED_VIDEO);
+            isAdsForCarCrashed = true;
+        }
+    }
+    public void ShowRVForMagicBox()
         {
 
             {
@@ -151,15 +135,15 @@ using UnityEngine;
                 }
             }
         }
-        public void ShowBanner()
+    public void ShowBanner()
+    {
+        if (PlayerPrefs.GetInt("NoAds") != 1)
         {
-            if (PlayerPrefs.GetInt("NoAds") != 1)
-            {
 
-                Appodeal.show(Appodeal.BANNER_BOTTOM, "default");
+            Appodeal.show(Appodeal.BANNER_BOTTOM, "default");
 
-            }
         }
+    }
 
 
         #region CoinFX
@@ -406,7 +390,7 @@ using UnityEngine;
             {
                 PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 2500f);
                 Amplitude.Instance.logEvent("OnRewardedVideoFinished");
-                print("isAdsShop");
+                isAdsShop = false;
             }
 
             if (isAdsEnergy)
@@ -423,16 +407,42 @@ using UnityEngine;
                 {
                     Pause.manage.tracks[Random.Range(0, 6)].Play();
                 }
-                Amplitude.Instance.logEvent("AdsForEnergy");
+                isAdsEnergy = false;
+                Amplitude.Instance.logEvent("OnRewardedVideoForEnergy");
             }
+
+            if (isAdsForCarCrashed)
+            {
+
+                CarDamage.manage.StartEngine();
+                
+                AudioListener.pause = false;
+                PlayerPrefs.SetInt("crashed", 0);
+                if (PlayerPrefs.GetInt("Soundtrack") == 0)
+                {
+                    Pause.manage.tracks[Random.Range(0, 6)].Play();
+                }
+                LevelManager.manage.Crashed.SetActive(false);
+                isAdsForCarCrashed = false;
+                Amplitude.Instance.logEvent("OnRewardedVideoForCrashCar");
+                Time.timeScale = 1;
+            }
+
+            if (isAdsForSecCheckpoint)
+            {
+            Checkpoint.manage.ContinueAdsForTimeCheckpoint();
+            Amplitude.Instance.logEvent("OnRewardedVideoForCheckpoint");
+            isAdsForSecCheckpoint = false;
         }
+     }
 
 
         public void onRewardedVideoClosed(bool finished)
         {
             isAdsShop = false;
             isAdsEnergy = false;
-            print("onRewardedVideoClosed");
+            isAdsForCarCrashed = false;
+            Time.timeScale = 1;
         }
 
         public void onRewardedVideoExpired()

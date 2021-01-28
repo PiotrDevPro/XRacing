@@ -24,7 +24,7 @@ using UnityEngine;
             int a = 0;
             if (other.CompareTag("Player") && !CarDamage.manage.isDead)
             {
-                if (MainMenuManager.manage.isAllvsYou)
+                if (MainMenuManager.manage.isAllvsYou || MainMenuManager.manage.isFreerideActive)
                 {
                     if (GetComponent<RCC_CarControllerV3>().speed > 90)
                     {
@@ -32,11 +32,12 @@ using UnityEngine;
                         energy -= 5;
                         if (energy <= 0 && !CarDamage.manage.AiIsDead1)
                         {
+                            energy = 0;
                             GetComponent<RCC_CarControllerV3>().KillEngine();
                             PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
                             coin += 500;
                             Blow.SetActive(true);
-                            energy = 0;
+                            
                             Amplitude.Instance.logEvent("Bot2KillThePlayer90KMH");
                         }
                     }
@@ -47,11 +48,11 @@ using UnityEngine;
                         energy -= 15;
                         if (energy <= 0 && !CarDamage.manage.AiIsDead1)
                         {
+                            energy = 0;
                             GetComponent<RCC_CarControllerV3>().KillEngine();
                             PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
                             coin += 500;
                             Blow.SetActive(true);
-                            energy = 0;
                             Amplitude.Instance.logEvent("Bot2KillThePlayer140KMH");
                         }
                     }
@@ -62,11 +63,11 @@ using UnityEngine;
                         energy -= 25;
                         if (energy <= 0 && !CarDamage.manage.AiIsDead1)
                         {
+                            energy = 0;
                             GetComponent<RCC_CarControllerV3>().KillEngine();
                             PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
                             coin += 500;
                             Blow.SetActive(true);
-                            energy = 0;
                             Amplitude.Instance.logEvent("Bot2KillThePlayer250KMH");
                         }
                     }
@@ -76,11 +77,11 @@ using UnityEngine;
                         energy -= 2;
                         if (energy <= 0)
                         {
+                            energy = 0;
                             GetComponent<RCC_CarControllerV3>().KillEngine();
                             coin += 500;
                             Blow.SetActive(true);
                             PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
-                            energy = 0;
                             Amplitude.Instance.logEvent("Bot2KillThePlayer");
                         }
                     }
