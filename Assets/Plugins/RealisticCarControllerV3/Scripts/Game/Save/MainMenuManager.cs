@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Photon.Pun;
 using DG.Tweening;
 
 public enum PanelsUI { MainMenu = 0, SelectCar = 1, SelectLevel = 2, Settings = 3, _NetworkRoom = 4, Auth = 5}
@@ -25,6 +24,7 @@ public class MainMenuManager : MonoBehaviour
     public GameObject network_manager_active;
     public bool isFreerideActive = false;
     public bool isAllvsYou = false;
+    public bool isTopSpeedActive = false;
     //public bool isCityNetworkRoom;
     //public GameObject maxSpeedActive;
 
@@ -44,6 +44,8 @@ public class MainMenuManager : MonoBehaviour
     private float turbofill;
     private float handlingfill;
     private float driftfill;
+
+    private SystemLanguage _systemLang;
 
     [System.Serializable]
     public class CarSetting
@@ -3650,6 +3652,7 @@ public class MainMenuManager : MonoBehaviour
     {
         Amplitude.Instance.logEvent("TopSpeedLevel");
         SceneManager.LoadScene("level_top_speed_test");
+        isTopSpeedActive = true;
         LoadEngineUpgradeOnSelectedCar();
         LoadHandlingOnSelectedCar();
         LoadBrakeOnSelectedCar();
@@ -3757,6 +3760,11 @@ public class MainMenuManager : MonoBehaviour
         //config
         menuGUI.RUSure.SetActive(false);
         network_manager_active.SetActive(false);
+        print(_systemLang = Application.systemLanguage);
+        //if (LeanLocalization.CurrentLanguages != null)
+        //{
+        //    LeanLocalization.CurrentLanguages = LeanLocalization.CurrentLanguages.
+        //}
     }
     public void GetMoney()
     {
@@ -3780,6 +3788,7 @@ public class MainMenuManager : MonoBehaviour
     }
     void Update()
     {
+        
         LoadUpgradeOnAwake();
         LoadUpgrade();
         LoadUpgradeHandling();
@@ -3869,7 +3878,6 @@ public class MainMenuManager : MonoBehaviour
         //print(svChecked.isCheckBody);
         //print(svChecked.isCheckWheels);
         //print(svChecked.isCheckDetail);
-
     }
 }
 

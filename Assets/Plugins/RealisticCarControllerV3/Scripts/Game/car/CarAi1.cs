@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
-//namespace CarAI1
-//{
     public class CarAi1 : MonoBehaviour
     {
         public static CarAi1 manage;
         public GameObject Blow;
         public int coin = 0;
         public int energy = 100;
-        private void Awake()
+        private GameObject HP2;
+        private GameObject lbHP2;
+    private void Awake()
         {
             manage = this;
         }
@@ -20,12 +21,15 @@ using UnityEngine;
         }
         private void OnTriggerEnter(Collider other)
         {
-
-            int a = 0;
-            if (other.CompareTag("Player") && !CarDamage.manage.isDead)
+        if (!CarDamage.manage.isDead)
+        {
+            if (other.CompareTag("Car") || other.CompareTag("Player"))
             {
-                if (MainMenuManager.manage.isAllvsYou || MainMenuManager.manage.isFreerideActive)
+                if (MainMenuManager.manage.isAllvsYou || MainMenuManager.manage.isFreerideActive || MainMenuManager.manage.isTopSpeedActive)
                 {
+                    HP2 = GameObject.Find("LifeCar2");
+                    lbHP2 = GameObject.Find("carLb2");
+                    HP2.GetComponent<Text>().text = energy.ToString();
                     if (GetComponent<RCC_CarControllerV3>().speed > 90)
                     {
                         PlayerPrefs.SetInt("damage", 10);
@@ -37,7 +41,7 @@ using UnityEngine;
                             PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
                             coin += 500;
                             Blow.SetActive(true);
-                            
+
                             Amplitude.Instance.logEvent("Bot2KillThePlayer90KMH");
                         }
                     }
@@ -86,12 +90,32 @@ using UnityEngine;
                         }
                     }
                 }
+
+                if (energy < 0)
+                {
+                    energy = 0;
+                }
+                if (energy > 50)
+                {
+                    lbHP2.GetComponent<Text>().color = Color.green;
+                }
+                if (energy < 50)
+                {
+                    lbHP2.GetComponent<Text>().color = Color.yellow;
+                }
+
+                if (energy < 20)
+                {
+                    lbHP2.GetComponent<Text>().color = Color.red;
+                }
             }
-            if (CarDamage.manage.isDead)
+            if (CarDamage.manage.isDead && !MainMenuManager.manage.isTopSpeedActive)
             {
                 GetComponent<RCC_CarControllerV3>().KillEngine();
             }
         }
+    }
+            
         void latency()
         {
             //  GetComponentInChildren<BoxCollider>().tag = "Car";
@@ -112,5 +136,4 @@ using UnityEngine;
         }
 
     }
-//}
 

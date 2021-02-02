@@ -18,13 +18,16 @@ public class netManager : MonoBehaviourPunCallbacks
     public Slider noslevel;
     public Text maxspd;
     public bool DangerSpeed;
+    public bool isHighwayNetworkActive = false;
     int count = 0;
     private float starttime = 5f;
     private float curr = 0;
+
+    //
+    public GameObject LosePanel;
     
 
     public RCC_CarControllerV3 newVehicle;
-
 
     private void Awake()
     {
@@ -33,7 +36,7 @@ public class netManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        
+        LosePanel.SetActive(false);
         curr = starttime;
 
         if (RCC_SceneManager.Instance.activePlayerVehicle)
@@ -42,7 +45,9 @@ public class netManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.CurrentRoom.Name == "Highway") 
         {
             Amplitude.Instance.logEvent("HighwayLevelNetwork");
-            newVehicle = PhotonNetwork.Instantiate("Cars/" + CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")].name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>(); 
+            newVehicle = PhotonNetwork.Instantiate("Cars/" + CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")].name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+            isHighwayNetworkActive = true;
+
         } 
         else if (PhotonNetwork.CurrentRoom.Name == "City")
         {
@@ -406,14 +411,14 @@ public class netManager : MonoBehaviourPunCallbacks
     private void Update()
     {
         maxspd.text = "MAX:" + newVehicle.GetComponent<RCC_CarControllerV3>().maxspeed.ToString() + "KM/H";
-        if (newVehicle.GetComponent<RCC_CarControllerV3>().speed > 30f)
+        if (newVehicle.GetComponent<RCC_CarControllerV3>().speed > 50f)
         {
             DangerSpeed = true;
 
             count += 1;
             if (count == 1)
             {
-                Amplitude.Instance.logEvent("StartRide > 30 kmh");
+                Amplitude.Instance.logEvent("StartRide > 50 kmh");
 
             }
 
@@ -428,6 +433,7 @@ public class netManager : MonoBehaviourPunCallbacks
         if (SceneManager.GetActiveScene().name == "battle_online")
         {
             PhotonNetwork.LeaveRoom();
+            isHighwayNetworkActive = false;
             Time.timeScale = 1;
         } 
     }
@@ -456,6 +462,22 @@ public class netManager : MonoBehaviourPunCallbacks
         {
             curr = 0;
         }
+    }
+
+    public void CarCrashedNetwork()
+    {
+        LosePanel.SetActive(true);
+    }
+
+    public void ForAds()
+    {
+      //if  (!photonView.IsMine )
+        //    return;
+            newVehicle.GetComponent<RCC_CarControllerV3>().KillOrStartEngine();
+            CarDamage.manage.energy = CarDamage.manage.energy + 50;
+            CarDamage.manage.energyBarProgress.GetComponent<Text>().text = CarDamage.manage.energy.ToString();
+            CarDamage.manage.isDead = false;
+            LosePanel.SetActive(false); 
     }
 
 }

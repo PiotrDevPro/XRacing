@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager manage;
     public GameObject Crashed;
+    public GameObject CarDisplayPanel;
 
     private void Awake()
     {
@@ -16,6 +17,7 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         Crashed.SetActive(false);
+        CarDisplayPanel.SetActive(true);
     }
 
     public void Lose()
@@ -26,5 +28,6 @@ public class LevelManager : MonoBehaviour
     void LatencyLose()
     {
         Crashed.SetActive(true);
+        
     }
 }

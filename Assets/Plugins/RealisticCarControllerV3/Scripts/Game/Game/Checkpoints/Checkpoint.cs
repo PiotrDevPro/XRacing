@@ -493,7 +493,14 @@ using UnityEngine;
             losePanel.SetActive(true);
             loseSnd.GetComponent<AudioSource>().Play();
             erndCoinTx = GameObject.Find("coinNum");
+        if (SceneManager.GetActiveScene().name == "level_top_speed_test")
+        {
+            erndCoinTx.GetComponent<Text>().text = (CarAi.manage.coin + CarAi1.manage.coin + CarAi2.manage.coin).ToString();
+        }
+        else
+        {
             erndCoinTx.GetComponent<Text>().text = erndCoin.ToString();
+        }
             GameObject chkPointCounter = GameObject.Find("pointNumCurr");
             chkPointCounter.GetComponent<Text>().text = totalPoint.ToString();
             GameObject lapsCounter = GameObject.Find("lapNum");
@@ -510,7 +517,14 @@ using UnityEngine;
             winSnd.GetComponent<AudioSource>().Play();
             winSnd2.GetComponent<AudioSource>().Play();
             erndCoinTx = GameObject.Find("coinNum");
+        if (SceneManager.GetActiveScene().name == "level_top_speed_test")
+        {
+            erndCoinTx.GetComponent<Text>().text = (CarAi.manage.coin + CarAi1.manage.coin + CarAi2.manage.coin).ToString();
+        }
+        else
+        {
             erndCoinTx.GetComponent<Text>().text = erndCoin.ToString();
+        }
             GameObject chkPointCounter = GameObject.Find("pointNumCurr");
             chkPointCounter.GetComponent<Text>().text = totalPoint.ToString();
             GameObject lapsCounter = GameObject.Find("lapNum");

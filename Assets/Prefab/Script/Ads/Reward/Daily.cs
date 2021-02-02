@@ -8,7 +8,7 @@ using UnityEngine.Assertions.Must;
 public class Daily : MonoBehaviour
 {
     public static Daily manage;
-    public float msToWait = 5000f;
+    public float msToWait = 10000f;
 
     public Text Timer;
     public Button RewardButton;
@@ -88,7 +88,7 @@ public class Daily : MonoBehaviour
 
     void CashFlow()
     {
-        PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 5000f);
+        PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 10000f);
     }
 
     private bool isReady()
