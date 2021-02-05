@@ -2710,8 +2710,43 @@ public class MainMenuManager : MonoBehaviour
                 VSetting.car.SetActive(true);
                 currentCar = VSetting;
                 PlayerPrefs.SetInt("CurrentCar", currentCarNumber);
-                print(PlayerPrefs.GetInt("CurrentCar"));
-                Amplitude.Instance.logEvent("NextCar>>");
+                if (PlayerPrefs.GetInt("CurrentCar") == 0)
+                {
+                    Amplitude.Instance.logEvent("Hevy666");
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 1)
+                {
+                    Amplitude.Instance.logEvent("HotRodd 1937");
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 2)
+                {
+                    Amplitude.Instance.logEvent("Buggy GTR");
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 3)
+                {
+                    Amplitude.Instance.logEvent("GT 350");
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 4)
+                {
+                    Amplitude.Instance.logEvent("Rasta 1970");
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 5)
+                {
+                    Amplitude.Instance.logEvent("Cuda Killer");
+                }
+
+                if (PlayerPrefs.GetInt("CurrentCar") == 6)
+                {
+                    Amplitude.Instance.logEvent("BMW i8");
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 7)
+                {
+                    Amplitude.Instance.logEvent("Lambo LP-750");
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 8)
+                {
+                    Amplitude.Instance.logEvent("The Bison Monster");
+                }
             }
             else
             {
@@ -2734,8 +2769,43 @@ public class MainMenuManager : MonoBehaviour
                 VSetting.car.SetActive(true);
                 currentCar = VSetting;
                 PlayerPrefs.SetInt("CurrentCar", currentCarNumber);
-                print(PlayerPrefs.GetInt("CurrentCar"));
-                Amplitude.Instance.logEvent("<<PrevCar");
+                if (PlayerPrefs.GetInt("CurrentCar")==0)
+                {
+                    Amplitude.Instance.logEvent("Hevy666");
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 1)
+                {
+                    Amplitude.Instance.logEvent("HotRodd 1937");
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 2)
+                {
+                    Amplitude.Instance.logEvent("Buggy GTR");
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 3)
+                {
+                    Amplitude.Instance.logEvent("GT 350");
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 4)
+                {
+                    Amplitude.Instance.logEvent("Rasta 1970");
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 5)
+                {
+                    Amplitude.Instance.logEvent("Cuda Killer");
+                }
+
+                if (PlayerPrefs.GetInt("CurrentCar") == 6)
+                {
+                    Amplitude.Instance.logEvent("BMW i8");
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 7)
+                {
+                    Amplitude.Instance.logEvent("Lambo LP-750");
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 8)
+                {
+                    Amplitude.Instance.logEvent("The Bison Monster");
+                }
             }
             else
             {
@@ -3761,10 +3831,6 @@ public class MainMenuManager : MonoBehaviour
         menuGUI.RUSure.SetActive(false);
         network_manager_active.SetActive(false);
         print(_systemLang = Application.systemLanguage);
-        //if (LeanLocalization.CurrentLanguages != null)
-        //{
-        //    LeanLocalization.CurrentLanguages = LeanLocalization.CurrentLanguages.
-        //}
     }
     public void GetMoney()
     {

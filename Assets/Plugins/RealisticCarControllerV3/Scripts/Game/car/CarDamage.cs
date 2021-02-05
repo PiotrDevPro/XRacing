@@ -33,7 +33,7 @@ public class CarDamage : MonoBehaviour
 
     private void Update()
     {
-      //  print(energy);
+        //  print(energy);
     }
 
     private void Awake()
@@ -182,7 +182,7 @@ public class CarDamage : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "level_top_speed_test")
         {
-            if (other.CompareTag("Car") || other.CompareTag("CarAI") && !isDead)
+            if (other.CompareTag("Car") && !isDead && !Checkpoint.manage.isWin || other.CompareTag("CarAI") && !isDead && !Checkpoint.manage.isWin)
             {
                 energyBarProgress = GameObject.Find("LifeGauge");
                 enemyDestroy = GameObject.Find("currenemy");
@@ -199,14 +199,14 @@ public class CarDamage : MonoBehaviour
                 energy -= 1;
                 energyBarProgress.GetComponent<Text>().text = energy.ToString();
                 if (GetComponent<RCC_CarControllerV3>().speed > 50)
-                    {
-                    energy -= 5;
+                {
+                    energy -= 3;
                     energyBarProgress.GetComponent<Text>().text = energy.ToString();
                 }
 
-                if (GetComponent<RCC_CarControllerV3>().speed > 130)
+                if (GetComponent<RCC_CarControllerV3>().speed > 150)
                 {
-                    energy -= 15;
+                    energy -= 8;
                     energyBarProgress.GetComponent<Text>().text = energy.ToString();
                 }
 
@@ -216,6 +216,7 @@ public class CarDamage : MonoBehaviour
                     GetComponent<RCC_CarControllerV3>().KillEngine();
                     PlayerPrefs.SetInt("crashed", 1);
                     energyBarProgress.GetComponent<Text>().text = "0";
+
                     LevelManager.manage.Lose();
                     isDead = true;
                     Pause.manage.tracks[0].Stop();
@@ -227,95 +228,95 @@ public class CarDamage : MonoBehaviour
                     Pause.manage.tracks[6].Stop();
                     Amplitude.Instance.logEvent("PlayerIsDead");
                 }
-                
-            }
 
-            #region Enemy Car Display
-            energyBarProgress.GetComponent<Text>().text = energy.ToString();
-            HP1.GetComponent<Text>().text = (CarAi.manage.energy).ToString();
-            if (CarAi.manage.energy < 0)
-            {
-                CarAi.manage.energy = 0;
             }
-            if (CarAi.manage.energy > 50)
-            {
-                lbHP1.GetComponent<Text>().color = Color.green;
-            }
-            if (CarAi.manage.energy < 50)
-            {
-                lbHP1.GetComponent<Text>().color = Color.yellow;
-            }
+        }
 
-            if (CarAi.manage.energy < 20)
-            {
-                lbHP1.GetComponent<Text>().color = Color.red;
-            }
+        #region Enemy Car Display
+        energyBarProgress.GetComponent<Text>().text = energy.ToString();
+        HP1.GetComponent<Text>().text = (CarAi.manage.energy).ToString();
+        if (CarAi.manage.energy < 0)
+        {
+            CarAi.manage.energy = 0;
+        }
+        if (CarAi.manage.energy > 50)
+        {
+            lbHP1.GetComponent<Text>().color = Color.green;
+        }
+        if (CarAi.manage.energy < 50)
+        {
+            lbHP1.GetComponent<Text>().color = Color.yellow;
+        }
 
-            HP2.GetComponent<Text>().text = (CarAi1.manage.energy).ToString();
-            if (CarAi1.manage.energy < 0)
-            {
-                CarAi1.manage.energy = 0;
-            }
-            if (CarAi1.manage.energy > 50)
-            {
-                lbHP2.GetComponent<Text>().color = Color.green;
-            }
-            if (CarAi1.manage.energy < 50)
-            {
-                lbHP2.GetComponent<Text>().color = Color.yellow;
-            }
+        if (CarAi.manage.energy < 20)
+        {
+            lbHP1.GetComponent<Text>().color = Color.red;
+        }
 
-            if (CarAi1.manage.energy < 20)
-            {
-                lbHP2.GetComponent<Text>().color = Color.red;
-            }
-            HP3.GetComponent<Text>().text = (CarAi2.manage.energy).ToString();
-            if (CarAi2.manage.energy < 0)
-            {
-                CarAi2.manage.energy = 0;
-            }
-            if (CarAi2.manage.energy > 50)
-            {
-                lbHP3.GetComponent<Text>().color = Color.green;
-            }
-            if (CarAi2.manage.energy < 50)
-            {
-                lbHP3.GetComponent<Text>().color = Color.yellow;
-            }
+        HP2.GetComponent<Text>().text = (CarAi1.manage.energy).ToString();
+        if (CarAi1.manage.energy < 0)
+        {
+            CarAi1.manage.energy = 0;
+        }
+        if (CarAi1.manage.energy > 50)
+        {
+            lbHP2.GetComponent<Text>().color = Color.green;
+        }
+        if (CarAi1.manage.energy < 50)
+        {
+            lbHP2.GetComponent<Text>().color = Color.yellow;
+        }
 
-            if (CarAi2.manage.energy < 20)
-            {
-                lbHP3.GetComponent<Text>().color = Color.red;
-            }
+        if (CarAi1.manage.energy < 20)
+        {
+            lbHP2.GetComponent<Text>().color = Color.red;
+        }
+        HP3.GetComponent<Text>().text = (CarAi2.manage.energy).ToString();
+        if (CarAi2.manage.energy < 0)
+        {
+            CarAi2.manage.energy = 0;
+        }
+        if (CarAi2.manage.energy > 50)
+        {
+            lbHP3.GetComponent<Text>().color = Color.green;
+        }
+        if (CarAi2.manage.energy < 50)
+        {
+            lbHP3.GetComponent<Text>().color = Color.yellow;
+        }
 
-            if (CarAi.manage.energy <= 0 && !AiIsDead)
-                    {
+        if (CarAi2.manage.energy < 20)
+        {
+            lbHP3.GetComponent<Text>().color = Color.red;
+        }
 
-                        frag += 1;
-                        enemyDestroy.GetComponent<Text>().text = frag.ToString();
-                        AiIsDead = true;
-                        Amplitude.Instance.logEvent("CarIsDead1");
+        if (CarAi.manage.energy <= 0 && !AiIsDead)
+        {
 
-                    }
-
-                    if (CarAi1.manage.energy <= 0 && !AiIsDead1)
-                    {
-                        frag += 1;
-                        enemyDestroy.GetComponent<Text>().text = frag.ToString();
-                        AiIsDead1 = true;
-                        Amplitude.Instance.logEvent("CarIsDead2");
-                    }
-
-                    if (CarAi2.manage.energy <= 0 && !AiIsDead2)
-                    {
-                        frag += 1;
-                        enemyDestroy.GetComponent<Text>().text = frag.ToString();
-                        AiIsDead2 = true;
-                        Amplitude.Instance.logEvent("CarIsDead3");
-                    }
-            #endregion
+            frag += 1;
+            enemyDestroy.GetComponent<Text>().text = frag.ToString();
+            AiIsDead = true;
+            Amplitude.Instance.logEvent("CarIsDead1");
 
         }
+
+        if (CarAi1.manage.energy <= 0 && !AiIsDead1)
+        {
+            frag += 1;
+            enemyDestroy.GetComponent<Text>().text = frag.ToString();
+            AiIsDead1 = true;
+            Amplitude.Instance.logEvent("CarIsDead2");
+        }
+
+        if (CarAi2.manage.energy <= 0 && !AiIsDead2)
+        {
+            frag += 1;
+            enemyDestroy.GetComponent<Text>().text = frag.ToString();
+            AiIsDead2 = true;
+            Amplitude.Instance.logEvent("CarIsDead3");
+        }
+        #endregion
+
         if (SceneManager.GetActiveScene().name == "battle_online")
         {
             energyBarProgress = GameObject.Find("EnergyNum");

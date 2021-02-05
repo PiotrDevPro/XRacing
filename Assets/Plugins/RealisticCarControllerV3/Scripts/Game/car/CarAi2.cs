@@ -45,7 +45,7 @@ using UnityEngine;
                             coin += 500;
                             Blow.SetActive(true);
 
-                            Amplitude.Instance.logEvent("Bot3KillThePlayer90KMH");
+                            Amplitude.Instance.logEvent("Bot3Crashed90KMH");
                         }
                     }
 
@@ -61,7 +61,7 @@ using UnityEngine;
                             coin += 500;
                             Blow.SetActive(true);
 
-                            Amplitude.Instance.logEvent("Bot3KillThePlayer140KMH");
+                            Amplitude.Instance.logEvent("Bot3Crashed140KMH");
                         }
                     }
 
@@ -77,7 +77,7 @@ using UnityEngine;
                             PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
                             Blow.SetActive(true);
 
-                            Amplitude.Instance.logEvent("Bot3KillThePlayer250KMH");
+                            Amplitude.Instance.logEvent("Bot3Crashed250KMH");
                         }
                     }
                     else

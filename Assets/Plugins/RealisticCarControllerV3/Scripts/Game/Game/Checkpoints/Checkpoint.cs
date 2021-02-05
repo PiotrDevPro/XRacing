@@ -54,6 +54,8 @@ using UnityEngine;
         private GameObject AnimBonus;
         private GameObject cashRegSnd;
 
+        public bool isWin = false;
+
         private GameObject[] carAi1;
         private void Awake()
         {
@@ -65,6 +67,7 @@ using UnityEngine;
             pauza = FindObjectOfType<Pause>();
             carController = FindObjectOfType<RCC_CarControllerV3>();
             _waypointsContainer = FindObjectOfType<RCC_AIWaypointsContainer>();
+            isWin = false;
 
             curr = starttime;
 
@@ -514,6 +517,7 @@ using UnityEngine;
         {
             Amplitude.Instance.logEvent("Win");
             winPanel.SetActive(true);
+            isWin = true;
             winSnd.GetComponent<AudioSource>().Play();
             winSnd2.GetComponent<AudioSource>().Play();
             erndCoinTx = GameObject.Find("coinNum");

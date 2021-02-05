@@ -36,7 +36,11 @@ public class netManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        LosePanel.SetActive(false);
+        if (SceneManager.GetActiveScene().name == "battle_online")
+        {
+            LosePanel.SetActive(false);
+        }
+        
         curr = starttime;
 
         if (RCC_SceneManager.Instance.activePlayerVehicle)

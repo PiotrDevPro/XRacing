@@ -414,7 +414,9 @@ using UnityEngine;
                     Pause.manage.tracks[Random.Range(0, 6)].Play();
                 }
                 LevelManager.manage.Crashed.SetActive(false);
-                isAdsForCarCrashed = false;
+                CarDamage.manage.energyBarProgress.GetComponent<Text>().text = CarDamage.manage.energy.ToString();
+
+            isAdsForCarCrashed = false;
                 Amplitude.Instance.logEvent("OnRewardedVideoForCrashCar");
                 Time.timeScale = 1;
             }
