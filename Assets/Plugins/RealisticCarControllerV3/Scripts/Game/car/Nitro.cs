@@ -8,14 +8,14 @@ public class Nitro : MonoBehaviour
     private GameObject _playerCar;
     private bool boostInput;
     public Slider boostlvl;
-
-    void Start()
-    {
-        _playerCar = GameObject.FindGameObjectWithTag("Player");
-    }
+    int count = 0;
 
     private void Update()
     {
+        count += 1;
+        if (count == 1){
+        _playerCar = GameObject.FindGameObjectWithTag("Player");
+        }
         boostlvl.value = _playerCar.GetComponentInChildren<RCC_CarControllerV3>().NoS;
   }
 }

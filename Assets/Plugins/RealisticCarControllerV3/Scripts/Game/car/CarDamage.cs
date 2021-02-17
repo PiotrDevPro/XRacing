@@ -33,13 +33,19 @@ public class CarDamage : MonoBehaviour
 
     private void Update()
     {
-        //  print(energy);
+        count += 1;
+        if (SceneManager.GetActiveScene().name == "battle_online" && count ==1)
+        {
+            energyBarProgress = GameObject.Find("EnergyNum");
+            print(energyBarProgress);
+        }
     }
 
     private void Awake()
     {
         manage = this;
     }
+
 
     private void Start()
     {
@@ -230,7 +236,7 @@ public class CarDamage : MonoBehaviour
                 }
 
             }
-        }
+        
 
         #region Enemy Car Display
         energyBarProgress.GetComponent<Text>().text = energy.ToString();
@@ -315,17 +321,15 @@ public class CarDamage : MonoBehaviour
             AiIsDead2 = true;
             Amplitude.Instance.logEvent("CarIsDead3");
         }
+    }
         #endregion
 
         if (SceneManager.GetActiveScene().name == "battle_online")
         {
-            energyBarProgress = GameObject.Find("EnergyNum");
-
             if (other.CompareTag("Car") && !isDead)
             {
-                
                 if (netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed > 80f )
-                {
+
                         energy -= 3;
                         energyBarProgress.GetComponent<Text>().text = energy.ToString();
                         Amplitude.Instance.logEvent("CarHitOnspeed > 80f");
@@ -379,10 +383,10 @@ public class CarDamage : MonoBehaviour
             }
             if (other.CompareTag("Player") && !isDead)
             {
-
-                if (netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed > 70f)
+            if (netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed > 70f)
                 {
                     energy -= 2;
+                    
                     energyBarProgress.GetComponent<Text>().text = energy.ToString();
                     Amplitude.Instance.logEvent("NetworkPlayerHitOnspeed > 80f");
                 }
@@ -423,7 +427,7 @@ public class CarDamage : MonoBehaviour
                 }
             }
         }
-    }
+    
 
     void Latency()
     {
