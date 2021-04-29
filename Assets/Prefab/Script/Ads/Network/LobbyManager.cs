@@ -43,6 +43,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
 
             PhotonNetwork.NickName = PlayerPrefs.GetString("Player");
+            //PlayerPrefs.SetString("PlayerNetwork",PhotonNetwork.NickName);
+            //print(PlayerPrefs.GetString("PlayerNetwork"));
             //Log("Player's name is set to " + PhotonNetwork.NickName);
             PhotonNetwork.AutomaticallySyncScene = true;
             PhotonNetwork.GameVersion = "1";
@@ -63,9 +65,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
-        PhotonNetwork.CreateRoom("Highway", new Photon.Realtime.RoomOptions { MaxPlayers = 10 });
-        Amplitude.Instance.logEvent("CreateRoomHighway");
 
+        PhotonNetwork.CreateRoom("Highway", new Photon.Realtime.RoomOptions { MaxPlayers = 10 }) ;
+        Amplitude.Instance.logEvent("CreateRoomHighway");
+        loading.SetActive(true);
     }
 
     public void CreateRoomCity()
@@ -92,9 +95,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         
         if (PhotonNetwork.CurrentRoom.Name == "Highway")
         {
-            loading.SetActive(true);
+            
             createRoomHighway.interactable = false;
             print(PhotonNetwork.CurrentRoom);
+            print(PhotonNetwork.CurrentRoom.MaxPlayers);
             PhotonNetwork.LoadLevel("battle_online");
             MainMenuManager.manage.LoadEngineUpgradeOnSelectedCar();
             MainMenuManager.manage.LoadHandlingOnSelectedCar();

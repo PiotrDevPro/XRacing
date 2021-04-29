@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using AppodealAds.Unity.Api;
-using AppodealAds.Unity.Common;
+//using AppodealAds.Unity.Api;
+//using AppodealAds.Unity.Common;
 using Photon.Pun;
 using UnityEngine.UI;
 using UnityEngine;
 
 
-    public class AppDealManager : MonoBehaviour, IInterstitialAdListener, INonSkippableVideoAdListener, IBannerAdListener, IRewardedVideoAdListener
-    {
+public class AppDealManager : MonoBehaviour//, IInterstitialAdListener, INonSkippableVideoAdListener, IBannerAdListener, IRewardedVideoAdListener
+{
     public static AppDealManager manage;
     public bool isAdsShop = false;
     public bool isAdsEnergy = false;
@@ -20,13 +20,14 @@ using UnityEngine;
 #if UNITY_IOS || UNITY_IPHONE
     private const string APP_KEY = "";
 #else
-        private const string APP_KEY = "96ef05657cdb77782e1b8746bcefb3d431c0b22a31831a55";
+    private const string APP_KEY = "96ef05657cdb77782e1b8746bcefb3d431c0b22a31831a55";
 #endif
     private void Awake()
     {
         manage = this;
     }
-
+}
+    /*
     private void Start()
     {
         //Appodeal.setLogLevel(Appodeal.LogLevel.Debug);
@@ -469,3 +470,4 @@ using UnityEngine;
         #endregion
     }
 
+    */

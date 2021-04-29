@@ -127,6 +127,23 @@ public class RCC_DashboardInputs : MonoBehaviour {
 			
 	}
 
+	public void ResetCarForCoinz()
+    {
+		RCC_CarControllerV3.manage.ResetCarForCoin();
+		DamagePartsHood.manage.wheels1.gameObject.SetActive(true);
+		DamagePartsHood.manage.wheels2.gameObject.SetActive(true);
+		DamagePartsHood.manage.wheels1col.gameObject.SetActive(true);
+		DamagePartsHood.manage.wheels2col.gameObject.SetActive(true);
+		DamagePartsHood.manage.blow.SetActive(false);
+		DamagePartsHood.manage.point = 50;
+		DPTrunk.manage.wheels1.gameObject.SetActive(true);
+		DPTrunk.manage.wheels2.gameObject.SetActive(true);
+		DPTrunk.manage.wheels1col.gameObject.SetActive(true);
+		DPTrunk.manage.wheels2col.gameObject.SetActive(true);
+		DPTrunk.manage.point = 50;
+
+	}
+
 }
 
 
