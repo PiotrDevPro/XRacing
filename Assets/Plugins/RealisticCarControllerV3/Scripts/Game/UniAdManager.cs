@@ -4,13 +4,14 @@ using UnityEngine.Advertisements;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class UnityAd : MonoBehaviour
+public class UniAdManager : MonoBehaviour
 {
-    public static UnityAd manage;
+    public static UniAdManager manage;
 
     private bool isAdsShop = false;
     private bool isAds25Sec = false;
     private bool isAdsEnergy = false;
+    private bool isAdsEnergyInShop = false;
     private bool isAdsForCarCrashed = false;
     private void Awake()
     {
@@ -33,6 +34,15 @@ public class UnityAd : MonoBehaviour
         {
             Advertisement.Show("rewardedVideo", new ShowOptions() { resultCallback = HandleAdResult });
             isAdsEnergy = true;
+        }
+    }
+
+    public void ShowAdForEnergyInShop()
+    {
+        if (Advertisement.IsReady() && Advertisement.isInitialized)
+        {
+            Advertisement.Show("rewardedVideo", new ShowOptions() { resultCallback = HandleAdResult });
+            isAdsEnergyInShop = true;
         }
     }
 
@@ -129,16 +139,28 @@ public class UnityAd : MonoBehaviour
                     isAdsForCarCrashed = false;
                 }
 
+                if (isAdsEnergyInShop)
+                {
+                    PlayerPrefs.SetInt("Energy", 25);
+                    //MainMenuManager.manage.carSetting[PlayerPrefs.GetInt("CurrentCar")].energy += 25;
+                    GameObject snd = GameObject.Find("Purchased");
+                    snd.GetComponent<AudioSource>().Play();
+                    MainMenuManager.manage.menuGUI.adsEnergyBtn.interactable = false;
+                    
+                }
+
                 break;
             case ShowResult.Skipped:
                 isAdsShop = false;
                 isAdsForCarCrashed = false;
                 isAds25Sec = false;
+                isAdsEnergyInShop = false;
                 break;
             case ShowResult.Failed:
                 isAdsShop = false;
                 isAdsForCarCrashed = false;
                 isAds25Sec = false;
+                isAdsEnergyInShop = false;
                 break;
         }
     }
@@ -162,11 +184,14 @@ public class UnityAd : MonoBehaviour
     #region Add coin's/energy for Ad
     void latencyCoinUpdate15()
     {
-
-        GameObject snd = GameObject.Find("Purchased");
-        snd.GetComponent<AudioSource>().Play();
-        Invoke("latencySpawnCoin", 0.5f);
-        Invoke("addCoinsOnShop", 1.7f);
+        if (!MainMenuManager.manage.isFreerideActive && !MainMenuManager.manage.isAllvsYou && !MainMenuManager.manage.isTopSpeedActive)
+        {
+            GameObject snd = GameObject.Find("Purchased");
+            snd.GetComponent<AudioSource>().Play();
+            Invoke("latencySpawnCoin", 0.5f);
+            Invoke("addCoinsOnShop", 1.7f);
+        }
+        
     }
 
 

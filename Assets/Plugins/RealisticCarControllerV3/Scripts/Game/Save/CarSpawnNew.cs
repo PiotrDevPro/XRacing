@@ -57,12 +57,24 @@ public class CarSpawnNew : MonoBehaviour
             InstantiatedCar.GetComponent<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspRear" + PlayerPrefs.GetInt("CurrentCar"));
         } else if (PlayerPrefs.GetInt("WheelSussp" + PlayerPrefs.GetInt("CurrentCar")) == 0)
         {
-            InstantiatedCar.GetComponent<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
-            InstantiatedCar.GetComponent<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+            if (PlayerPrefs.GetInt("CurrentCar") != 8)
+            {
+                InstantiatedCar.GetComponent<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+                InstantiatedCar.GetComponent<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
 
-            InstantiatedCar.GetComponent<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
-            InstantiatedCar.GetComponent<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+                InstantiatedCar.GetComponent<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+                InstantiatedCar.GetComponent<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+            }
+            if (PlayerPrefs.GetInt("CurrentCar") == 8)
+            {
+                InstantiatedCar.GetComponent<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.02f;
+                InstantiatedCar.GetComponent<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.02f;
+
+                InstantiatedCar.GetComponent<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = 0.02f;
+                InstantiatedCar.GetComponent<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = 0.02f;
+            }
         }
+      
         
         #endregion
 

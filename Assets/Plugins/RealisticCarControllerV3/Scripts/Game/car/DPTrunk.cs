@@ -12,7 +12,7 @@ public class DPTrunk : MonoBehaviour
     public Transform wheels2;
     public Transform wheels1col;
     public Transform wheels2col;
-
+    public GameObject Blow;
 
     private void Awake()
     {
@@ -36,7 +36,7 @@ public class DPTrunk : MonoBehaviour
                 point -= 8;
             }
 
-            if (point <= 35)
+            if (point <= 45)
             {
                 if (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 1 || PlayerPrefs.GetInt("CurrentCar") == 7)
                 {
@@ -44,16 +44,18 @@ public class DPTrunk : MonoBehaviour
                 }
                 
             }
-            if (point <= 25)
+            if (point <= 44)
             {
                 wheels1.gameObject.SetActive(false);
                 wheels1col.gameObject.SetActive(false);
+                Blow.SetActive(true);
             }
 
-            if (point <= 15)
+            if (point <= 30)
             {
                 wheels2.gameObject.SetActive(false);
                 wheels2col.gameObject.SetActive(false);
+                
             }
         }
     }

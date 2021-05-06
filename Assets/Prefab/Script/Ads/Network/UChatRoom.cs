@@ -262,8 +262,8 @@ public class UChatRoom : MonoBehaviour, IChatClientListener
 
 	public void OnChatStateChange(ChatState state)
 	{
-		print(chatClient.State);
-		print(UserName);
+		//print(chatClient.State);
+		//print(UserName);
 	}
 
 	public void OnConnected()

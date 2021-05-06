@@ -1,15 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using Photon.Realtime;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
 
-public class CarDamage : MonoBehaviour
+public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
 {
     public static CarDamage manage;
     public int energy = 100;
+    public int counter = 0;
     public bool isDead = false;
     public bool isWin = false;
     public bool isAdsShowed = false;
@@ -19,7 +22,8 @@ public class CarDamage : MonoBehaviour
 
     public GameObject energyBarProgress;
     private GameObject enemyDestroy;
-    public PhotonView photonView;
+
+    
 
     private GameObject HP1;
     private GameObject HP2;
@@ -27,6 +31,16 @@ public class CarDamage : MonoBehaviour
     private GameObject lbHP1;
     private GameObject lbHP2;
     private GameObject lbHP3;
+
+    private GameObject point1Active;
+    [SerializeField] Transform roomListContent;
+    [SerializeField] GameObject roomListPrefab;
+
+    PhotonView PV;
+
+    Rigidbody rb;
+
+    public Player Player { get; private set; }
 
     int count = 0;
     public int frag = 0;
@@ -37,20 +51,51 @@ public class CarDamage : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "battle_online" && count ==1)
         {
             energyBarProgress = GameObject.Find("EnergyNum");
-            print(energyBarProgress);
+            point1Active = GameObject.Find("point1");
+            point1Active.SetActive(false);
         }
     }
 
     private void Awake()
     {
         manage = this;
+        PV = GetComponent<PhotonView>();
     }
 
 
     private void Start()
     {
-        photonView = GetComponent<PhotonView>();
+        
+        if (PlayerPrefs.GetInt("Energy") == 25)
+        {
+          energy += 25;
+        }
     }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        print("OnPlayerEnteredRoom");
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        print("OnPlayerLeftRoom");
+    }
+
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+        print("OnRoomPropertiesUpdate");
+    }
+
+    public override void OnJoinedRoom()
+    {
+        //print(PhotonNetwork.NickName);
+        //print(PhotonNetwork.CurrentRoom.CustomProperties["Energy"]);
+        //print(PhotonNetwork.LocalPlayer.CustomProperties["Role"]);
+        //PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable() { { "Role", counter++} });
+        //print(PhotonNetwork.CurrentRoom.CustomProperties["Energy"].ToString());
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -60,6 +105,7 @@ public class CarDamage : MonoBehaviour
 
                 if (MainMenuManager.manage.isFreerideActive && !isDead || MainMenuManager.manage.isAllvsYou && !isDead)
                 {
+
                     energyBarProgress = GameObject.Find("LifeGauge");
                     enemyDestroy = GameObject.Find("currenemy");
                     PlayerPrefs.SetInt("crashed", 0);
@@ -236,106 +282,110 @@ public class CarDamage : MonoBehaviour
                 }
 
             }
-        
 
-        #region Enemy Car Display
-        energyBarProgress.GetComponent<Text>().text = energy.ToString();
-        HP1.GetComponent<Text>().text = (CarAi.manage.energy).ToString();
-        if (CarAi.manage.energy < 0)
-        {
-            CarAi.manage.energy = 0;
-        }
-        if (CarAi.manage.energy > 50)
-        {
-            lbHP1.GetComponent<Text>().color = Color.green;
-        }
-        if (CarAi.manage.energy < 50)
-        {
-            lbHP1.GetComponent<Text>().color = Color.yellow;
-        }
 
-        if (CarAi.manage.energy < 20)
-        {
-            lbHP1.GetComponent<Text>().color = Color.red;
-        }
+            #region Enemy Car Display
+            energyBarProgress.GetComponent<Text>().text = energy.ToString();
+            HP1.GetComponent<Text>().text = (CarAi.manage.energy).ToString();
+            if (CarAi.manage.energy < 0)
+            {
+                CarAi.manage.energy = 0;
+            }
+            if (CarAi.manage.energy > 50)
+            {
+                lbHP1.GetComponent<Text>().color = Color.green;
+            }
+            if (CarAi.manage.energy < 50)
+            {
+                lbHP1.GetComponent<Text>().color = Color.yellow;
+            }
 
-        HP2.GetComponent<Text>().text = (CarAi1.manage.energy).ToString();
-        if (CarAi1.manage.energy < 0)
-        {
-            CarAi1.manage.energy = 0;
-        }
-        if (CarAi1.manage.energy > 50)
-        {
-            lbHP2.GetComponent<Text>().color = Color.green;
-        }
-        if (CarAi1.manage.energy < 50)
-        {
-            lbHP2.GetComponent<Text>().color = Color.yellow;
-        }
+            if (CarAi.manage.energy < 20)
+            {
+                lbHP1.GetComponent<Text>().color = Color.red;
+            }
 
-        if (CarAi1.manage.energy < 20)
-        {
-            lbHP2.GetComponent<Text>().color = Color.red;
-        }
-        HP3.GetComponent<Text>().text = (CarAi2.manage.energy).ToString();
-        if (CarAi2.manage.energy < 0)
-        {
-            CarAi2.manage.energy = 0;
-        }
-        if (CarAi2.manage.energy > 50)
-        {
-            lbHP3.GetComponent<Text>().color = Color.green;
-        }
-        if (CarAi2.manage.energy < 50)
-        {
-            lbHP3.GetComponent<Text>().color = Color.yellow;
-        }
+            HP2.GetComponent<Text>().text = (CarAi1.manage.energy).ToString();
+            if (CarAi1.manage.energy < 0)
+            {
+                CarAi1.manage.energy = 0;
+            }
+            if (CarAi1.manage.energy > 50)
+            {
+                lbHP2.GetComponent<Text>().color = Color.green;
+            }
+            if (CarAi1.manage.energy < 50)
+            {
+                lbHP2.GetComponent<Text>().color = Color.yellow;
+            }
 
-        if (CarAi2.manage.energy < 20)
-        {
-            lbHP3.GetComponent<Text>().color = Color.red;
+            if (CarAi1.manage.energy < 20)
+            {
+                lbHP2.GetComponent<Text>().color = Color.red;
+            }
+            HP3.GetComponent<Text>().text = (CarAi2.manage.energy).ToString();
+            if (CarAi2.manage.energy < 0)
+            {
+                CarAi2.manage.energy = 0;
+            }
+            if (CarAi2.manage.energy > 50)
+            {
+                lbHP3.GetComponent<Text>().color = Color.green;
+            }
+            if (CarAi2.manage.energy < 50)
+            {
+                lbHP3.GetComponent<Text>().color = Color.yellow;
+            }
+
+            if (CarAi2.manage.energy < 20)
+            {
+                lbHP3.GetComponent<Text>().color = Color.red;
+            }
+
+            if (CarAi.manage.energy <= 0 && !AiIsDead)
+            {
+
+                frag += 1;
+                enemyDestroy.GetComponent<Text>().text = frag.ToString();
+                AiIsDead = true;
+                Amplitude.Instance.logEvent("CarIsDead1");
+
+            }
+
+            if (CarAi1.manage.energy <= 0 && !AiIsDead1)
+            {
+                frag += 1;
+                enemyDestroy.GetComponent<Text>().text = frag.ToString();
+                AiIsDead1 = true;
+                Amplitude.Instance.logEvent("CarIsDead2");
+            }
+
+            if (CarAi2.manage.energy <= 0 && !AiIsDead2)
+            {
+                frag += 1;
+                enemyDestroy.GetComponent<Text>().text = frag.ToString();
+                AiIsDead2 = true;
+                Amplitude.Instance.logEvent("CarIsDead3");
+            }
         }
-
-        if (CarAi.manage.energy <= 0 && !AiIsDead)
-        {
-
-            frag += 1;
-            enemyDestroy.GetComponent<Text>().text = frag.ToString();
-            AiIsDead = true;
-            Amplitude.Instance.logEvent("CarIsDead1");
-
-        }
-
-        if (CarAi1.manage.energy <= 0 && !AiIsDead1)
-        {
-            frag += 1;
-            enemyDestroy.GetComponent<Text>().text = frag.ToString();
-            AiIsDead1 = true;
-            Amplitude.Instance.logEvent("CarIsDead2");
-        }
-
-        if (CarAi2.manage.energy <= 0 && !AiIsDead2)
-        {
-            frag += 1;
-            enemyDestroy.GetComponent<Text>().text = frag.ToString();
-            AiIsDead2 = true;
-            Amplitude.Instance.logEvent("CarIsDead3");
-        }
-    }
         #endregion
 
         if (SceneManager.GetActiveScene().name == "battle_online")
+
         {
+            if (!PV.IsMine)
+                return;
+
             if (other.CompareTag("Car") && !isDead)
             {
-                if (netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed > 80f )
-
-                        energy -= 3;
-                        energyBarProgress.GetComponent<Text>().text = energy.ToString();
-                        Amplitude.Instance.logEvent("CarHitOnspeed > 80f");
+                if (netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed > 40f)
+                {
+                    energy -= 3;
+                    energyBarProgress.GetComponent<Text>().text = energy.ToString();
+                    Amplitude.Instance.logEvent("CarHitOnspeed > 80f");
                 }
 
-                if (netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed > 140f)
+                if (netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed > 100f)
                 {
                     energy -= 5;
                     energyBarProgress.GetComponent<Text>().text = energy.ToString();
@@ -364,7 +414,7 @@ public class CarDamage : MonoBehaviour
                 }
                 else
                 {
-                    energy -= 1;
+                    energy -= 0;
                     energyBarProgress.GetComponent<Text>().text = energy.ToString();
                 }
 
@@ -379,38 +429,22 @@ public class CarDamage : MonoBehaviour
                     Amplitude.Instance.logEvent("DeadFromTrafficCar");
 
                 }
-
             }
+
             if (other.CompareTag("Player") && !isDead)
             {
-            if (netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed > 70f)
-                {
-                    energy -= 2;
-                    
+
+                    GetComponent<IDamageble>()?.TakeDamage(1);
+                    energy -= 1;
                     energyBarProgress.GetComponent<Text>().text = energy.ToString();
-                    Amplitude.Instance.logEvent("NetworkPlayerHitOnspeed > 80f");
+
+                if (netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed > 100f)
+                {
+                    GetComponent<IDamageble>()?.TakeDamage(3);
+                    energy -= 3;
+                    energyBarProgress.GetComponent<Text>().text = energy.ToString();
                 }
 
-                if (netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed > 120f)
-                {
-                    energy -= 4;
-                    energyBarProgress.GetComponent<Text>().text = energy.ToString();
-                    Amplitude.Instance.logEvent("NetworkPlayerHitOnspeed > 120f");
-                }
-
-                if (netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed > 180f)
-                {
-                    energy -= 6;
-                    energyBarProgress.GetComponent<Text>().text = energy.ToString();
-                    Amplitude.Instance.logEvent("NetworkPlayerHitOnspeed > 180f");
-                }
-
-                if (netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed > 250f)
-                {
-                    energy -= 10;
-                    energyBarProgress.GetComponent<Text>().text = energy.ToString();
-                    Amplitude.Instance.logEvent("NetworkPlayerHitOnspeed > 250f");
-                }
                 if (energy <= 0)
                 {
                     energy = 0;
@@ -420,14 +454,9 @@ public class CarDamage : MonoBehaviour
                     Amplitude.Instance.logEvent("DeadFromOtherNetworkPlayer");
                     isDead = true;
                 }
-                else
-                {
-                    energy -= 1;
-                    energyBarProgress.GetComponent<Text>().text = energy.ToString();
-                }
             }
         }
-    
+    }
 
     void Latency()
     {
@@ -440,4 +469,28 @@ public class CarDamage : MonoBehaviour
         GetComponent<RCC_CarControllerV3>().KillOrStartEngine();
     }
 
+    void TargetRay()
+    {
+        Debug.DrawRay(transform.position + transform.up / 2f, transform.forward * 100.34f, Color.yellow);
+        RaycastHit info;
+        int mask = 1 << 10;
+        if (Physics.Raycast(transform.position + transform.up / 2f, transform.forward * 100.34f, out info, 100.34f, mask))
+        {
+            print(gameObject.name);
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+    }
+
+    [PunRPC]
+
+    void RPC_TakeDamage(float damage)
+    {
+        if (!PV.IsMine)
+            return;
+        print("Damage +" +  damage);
+    }
 }

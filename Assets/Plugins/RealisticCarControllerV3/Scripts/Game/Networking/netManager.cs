@@ -458,6 +458,7 @@ public class netManager : MonoBehaviourPunCallbacks
         RCC_InfoLabel.Instance.ShowInfo("Left " + otherPlayer.NickName);
     }
 
+
     void Timer()
     {
         print(curr);

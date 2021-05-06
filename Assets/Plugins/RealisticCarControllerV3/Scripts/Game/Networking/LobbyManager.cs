@@ -1,9 +1,12 @@
 ﻿using Photon.Pun;
 using Photon.Realtime;
+using Photon;
 using Photon.Chat;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine;
 using UnityEngine.UI;
 using ExitGames.Client.Photon;
+using System.Collections.Generic;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
@@ -16,6 +19,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public GameObject loading;
     int count = 0;
     private GameObject _player;
+
+    [SerializeField] Transform roomListContent;
+    [SerializeField] GameObject roomListPrefab;
+    public Player Player { get; private set; }
     private void Awake()
     {
         manage = this;
@@ -57,6 +64,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Amplitude.Instance.logEvent("ConnectedToMasterServer");
+        PhotonNetwork.JoinLobby();
         createRoomHighway.interactable = true;
         createRoomCity.interactable = true;
         connectToServerMsg.SetActive(false);
@@ -65,15 +73,21 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
-
-        PhotonNetwork.CreateRoom("Highway", new Photon.Realtime.RoomOptions { MaxPlayers = 10 }) ;
+        RoomOptions ro = new RoomOptions();
+        ro.IsOpen = true;
+        ro.MaxPlayers = 10;
+        ro.IsVisible = true;
+        Hashtable RoomCustomProps = new Hashtable();
+        RoomCustomProps.Add("Energy", 1);
+        ro.CustomRoomProperties = RoomCustomProps;
+        PhotonNetwork.JoinOrCreateRoom("Highway", ro, TypedLobby.Default) ;
         Amplitude.Instance.logEvent("CreateRoomHighway");
         loading.SetActive(true);
     }
 
     public void CreateRoomCity()
     {
-        PhotonNetwork.CreateRoom("City", new Photon.Realtime.RoomOptions { MaxPlayers = 10 });
+        PhotonNetwork.CreateRoom("City", new RoomOptions { MaxPlayers = 10 });
         Amplitude.Instance.logEvent("CreateRoomCity");
     }
 
@@ -90,6 +104,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         Amplitude.Instance.logEvent("JoinRoomCity");
     }
 
+    public void JoinRoomOnClicked(RoomInfo info)
+    {
+        PhotonNetwork.JoinRoom(info.Name);
+    }
+
     public override void OnJoinedRoom()
     {
         
@@ -97,12 +116,16 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             
             createRoomHighway.interactable = false;
-            print(PhotonNetwork.CurrentRoom);
-            print(PhotonNetwork.CurrentRoom.MaxPlayers);
-            PhotonNetwork.LoadLevel("battle_online");
+           
             MainMenuManager.manage.LoadEngineUpgradeOnSelectedCar();
             MainMenuManager.manage.LoadHandlingOnSelectedCar();
             MainMenuManager.manage.LoadBrakeOnSelectedCar();
+            Hashtable playerCustomProps = new Hashtable();
+            playerCustomProps.Add("Role", 2);
+            PhotonNetwork.SetPlayerCustomProperties(playerCustomProps);
+            print("Highway");
+            PhotonNetwork.LoadLevel("battle_online");
+
         }
         else if (PhotonNetwork.CurrentRoom.Name == "City")
         {
@@ -123,6 +146,33 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         LogText.text += "\n";
         LogText.text += message;
 
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        print("OnRoomListUpdate");
+        foreach (Transform trans in roomListContent)
+        {
+            Destroy(trans.gameObject);
+        }
+        for (int i = 0; i < roomList.Count; i++)
+        {
+            if (roomList[i].RemovedFromList)
+                continue;
+            Instantiate(roomListPrefab, roomListContent).GetComponent<roomListItem>().SetUp(roomList[i]);
+
+        }
+    }
+
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+        Debug.Log("OnRoomPropertiesUpdate");
+
+    }
+
+    public override void OnJoinedLobby()
+    {
+        print("OnJoinedLobby");
     }
 
     public void DeactiveNetwork()

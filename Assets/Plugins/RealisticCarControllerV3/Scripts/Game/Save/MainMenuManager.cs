@@ -9,9 +9,10 @@ public enum PanelsUI { MainMenu = 0, SelectCar = 1, SelectLevel = 2, Settings = 
 
 public class MainMenuManager : MonoBehaviour
 {
+    
+    public static MainMenuManager manage;
     int tEngine, tHandling, tBrake, tWheel;
     public CarSetting[] carSetting;
-    public static MainMenuManager manage;
     public Transform CarManager;
     public Transform qualityPanel;
     public MenuPanels menuPanels;
@@ -20,6 +21,7 @@ public class MainMenuManager : MonoBehaviour
     public AudioUI audioUi;
     public AudioSource[] tracks;
     public Text cashAmount;
+    public Text energyTx;
     [SerializeField] private GameObject versionApp;
     public GameObject network_manager_active;
     public bool isFreerideActive = false;
@@ -63,6 +65,8 @@ public class MainMenuManager : MonoBehaviour
         public int[] ESPPrice;
         public int[] TractionPrice;
         public int[] WheelDrivePrice;
+        public int energy;
+
 
         public GameObject car;
 
@@ -257,6 +261,7 @@ public class MainMenuManager : MonoBehaviour
     {
         //int tEngine, tHandling, tBrake;
         //public Text GameScore;
+        public Button adsEnergyBtn;
         public Text CarName;
         public Text CarPrice;
        // public Text CarMaxSpeed;
@@ -388,6 +393,7 @@ public class MainMenuManager : MonoBehaviour
                 menuPanels.SelectLevel.SetActive(false);
                 menuPanels._NetworkRoom.SetActive(false);
                 Amplitude.Instance.logEvent("SelectCar");
+                energyTx.text = "Energy: " + (carSetting[currentCarNumber].energy + PlayerPrefs.GetInt("Energy"));
                 break;
             case PanelsUI.SelectLevel:
                 menuPanels.MainMenu.SetActive(false);
@@ -2710,6 +2716,7 @@ public class MainMenuManager : MonoBehaviour
                 VSetting.car.SetActive(true);
                 currentCar = VSetting;
                 PlayerPrefs.SetInt("CurrentCar", currentCarNumber);
+                energyTx.text = "Energy: " + (carSetting[currentCarNumber].energy + PlayerPrefs.GetInt("Energy"));
                 if (PlayerPrefs.GetInt("CurrentCar") == 0)
                 {
                     Amplitude.Instance.logEvent("Hevy666");
@@ -2769,6 +2776,8 @@ public class MainMenuManager : MonoBehaviour
                 VSetting.car.SetActive(true);
                 currentCar = VSetting;
                 PlayerPrefs.SetInt("CurrentCar", currentCarNumber);
+                energyTx.text = "Energy: " + (carSetting[currentCarNumber].energy + PlayerPrefs.GetInt("Energy"));
+
                 if (PlayerPrefs.GetInt("CurrentCar")==0)
                 {
                     Amplitude.Instance.logEvent("Hevy666");
@@ -2805,6 +2814,10 @@ public class MainMenuManager : MonoBehaviour
                 if (PlayerPrefs.GetInt("CurrentCar") == 8)
                 {
                     Amplitude.Instance.logEvent("The Bison Monster");
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 9)
+                {
+                    Amplitude.Instance.logEvent("Tesla T");
                 }
             }
             else
@@ -3166,8 +3179,17 @@ public class MainMenuManager : MonoBehaviour
             menuGUI.WheelSusspPriceF.gameObject.SetActive(true);
             menuGUI.WheelSusspPriceR.gameObject.SetActive(true);
             WheelSusspIsChecked = false;
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+            if (PlayerPrefs.GetInt("CurrentCar") != 8)
+            {
+                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+            }
+            else
+            {
+                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.022f;
+                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.022f;
+            }
+
             audioUi.Denied.Play();
         }
     }
@@ -3647,7 +3669,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void WheelSusspensionTxRear()
     {
-        menuGUI.SusspRearTx.text = PlayerPrefs.GetFloat("WheelSusspRear" + currentCarNumber.ToString(), menuGUI.RearS.value).ToString();//carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance.ToString();
+        menuGUI.SusspRearTx.text = PlayerPrefs.GetFloat("WheelSusspRear" + currentCarNumber.ToString(), menuGUI.RearS.value).ToString();
     }
 
     public void TCSTx()
@@ -3780,6 +3802,8 @@ public class MainMenuManager : MonoBehaviour
 
     #endregion
 
+
+
     void Awake()
     {
         manage = this;
@@ -3831,11 +3855,17 @@ public class MainMenuManager : MonoBehaviour
         menuGUI.RUSure.SetActive(false);
         network_manager_active.SetActive(false);
         print(_systemLang = Application.systemLanguage);
+        if (PlayerPrefs.GetInt("Energy") == 25)
+        {
+            menuGUI.adsEnergyBtn.interactable = false;
+        }
     }
     public void GetMoney()
     {
         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 100000f);
     }
+
+    #region Trash
     public void DeleteAll()
     {
         PlayerPrefs.DeleteAll();
@@ -3852,9 +3882,21 @@ public class MainMenuManager : MonoBehaviour
         GameObject anim1 = GameObject.Find("Body");
         anim1.GetComponent<Animator>().SetBool("push", true);
     }
+
+    public void endEvent()
+    {
+        Amplitude.Instance.logEvent("ENG");
+    }
+
+    public void ruEvent()
+    {
+        Amplitude.Instance.logEvent("RU");
+    }
+    #endregion
+
+
     void Update()
     {
-        
         LoadUpgradeOnAwake();
         LoadUpgrade();
         LoadUpgradeHandling();
@@ -3902,7 +3944,6 @@ public class MainMenuManager : MonoBehaviour
         menuGUI.ESPPrice.text = carSetting[currentCarNumber].ESPPrice[0].ToString() + "$";
         menuGUI.TractionPrice.text = carSetting[currentCarNumber].TractionPrice[0].ToString() + "$";
         menuGUI.WheelDrivePrice.text = carSetting[currentCarNumber].WheelDrivePrice[0].ToString() + "$";
-        
         // Shop system for cars
         if (carSetting[currentCarNumber].Bought)
         {

@@ -2,15 +2,17 @@
 using UnityEngine.UI;
 using System.Collections;
 using Photon.Pun;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine.SceneManagement;
+using Photon.Realtime;
 
 /// <summary>
 /// Connects to Photon Server, registers the player, and activates player UI panel when connected.
 /// </summary>
 [AddComponentMenu("BoneCracker Games/Realistic Car Controller/Network/Photon/RCC Photon Scene Manager")]
-public class RCC_PhotonManager : Photon.Pun.MonoBehaviourPunCallbacks {
+public class RCC_PhotonManager : MonoBehaviourPunCallbacks {
 
-
+	public Player player;
 	void Start () {
 
 		ConnectToServer();
@@ -73,12 +75,18 @@ public class RCC_PhotonManager : Photon.Pun.MonoBehaviourPunCallbacks {
 	public override void OnJoinedRoom(){
 
 		print("Joined room");
+
 		RCC_InfoLabel.Instance.ShowInfo ("Joined Room. You can spawn your vehicle.");
-		//playerName.gameObject.SetActive(true);
+		
 
 	}
 
-	public void Leave()
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+		
+	}
+
+    public void Leave()
 	{
 		PhotonNetwork.LeaveRoom();
 		Time.timeScale = 1;

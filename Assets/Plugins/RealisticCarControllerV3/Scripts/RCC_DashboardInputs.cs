@@ -21,6 +21,7 @@ public class RCC_DashboardInputs : MonoBehaviour {
 	public GameObject NOSGauge;
 	public GameObject BoostNeedle;
 	public GameObject NoSNeedle;
+	public GameObject infoPanel;
 
 	private float RPMNeedleRotation = 0f;
 	private float KMHNeedleRotation = 0f;
@@ -140,10 +141,22 @@ public class RCC_DashboardInputs : MonoBehaviour {
 		DPTrunk.manage.wheels2.gameObject.SetActive(true);
 		DPTrunk.manage.wheels1col.gameObject.SetActive(true);
 		DPTrunk.manage.wheels2col.gameObject.SetActive(true);
+		DPTrunk.manage.Blow.SetActive(false);
 		DPTrunk.manage.point = 50;
-
+		if (PlayerPrefs.GetFloat("DriftCoin") >= 499) { infoPanel.SetActive(true); }
+		GameObject checkpointSound = GameObject.Find("checkpointSnd");
+		checkpointSound.GetComponent<AudioSource>().Play();
+		Pause.manage.PausePanel.SetActive(false);
+		Time.timeScale = 1f;
+		AudioListener.pause = false;
+		Amplitude.Instance.logEvent("ResetCarForCoinz");
+		Invoke("latency",0.9f);
 	}
 
+    private void latency()
+    {
+		infoPanel.SetActive(false);
+	}
 }
 
 

@@ -59,7 +59,6 @@ public class UChat : MonoBehaviour, IChatClientListener
 	public void Connect()
 	{
 		this.UserIdFormPanel.gameObject.SetActive(false);
-		print("chat");
 		this.chatClient = new ChatClient(this);
 #if !UNITY_WEBGL
 		this.chatClient.UseBackgroundWorkerForSending = true;
@@ -272,8 +271,8 @@ public class UChat : MonoBehaviour, IChatClientListener
 
     public void OnChatStateChange(ChatState state)
     {
-		print(chatClient.State);
-		print(UserName);
+		//print(chatClient.State);
+		//print(UserName);
 	}
 
 	public void OnConnected()
@@ -328,13 +327,20 @@ public class UChat : MonoBehaviour, IChatClientListener
 		// in this demo, we simply send a message into each channel. This is NOT a must have!
 		foreach (string channel in channels)
 		{
-			this.chatClient.PublishMessage(channel, "entered the chat."); // you don't HAVE to send a msg on join but you could.
+			if (Application.systemLanguage != SystemLanguage.Russian)
+			{
+				this.chatClient.PublishMessage(channel, "entered the chat."); // you don't HAVE to send a msg on join but you could.
+			}
+			else
+			{
+				this.chatClient.PublishMessage(channel, "Вошел в чат");
+			} // you don't HAVE to send a msg on join but you could.
 
 			//if (this.ChannelToggleToInstantiate != null)
-		//	{
+			//	{
 			//	this.InstantiateChannelButton(channel);
 
-		//	}
+			//	}
 		}
 
 		Debug.Log("OnSubscribed: " + string.Join(", ", channels));

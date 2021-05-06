@@ -1726,9 +1726,20 @@ public class RCC_CarControllerV3 : MonoBehaviour
 
 	public void ResetCarForCoin()
     {
-		transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
-		transform.position = CarSpawnNew.manage.spawnPoint.position;
-		resetTime = 0f;
+		if (PlayerPrefs.GetFloat("DriftCoin") >= 499)
+		{
+			transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
+			transform.position = CarSpawnNew.manage.spawnPoint.position;
+			resetTime = 0f;
+			PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - 500);
+		} else
+        {
+			UniAdManager.manage.ShowAdShop();
+			transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
+			transform.position = CarSpawnNew.manage.spawnPoint.position;
+			resetTime = 0f;
+		}
+		
 	}
 
 	void OnCollisionEnter(Collision collision)
