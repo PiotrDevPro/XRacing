@@ -415,14 +415,14 @@ public class netManager : MonoBehaviourPunCallbacks
     private void Update()
     {
         maxspd.text = "MAX:" + newVehicle.GetComponent<RCC_CarControllerV3>().maxspeed.ToString() + "KM/H";
-        if (newVehicle.GetComponent<RCC_CarControllerV3>().speed > 50f)
+        if (newVehicle.GetComponent<RCC_CarControllerV3>().speed > 5f)
         {
             DangerSpeed = true;
 
             count += 1;
             if (count == 1)
             {
-                Amplitude.Instance.logEvent("StartRide > 50 kmh");
+                Amplitude.Instance.logEvent("StartRide > 5 kmh");
 
             }
 

@@ -17,6 +17,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public ChatClient chatClient;
     public GameObject connectToServerMsg;
     public GameObject loading;
+    public GameObject loadingToCityMap;
+    public GameObject loadingPanel;
+    public bool isCityLoadingBtnClicked = false;
     int count = 0;
     private GameObject _player;
 
@@ -41,6 +44,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         _player = GameObject.FindGameObjectWithTag("Player");
         loading.SetActive(false);
         connectToServerMsg.SetActive(true);
+        loadingPanel.SetActive(false);
+        loadingToCityMap.SetActive(false);
+
     }
 
     private void Update()
@@ -48,7 +54,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         count += 1;
         if (count == 1)
         {
-
+            loading.SetActive(false);
+            loadingToCityMap.SetActive(false);
+            loadingPanel.SetActive(false);
             PhotonNetwork.NickName = PlayerPrefs.GetString("Player");
             //PlayerPrefs.SetString("PlayerNetwork",PhotonNetwork.NickName);
             //print(PlayerPrefs.GetString("PlayerNetwork"));
@@ -85,10 +93,32 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         loading.SetActive(true);
     }
 
+    public void LoadCityOnlineFromAB() 
+    {
+        isCityLoadingBtnClicked = true;
+        if (PlayerPrefs.GetInt("AppActivate") == 0)
+        {
+            PlayerPrefs.SetInt("AppActivate",1);
+        }
+
+         if (PlayerPrefs.GetInt("AppActivate") ==1)
+        {
+                LoadAssetsBundle.manage.LoadAssetBundleSceneCity();
+                Amplitude.Instance.logEvent("LoadAssetBundleSceneCity");
+        }
+        else
+        {
+            CreateRoomCity();
+            Amplitude.Instance.logEvent("LoadingCityOnlineMap");
+        }
+    }
+    
+
     public void CreateRoomCity()
     {
-        PhotonNetwork.CreateRoom("City", new RoomOptions { MaxPlayers = 10 });
+        PhotonNetwork.JoinOrCreateRoom("City", new RoomOptions { MaxPlayers = 10 }, TypedLobby.Default);
         Amplitude.Instance.logEvent("CreateRoomCity");
+        loadingToCityMap.SetActive(true);
     }
 
     public void JoinRoom()
@@ -101,12 +131,20 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public void JoinRoomCity()
     {
         PhotonNetwork.JoinRoom("City");
+        createRoomCity.interactable = false;
         Amplitude.Instance.logEvent("JoinRoomCity");
     }
 
     public void JoinRoomOnClicked(RoomInfo info)
     {
-        PhotonNetwork.JoinRoom(info.Name);
+        if (info.Name != "City")
+        {
+            PhotonNetwork.JoinRoom(info.Name);
+        }
+        if (info.Name == "City")
+        {
+            LoadCityOnlineFromAB();
+        }
     }
 
     public override void OnJoinedRoom()
@@ -116,7 +154,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             
             createRoomHighway.interactable = false;
-           
+            loadingPanel.SetActive(true);
             MainMenuManager.manage.LoadEngineUpgradeOnSelectedCar();
             MainMenuManager.manage.LoadHandlingOnSelectedCar();
             MainMenuManager.manage.LoadBrakeOnSelectedCar();
@@ -130,8 +168,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         else if (PhotonNetwork.CurrentRoom.Name == "City")
         {
             createRoomCity.interactable = false;
+            loadingPanel.SetActive(true);
             print(PhotonNetwork.CurrentRoom);
             PhotonNetwork.LoadLevel("city_online");
+            LoadAssetsBundle.manage.loadingPanel.SetActive(false);
             MainMenuManager.manage.LoadEngineUpgradeOnSelectedCar();
             MainMenuManager.manage.LoadHandlingOnSelectedCar();
             MainMenuManager.manage.LoadBrakeOnSelectedCar();

@@ -14,6 +14,12 @@ public class UserNameConnected : MonoBehaviour
     private void Start()
     {
         this.chatNewComponent = FindObjectOfType<UChat>();
+
+        if (PlayerPrefs.GetString(UserNamePlayerPref) == "")
+        {
+            PlayerPrefs.SetString(UserNamePlayerPref, "Player " + Random.Range(0,9999));
+        }
+
         string prefsName = PlayerPrefs.GetString(UserNamePlayerPref);
         if (!string.IsNullOrEmpty(prefsName))
         {

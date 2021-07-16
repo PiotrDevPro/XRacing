@@ -14,12 +14,18 @@ public class AmplitudeManager : MonoBehaviour
         Amplitude amplitude = Amplitude.Instance;
         amplitude.logging = true;
         amplitude.init("8578eac3466937dd610b84480ff56bd8");
-
-        if (PlayerPrefs.GetInt("Install") == 0)
+        PlayerPrefs.SetInt("AppActive", PlayerPrefs.GetInt("AppActive") + 1);
+        if (LobbyManager.manage.isCityLoadingBtnClicked)
+        {
+            PlayerPrefs.SetInt("AppActivate", PlayerPrefs.GetInt("AppActivate") + 1);
+        }
+        if (PlayerPrefs.GetInt("FirstActive") == 0)
         {
             Amplitude.Instance.logEvent("AppOpen", FirstTime);
+            Amplitude.Instance.logEvent("FirstTime");
+            PlayerPrefs.SetString("Player", "Player" + Random.Range(0,9999));
             PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 10000f);
-            PlayerPrefs.SetInt("Install", PlayerPrefs.GetInt("Install") + 1);
+            PlayerPrefs.SetInt("FirstActive", PlayerPrefs.GetInt("FirstActive") + 1);
             isFirstActivate = true;
 
         }
@@ -35,9 +41,14 @@ public class AmplitudeManager : MonoBehaviour
     void Start()
 
     {
-        Amplitude.Instance.logEvent("SeenMainScreen");
-        
 
+        Amplitude.Instance.logEvent("SeenMainScreen");
+    }
+
+    private void Update()
+    {
+        print(PlayerPrefs.GetInt("AppActive"));
+        print(PlayerPrefs.GetInt("AppActivate"));
     }
     private void OnApplicationFocus(bool focus)
     {
@@ -47,14 +58,16 @@ public class AmplitudeManager : MonoBehaviour
             if (count == 0 && !isFirstActivate)
             {
                 Amplitude.Instance.logEvent("AppOpen", SecondTime);
-                PlayerPrefs.SetInt("box", 0);
+                print("OnApplicationFocusTrue");
+                PlayerPrefs.SetInt("AppActivate", 1);
                 count += 1;
             }
         }
         if (focus == false)
         {
             count = 1;
-
+            //PlayerPrefs.SetInt("AppActive", 0);
+            print("OnApplicationFocusFalse");
         }
     }
 }

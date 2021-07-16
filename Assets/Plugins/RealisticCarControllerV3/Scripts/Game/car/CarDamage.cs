@@ -43,7 +43,8 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
     public Player Player { get; private set; }
 
     int count = 0;
-    public int frag = 0;
+    public int frag;
+    private int fragRec;
 
     private void Update()
     {
@@ -72,6 +73,7 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
         }
     }
 
+    #region Photon Methods
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         print("OnPlayerEnteredRoom");
@@ -96,6 +98,7 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
         //print(PhotonNetwork.CurrentRoom.CustomProperties["Energy"].ToString());
     }
 
+    #endregion
 
     private void OnTriggerEnter(Collider other)
     {
@@ -105,7 +108,7 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
 
                 if (MainMenuManager.manage.isFreerideActive && !isDead || MainMenuManager.manage.isAllvsYou && !isDead)
                 {
-
+                    
                     energyBarProgress = GameObject.Find("LifeGauge");
                     enemyDestroy = GameObject.Find("currenemy");
                     PlayerPrefs.SetInt("crashed", 0);
@@ -142,6 +145,7 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
                     {
 
                         frag += 1;
+                        PlayerPrefs.SetInt("fragAI", PlayerPrefs.GetInt("fragAI")+1);
                         enemyDestroy.GetComponent<Text>().text = frag.ToString();
                         AiIsDead = true;
                         Amplitude.Instance.logEvent("CarIsDead1");
@@ -151,6 +155,7 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
                     if (CarAi1.manage.energy <= 0 && !AiIsDead1)
                     {
                         frag += 1;
+                        PlayerPrefs.SetInt("fragAI", PlayerPrefs.GetInt("fragAI") + 1);
                         enemyDestroy.GetComponent<Text>().text = frag.ToString();
                         AiIsDead1 = true;
                         Amplitude.Instance.logEvent("CarIsDead2");
@@ -159,6 +164,7 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
                     if (CarAi2.manage.energy <= 0 && !AiIsDead2)
                     {
                         frag += 1;
+                        PlayerPrefs.SetInt("fragAI", PlayerPrefs.GetInt("fragAI") + 1);
                         enemyDestroy.GetComponent<Text>().text = frag.ToString();
                         AiIsDead2 = true;
                         Amplitude.Instance.logEvent("CarIsDead3");
@@ -287,10 +293,7 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
             #region Enemy Car Display
             energyBarProgress.GetComponent<Text>().text = energy.ToString();
             HP1.GetComponent<Text>().text = (CarAi.manage.energy).ToString();
-            if (CarAi.manage.energy < 0)
-            {
-                CarAi.manage.energy = 0;
-            }
+
             if (CarAi.manage.energy > 50)
             {
                 lbHP1.GetComponent<Text>().color = Color.green;
@@ -306,10 +309,7 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
             }
 
             HP2.GetComponent<Text>().text = (CarAi1.manage.energy).ToString();
-            if (CarAi1.manage.energy < 0)
-            {
-                CarAi1.manage.energy = 0;
-            }
+
             if (CarAi1.manage.energy > 50)
             {
                 lbHP2.GetComponent<Text>().color = Color.green;
@@ -324,10 +324,6 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
                 lbHP2.GetComponent<Text>().color = Color.red;
             }
             HP3.GetComponent<Text>().text = (CarAi2.manage.energy).ToString();
-            if (CarAi2.manage.energy < 0)
-            {
-                CarAi2.manage.energy = 0;
-            }
             if (CarAi2.manage.energy > 50)
             {
                 lbHP3.GetComponent<Text>().color = Color.green;
@@ -344,8 +340,9 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
 
             if (CarAi.manage.energy <= 0 && !AiIsDead)
             {
-
+                CarAi.manage.energy = 0;
                 frag += 1;
+                PlayerPrefs.SetInt("fragAI", PlayerPrefs.GetInt("fragAI") + 1);
                 enemyDestroy.GetComponent<Text>().text = frag.ToString();
                 AiIsDead = true;
                 Amplitude.Instance.logEvent("CarIsDead1");
@@ -354,7 +351,9 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
 
             if (CarAi1.manage.energy <= 0 && !AiIsDead1)
             {
+                CarAi1.manage.energy = 0;
                 frag += 1;
+                PlayerPrefs.SetInt("fragAI", PlayerPrefs.GetInt("fragAI") + 1);
                 enemyDestroy.GetComponent<Text>().text = frag.ToString();
                 AiIsDead1 = true;
                 Amplitude.Instance.logEvent("CarIsDead2");
@@ -362,7 +361,9 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
 
             if (CarAi2.manage.energy <= 0 && !AiIsDead2)
             {
+                CarAi.manage.energy = 0;
                 frag += 1;
+                PlayerPrefs.SetInt("fragAI", PlayerPrefs.GetInt("fragAI") + 1);
                 enemyDestroy.GetComponent<Text>().text = frag.ToString();
                 AiIsDead2 = true;
                 Amplitude.Instance.logEvent("CarIsDead3");
@@ -375,6 +376,8 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
         {
             if (!PV.IsMine)
                 return;
+ 
+                
 
             if (other.CompareTag("Car") && !isDead)
             {
@@ -383,6 +386,8 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
                     energy -= 3;
                     energyBarProgress.GetComponent<Text>().text = energy.ToString();
                     Amplitude.Instance.logEvent("CarHitOnspeed > 80f");
+                    print(gameObject.name);
+                    print("CarHitOnspeed > 80f");
                 }
 
                 if (netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed > 100f)
@@ -390,6 +395,8 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
                     energy -= 5;
                     energyBarProgress.GetComponent<Text>().text = energy.ToString();
                     Amplitude.Instance.logEvent("CarHitOnspeed > 120f");
+                    print(gameObject.name);
+                    print("CarHitOnspeed > 120f");
                 }
 
                 if (netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed > 180f)
@@ -397,6 +404,8 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
                     energy -= 10;
                     energyBarProgress.GetComponent<Text>().text = energy.ToString();
                     Amplitude.Instance.logEvent("CarHitOnspeed > 180f");
+                    print(gameObject.name);
+                    print("CarHitOnspeed > 180f");
                 }
 
                 if (netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed > 250f)
@@ -404,12 +413,15 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
                     energy -= 15;
                     energyBarProgress.GetComponent<Text>().text = energy.ToString();
                     Amplitude.Instance.logEvent("CarHitOnspeed > 250f");
+                    print(gameObject.name);
+                    print("CarHitOnspeed > 250f");
                 }
 
                 if (netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed > 300f)
                 {
                     energy -= 45;
                     energyBarProgress.GetComponent<Text>().text = energy.ToString();
+                    print(gameObject.name);
                     Amplitude.Instance.logEvent("CarHitOnspeed > 300f");
                 }
                 else

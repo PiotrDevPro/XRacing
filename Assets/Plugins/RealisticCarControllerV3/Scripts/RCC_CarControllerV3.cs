@@ -1726,20 +1726,41 @@ public class RCC_CarControllerV3 : MonoBehaviour
 
 	public void ResetCarForCoin()
     {
-		if (PlayerPrefs.GetFloat("DriftCoin") >= 499)
+		if (SceneManager.GetActiveScene().name != "battle_online" || SceneManager.GetActiveScene().name != "city_online")
 		{
-			transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
-			transform.position = CarSpawnNew.manage.spawnPoint.position;
-			resetTime = 0f;
-			PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - 500);
-		} else
-        {
-			UniAdManager.manage.ShowAdShop();
-			transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
-			transform.position = CarSpawnNew.manage.spawnPoint.position;
-			resetTime = 0f;
+			if (PlayerPrefs.GetFloat("DriftCoin") >= 249)
+			{
+				transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
+				transform.position = CarSpawnNew.manage.spawnPoint.position;
+				resetTime = 0f;
+				PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - 250);
+			}
+			else
+			{
+				UniAdManager.manage.ShowAdShop();
+				transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
+				transform.position = CarSpawnNew.manage.spawnPoint.position;
+				resetTime = 0f;
+			}
 		}
-		
+
+		if (SceneManager.GetActiveScene().name == "battle_online" || SceneManager.GetActiveScene().name == "city_online")
+        {
+			if (PlayerPrefs.GetFloat("DriftCoin") >= 249)
+			{
+				transform.rotation = netManager.manage.spawnPoint.rotation;
+				transform.position = netManager.manage.spawnPoint.position;
+				resetTime = 0f;
+				PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - 250);
+			}
+			else
+			{
+				UniAdManager.manage.ShowAdShop();
+				transform.rotation = netManager.manage.spawnPoint.rotation;
+				transform.position = netManager.manage.spawnPoint.position;
+				resetTime = 0f;
+			}
+		}
 	}
 
 	void OnCollisionEnter(Collision collision)

@@ -37,24 +37,27 @@ public class DamagePartsHood : MonoBehaviour
                  point -= 8;
              }
 
-            if (point <= 45)
+            if (point <= 30)
             {
                 if (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 1 || PlayerPrefs.GetInt("CurrentCar") == 2 || PlayerPrefs.GetInt("CurrentCar") == 7)
                 {
                     carPart.gameObject.SetActive(false);
+                    Amplitude.Instance.logEvent("FrontPartsDamaged");
                 }
             }
-            if (point <= 44)
+            if (point <= 25)
             {
                 wheels1.gameObject.SetActive(false);
                 wheels1col.gameObject.SetActive(false);
+                blow.SetActive(true);
+                Amplitude.Instance.logEvent("wheel1damaged");
             }
 
-            if (point <= 43)
+            if (point <= 15)
             {
                 wheels2.gameObject.SetActive(false);
                 wheels2col.gameObject.SetActive(false);
-                blow.SetActive(true);
+                Amplitude.Instance.logEvent("wheel1damaged + wheel1damaged");
             }
         }
     }

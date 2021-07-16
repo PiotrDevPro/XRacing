@@ -76,6 +76,18 @@ public class UniAdManager : MonoBehaviour
         }
     }
 
+    public void ShowInterstatial()
+    {
+        if (PlayerPrefs.GetInt("NoAds") != 1)
+        {
+            if (Advertisement.IsReady() && Advertisement.isInitialized)
+            {
+                Amplitude.Instance.logEvent("TopSpeedInterstatialShow");
+                Advertisement.Show("Interstatial", new ShowOptions() { resultCallback = HandleAdResultSkipable });
+            }
+        }
+    }
+
     private void HandleAdResult(ShowResult result)
     {
         switch (result)
@@ -194,7 +206,6 @@ public class UniAdManager : MonoBehaviour
         
     }
 
-
     void latencySpawnCoin()
     {
         MainMenuManager.manage.animate(25);
@@ -202,8 +213,8 @@ public class UniAdManager : MonoBehaviour
 
     void addCoinsOnShop()
     {
-        PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 2500f);
-        Amplitude.Instance.logEvent("2500$ - OnRewardedVideoFinished");
+        PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 3500f);
+        Amplitude.Instance.logEvent("3500$ - OnRewardedVideoFinished");
     }
     #endregion
 }

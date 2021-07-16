@@ -9,7 +9,7 @@ public enum PanelsUI { MainMenu = 0, SelectCar = 1, SelectLevel = 2, Settings = 
 
 public class MainMenuManager : MonoBehaviour
 {
-    
+
     public static MainMenuManager manage;
     int tEngine, tHandling, tBrake, tWheel;
     public CarSetting[] carSetting;
@@ -118,10 +118,10 @@ public class MainMenuManager : MonoBehaviour
         public GameObject SelectCar;
         public GameObject SelectLevel;
         public GameObject _NetworkRoom;
-        public GameObject _NetworkRoomCity;
         public GameObject EnoughMoney;
         public GameObject Settings;
         public GameObject Auth;
+        public GameObject Leaderboard;
     }
 
     [System.Serializable]
@@ -262,6 +262,7 @@ public class MainMenuManager : MonoBehaviour
         //int tEngine, tHandling, tBrake;
         //public Text GameScore;
         public Button adsEnergyBtn;
+        public Text _playerName;
         public Text CarName;
         public Text CarPrice;
        // public Text CarMaxSpeed;
@@ -349,6 +350,8 @@ public class MainMenuManager : MonoBehaviour
     private AsyncOperation sceneLoadingOperation = null;
     private Color mainColor;
 
+
+
     #region Setting
 
     public void CurrentPanel(int current)
@@ -385,6 +388,7 @@ public class MainMenuManager : MonoBehaviour
                 menuPanels.SelectCar.SetActive(false);
                 menuPanels.SelectLevel.SetActive(false);
                 menuPanels._NetworkRoom.SetActive(false);
+                menuGUI._playerName.text = PlayerPrefs.GetString("Player");
                 Amplitude.Instance.logEvent("MainMenu");
                 break;
             case PanelsUI.SelectCar:
@@ -392,6 +396,7 @@ public class MainMenuManager : MonoBehaviour
                 menuPanels.SelectCar.SetActive(true);
                 menuPanels.SelectLevel.SetActive(false);
                 menuPanels._NetworkRoom.SetActive(false);
+                menuGUI._playerName.text = PlayerPrefs.GetString("Player");
                 Amplitude.Instance.logEvent("SelectCar");
                 energyTx.text = "Energy: " + (carSetting[currentCarNumber].energy + PlayerPrefs.GetInt("Energy"));
                 break;
@@ -400,6 +405,7 @@ public class MainMenuManager : MonoBehaviour
                 menuPanels.SelectCar.SetActive(false);
                 menuPanels.SelectLevel.SetActive(true);
                 menuPanels._NetworkRoom.SetActive(false);
+                menuGUI._playerName.text = PlayerPrefs.GetString("Player");
                 Amplitude.Instance.logEvent("SelectLevel");
                 break;
             case PanelsUI.Auth:
@@ -411,7 +417,6 @@ public class MainMenuManager : MonoBehaviour
                 Amplitude.Instance.logEvent("AuthPanel");
                 break;
             case PanelsUI._NetworkRoom:
-                
                 menuPanels.MainMenu.SetActive(false);
                 menuPanels.SelectCar.SetActive(false);
                 menuPanels.SelectLevel.SetActive(false);
@@ -3775,6 +3780,24 @@ public class MainMenuManager : MonoBehaviour
         menuPanels.Auth.SetActive(false);
         Amplitude.Instance.logEvent("AuthRoomExit");
     }
+
+    public void LeaderBoardOpen()
+    {
+
+        menuPanels.Leaderboard.SetActive(true);
+        PlayFabLogin.manage.GetStats();
+        PlayFabLogin.manage.SetStats();
+        PlayFabLogin.manage.GetLeaderboard();
+        PlayFabLogin.manage.GetLeaderboardCoinz();
+        Amplitude.Instance.logEvent("LeaderboardOpen");
+    }
+
+    public void LeaderBoardClose()
+    {
+        PlayFabLogin.manage.CloseLeaderboardPanel();
+        menuPanels.Leaderboard.SetActive(false);
+        Amplitude.Instance.logEvent("LeaderboardClose");
+    }
     #endregion
 
     #region CoinFX
@@ -3806,8 +3829,9 @@ public class MainMenuManager : MonoBehaviour
 
     void Awake()
     {
+        
         manage = this;
-
+        Application.targetFrameRate = 300;
         CurrentPanel(0);
         ResolutionOnAwake();
         LoadEngineUprgadeOnAwake();
@@ -3846,26 +3870,32 @@ public class MainMenuManager : MonoBehaviour
     }
     void Start()
     {
+       // PlayerPrefs.DeleteAll();
         //if (PlayerPrefs.GetInt("NoAds") != 0)
         //{
         //    menuGUI.NoAdsBtn.SetActive(false);
         //}
-        
+
         //config
+
         menuGUI.RUSure.SetActive(false);
         network_manager_active.SetActive(false);
-        print(_systemLang = Application.systemLanguage);
+        menuGUI._playerName.text = PlayerPrefs.GetString("Player");
+        //print(_systemLang = Application.systemLanguage);
         if (PlayerPrefs.GetInt("Energy") == 25)
         {
             menuGUI.adsEnergyBtn.interactable = false;
         }
     }
+
+
     public void GetMoney()
     {
         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 100000f);
     }
 
     #region Trash
+
     public void DeleteAll()
     {
         PlayerPrefs.DeleteAll();
@@ -3897,6 +3927,7 @@ public class MainMenuManager : MonoBehaviour
 
     void Update()
     {
+        
         LoadUpgradeOnAwake();
         LoadUpgrade();
         LoadUpgradeHandling();

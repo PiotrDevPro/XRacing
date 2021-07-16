@@ -18,17 +18,29 @@ public class Death : MonoBehaviour
                     Instantiate(ragdoll, transform.position, transform.rotation);
                     Amplitude.Instance.logEvent("DeadPeople");
                     Destroy(gameObject);
+                    RCC_DashboardInputs.manage.infoPanelAboutPeople.SetActive(true);
+                    GameObject checkpointSound = GameObject.Find("checkpointSnd");
+                    checkpointSound.GetComponent<AudioSource>().Play();
+                    RCC_DashboardInputs.manage.PeoplePanel();
+                    PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 100);
                 }
             }
         }
 
-        else if (CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed > 30f)
+        else if (CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed > 5f)
         {
             if (col.CompareTag("Player"))
             {
+                
                 Instantiate(ragdoll, transform.position, transform.rotation);
                 Amplitude.Instance.logEvent("DeadPeople");
                 Destroy(gameObject);
+                RCC_DashboardInputs.manage.infoPanelAboutPeople.SetActive(true);
+                GameObject checkpointSound = GameObject.Find("checkpointSnd");
+                checkpointSound.GetComponent<AudioSource>().Play();
+                RCC_DashboardInputs.manage.PeoplePanel();
+                PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 100);
+
             }
         }
 

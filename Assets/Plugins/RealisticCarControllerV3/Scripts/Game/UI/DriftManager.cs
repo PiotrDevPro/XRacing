@@ -43,7 +43,7 @@ public class DriftManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (playerCar.GetComponent<RCC_CarControllerV3>().speed > 10f && playerCar.GetComponent<RCC_CarControllerV3>().driftingNow)
+        if (playerCar.GetComponent<RCC_CarControllerV3>().speed > 25f && playerCar.GetComponent<RCC_CarControllerV3>().driftingNow)
         {
             txDriftX.GetComponent<Animator>().StartPlayback();
             driftAmount += 0.1f;
@@ -120,7 +120,8 @@ public class DriftManager : MonoBehaviour
             txDriftScore.text = ((int)driftScore).ToString();
             driftAmount = 0;
             //driftCoins = 0;
-            txDriftCoins.text = ((int)SaveManager.driftcoin).ToString() + "$";
+            // txDriftCoins.text = ((int)SaveManager.driftcoin).ToString() + "$";
+            txDriftCoins.text = ((int)PlayerPrefs.GetFloat("DriftCoin")).ToString();
             //DriftCoinBouns.SetActive(false);
 
             if ((SaveManager.drifthigh) < (int)driftScore)
@@ -129,7 +130,7 @@ public class DriftManager : MonoBehaviour
                 SaveManager.UpdateDriftHighScore();
                 
                 txDriftHighScore.text = ((int)SaveManager.drifthigh).ToString() ;
-                txDriftCoins.text = ((int)SaveManager.driftcoin).ToString() + "$";
+                txDriftCoins.text = ((int)PlayerPrefs.GetFloat("DriftCoin")).ToString() + "$";
             }
         }
 

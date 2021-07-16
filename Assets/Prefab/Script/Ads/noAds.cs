@@ -11,7 +11,7 @@ public class noAds : MonoBehaviour
         PlayerPrefs.SetInt("NoAds", 1);
         GameObject snd = GameObject.Find("Purchased");
         snd.GetComponent<AudioSource>().Play();
-        Amplitude.Instance.logEvent("+500000Coins");
+        Amplitude.Instance.logEvent("+1 000 000 Coins");
         //FbManager.manage.NoAds("No ads no more");
         
         Invoke("CoinLatency", 0.5f);
@@ -37,7 +37,7 @@ public class noAds : MonoBehaviour
 
     void CashFlow()
     {
-        PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500000f);
+        PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 1000000f);
     }
 
 }

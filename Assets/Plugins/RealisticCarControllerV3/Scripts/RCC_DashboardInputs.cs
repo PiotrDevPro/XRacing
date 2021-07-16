@@ -13,6 +13,7 @@ using Photon.Pun;
 [AddComponentMenu("BoneCracker Games/Realistic Car Controller/UI/Dashboard Inputs")]
 public class RCC_DashboardInputs : MonoBehaviour {
 
+	public static RCC_DashboardInputs manage;
 	public RCC_CarControllerV3 currentCarController;
 	private PhotonView photonView;
 	public GameObject RPMNeedle;
@@ -22,6 +23,7 @@ public class RCC_DashboardInputs : MonoBehaviour {
 	public GameObject BoostNeedle;
 	public GameObject NoSNeedle;
 	public GameObject infoPanel;
+	public GameObject infoPanelAboutPeople;
 
 	private float RPMNeedleRotation = 0f;
 	private float KMHNeedleRotation = 0f;
@@ -40,7 +42,13 @@ public class RCC_DashboardInputs : MonoBehaviour {
 	internal bool Headlights = false;
 	internal RCC_CarControllerV3.IndicatorsOn indicators;
 
-	void Update(){
+    private void Awake()
+    {
+		manage = this;
+
+	}
+
+    void Update(){
 
 		if(RCC_Settings.Instance.uiType == RCC_Settings.UIType.None){
 			gameObject.SetActive(false);
@@ -128,6 +136,7 @@ public class RCC_DashboardInputs : MonoBehaviour {
 			
 	}
 
+
 	public void ResetCarForCoinz()
     {
 		RCC_CarControllerV3.manage.ResetCarForCoin();
@@ -143,7 +152,7 @@ public class RCC_DashboardInputs : MonoBehaviour {
 		DPTrunk.manage.wheels2col.gameObject.SetActive(true);
 		DPTrunk.manage.Blow.SetActive(false);
 		DPTrunk.manage.point = 50;
-		if (PlayerPrefs.GetFloat("DriftCoin") >= 499) { infoPanel.SetActive(true); }
+		if (PlayerPrefs.GetFloat("DriftCoin") >= 249) { infoPanel.SetActive(true); }
 		GameObject checkpointSound = GameObject.Find("checkpointSnd");
 		checkpointSound.GetComponent<AudioSource>().Play();
 		Pause.manage.PausePanel.SetActive(false);
@@ -157,6 +166,16 @@ public class RCC_DashboardInputs : MonoBehaviour {
     {
 		infoPanel.SetActive(false);
 	}
+
+	public void PeoplePanel()
+    {
+		Invoke("latencyPeoplePanel",0.5f);
+    }
+
+	private void latencyPeoplePanel()
+    {
+		infoPanelAboutPeople.SetActive(false);
+    }
 }
 
 

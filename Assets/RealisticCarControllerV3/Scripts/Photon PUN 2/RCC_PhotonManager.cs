@@ -30,7 +30,7 @@ public class RCC_PhotonManager : MonoBehaviourPunCallbacks {
 		}
 
 		if (Photon.Pun.PhotonNetwork.IsConnectedAndReady) {
-
+			OnGUI();
 		}
 	
 	}
@@ -44,14 +44,28 @@ public class RCC_PhotonManager : MonoBehaviourPunCallbacks {
 
 	void OnGUI(){
 
-		if(!Photon.Pun.PhotonNetwork.IsConnectedAndReady)
-			GUI.color = Color.red;
-		GUILayout.Label("State: " + Photon.Pun.PhotonNetwork.NetworkClientState.ToString());
-		GUI.color = Color.white;
-		GUILayout.Label("Name: " + PhotonNetwork.NickName);
-		GUILayout.Label("Total Players: " + Photon.Pun.PhotonNetwork.PlayerList.Length.ToString());
-		GUILayout.Label("Ping: " + Photon.Pun.PhotonNetwork.GetPing().ToString());
-
+		//if(!Photon.Pun.PhotonNetwork.IsConnectedAndReady)
+		//{
+			
+			if (Application.systemLanguage != SystemLanguage.Russian)
+			{
+				GUI.color = Color.red;
+				GUILayout.Label("State: " + Photon.Pun.PhotonNetwork.NetworkClientState.ToString());
+				GUI.color = Color.white;
+				GUILayout.Label("Name: " + PhotonNetwork.NickName);
+				GUILayout.Label("Total Players: " + Photon.Pun.PhotonNetwork.PlayerList.Length.ToString());
+				GUILayout.Label("Ping: " + Photon.Pun.PhotonNetwork.GetPing().ToString());
+				print("Yes");
+			}
+			else
+			{
+				GUI.color = Color.red;
+				GUILayout.Label("Состояние: " + Photon.Pun.PhotonNetwork.NetworkClientState.ToString());
+				GUI.color = Color.white;
+				GUILayout.Label("Имя: " + PhotonNetwork.NickName);
+				GUILayout.Label("Всего игроков: " + Photon.Pun.PhotonNetwork.PlayerList.Length.ToString());
+				GUILayout.Label("Пинг: " + Photon.Pun.PhotonNetwork.GetPing().ToString());
+			}
 	}
 
 	public override void OnJoinedLobby(){

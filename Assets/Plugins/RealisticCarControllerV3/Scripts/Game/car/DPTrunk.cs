@@ -24,7 +24,6 @@ public class DPTrunk : MonoBehaviour
         if (col.CompareTag("CarAI") || col.CompareTag("Car"))
         {
             point -= 1;
-            print(point);
 
             if (carController.speed > 50)
             {
@@ -36,26 +35,29 @@ public class DPTrunk : MonoBehaviour
                 point -= 8;
             }
 
-            if (point <= 45)
+            if (point <= 35)
             {
                 if (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 1 || PlayerPrefs.GetInt("CurrentCar") == 7)
                 {
                     carPart.gameObject.SetActive(false);
+                    Amplitude.Instance.logEvent("TrunkPartsDamaged");
                 }
                 
             }
-            if (point <= 44)
+            if (point <= 25)
             {
                 wheels1.gameObject.SetActive(false);
                 wheels1col.gameObject.SetActive(false);
                 Blow.SetActive(true);
+                Amplitude.Instance.logEvent("rearWheel1Damaged");
             }
 
-            if (point <= 30)
+            if (point <= 15)
             {
                 wheels2.gameObject.SetActive(false);
                 wheels2col.gameObject.SetActive(false);
-                
+                Amplitude.Instance.logEvent("rearWheel1Damaged + rearWheel2Damaged");
+
             }
         }
     }
