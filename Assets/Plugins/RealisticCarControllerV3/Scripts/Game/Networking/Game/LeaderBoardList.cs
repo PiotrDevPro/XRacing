@@ -8,4 +8,5 @@ public class LeaderBoardList : MonoBehaviour
     public Text pos;
     public Text playerName;
     public Text playerScore;
+    public GameObject crown_ico;
 }

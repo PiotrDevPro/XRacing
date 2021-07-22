@@ -16,13 +16,17 @@ public class PlayFabLogin : MonoBehaviour
     [SerializeField] private string username;
     [SerializeField] bool LoginWithCustomId_ = false;
     [SerializeField] Button LeaderBoardActive;
+    [SerializeField] Button RatingBoardActive;
     [Header("Player Statistic's")]
     [SerializeField] Text name1;
     [SerializeField] Text name2;
+    [SerializeField] Text name3;
     [SerializeField] Text carscore;
     [SerializeField] Text coinz_;
+    [SerializeField] Text rating_count;
     [SerializeField] Text rank1;
     [SerializeField] Text rank2;
+    [SerializeField] Text rank3;
 
     private void OnEnable()
     {
@@ -52,10 +56,12 @@ public class PlayFabLogin : MonoBehaviour
         if (PlayFabClientAPI.IsClientLoggedIn())
         {
             LeaderBoardActive.interactable = true;
+            RatingBoardActive.interactable = true;
         }
         else
         {
             LeaderBoardActive.interactable = false;
+            RatingBoardActive.interactable = false;
         }
     }
 
@@ -126,12 +132,14 @@ public class PlayFabLogin : MonoBehaviour
 
     public int carDestroy;
     public int coinz;
+    public int rating;
 
 
     public void SetStats()
     {
         carDestroy = PlayerPrefs.GetInt("fragAI");
         coinz = (int)PlayerPrefs.GetFloat("DriftCoin");
+        rating = PlayerPrefs.GetInt("Rating");
 
         PlayFabClientAPI.UpdatePlayerStatistics(new UpdatePlayerStatisticsRequest
         {
@@ -139,6 +147,7 @@ public class PlayFabLogin : MonoBehaviour
         {
             new StatisticUpdate { StatisticName = "CarDestroy", Value = carDestroy},
             new StatisticUpdate { StatisticName = "Coinz", Value = coinz},
+            new StatisticUpdate { StatisticName = "Rating", Value = rating},
         }
 
 
@@ -172,6 +181,9 @@ public class PlayFabLogin : MonoBehaviour
                 case "Coinz":
                     coinz = eachStat.Value;
                     break;
+                case "Rating":
+                    rating = eachStat.Value;
+                    break;
             }
         }
     }
@@ -184,6 +196,9 @@ public class PlayFabLogin : MonoBehaviour
 
     public GameObject listingCoinzPrefab;
     public Transform listingCoinzContainer;
+
+    public GameObject listingRatingPrefab;
+    public Transform listingRatingContainer;
     public void GetLeaderboard()
     {
         var requestLeaderboard = new GetLeaderboardRequest { StartPosition = 0, StatisticName = "CarDestroy", MaxResultsCount = 50 };
@@ -196,6 +211,14 @@ public class PlayFabLogin : MonoBehaviour
         var requestLeaderboardCoinz = new GetLeaderboardRequest { StartPosition = 0, StatisticName = "Coinz", MaxResultsCount = 50 };
         PlayFabClientAPI.GetLeaderboard(requestLeaderboardCoinz, OnGetLeaderboardCoinz, OnErrorLeaderboard);
     }
+
+    public void GetRatingboard()
+    {
+        var requestLeaderboard = new GetLeaderboardRequest { StartPosition = 0, StatisticName = "Rating", MaxResultsCount = 50 };
+
+        PlayFabClientAPI.GetLeaderboard(requestLeaderboard, OnGetRatingboard, OnErrorLeaderboard);
+    }
+
 
     void OnGetLeaderboardCarDestroy(GetLeaderboardResult result)
     {
@@ -213,18 +236,56 @@ public class PlayFabLogin : MonoBehaviour
             {
                 LL.pos.color = Color.green;
                 LL.playerName.color = Color.green;
+                LL.crown_ico.SetActive(true);
             }
                 
             if (LL.pos.text == "#2")
             {
                 LL.pos.color = Color.yellow;
                 LL.playerName.color = Color.yellow;
+                LL.crown_ico.SetActive(false);
             }
                 
             if (LL.pos.text == "#3")
             {
                 LL.pos.color = Color.red;
                 LL.playerName.color = Color.red;
+                LL.crown_ico.SetActive(false);
+            }
+        }
+    }
+
+    void OnGetRatingboard(GetLeaderboardResult result)
+    {
+        //Debug.Log(result.Leaderboard[0].StatValue);
+        name3.text = username;
+        rating_count.text = PlayerPrefs.GetInt("Rating").ToString();
+        foreach (PlayerLeaderboardEntry player in result.Leaderboard)
+        {
+            GameObject tempListing = Instantiate(listingRatingPrefab, listingRatingContainer);
+            LeaderBoardList LL = tempListing.GetComponent<LeaderBoardList>();
+            LL.playerName.text = player.DisplayName;
+            LL.playerScore.text = player.StatValue.ToString();
+            LL.pos.text = "#" + (player.Position + 1).ToString();
+            if (LL.pos.text == "#1")
+            {
+                LL.pos.color = Color.green;
+                LL.playerName.color = Color.green;
+                LL.crown_ico.SetActive(true);
+            }
+
+            if (LL.pos.text == "#2")
+            {
+                LL.pos.color = Color.yellow;
+                LL.playerName.color = Color.yellow;
+                LL.crown_ico.SetActive(false);
+            }
+
+            if (LL.pos.text == "#3")
+            {
+                LL.pos.color = Color.red;
+                LL.playerName.color = Color.red;
+                LL.crown_ico.SetActive(false);
             }
         }
     }
@@ -245,18 +306,21 @@ public class PlayFabLogin : MonoBehaviour
             {
                 LL.pos.color = Color.green;
                 LL.playerName.color = Color.green;
+                LL.crown_ico.SetActive(true);
             }
 
             if (LL.pos.text == "#2")
             {
                 LL.pos.color = Color.yellow;
                 LL.playerName.color = Color.yellow;
+                LL.crown_ico.SetActive(false);
             }
 
             if (LL.pos.text == "#3")
             {
                 LL.pos.color = Color.red;
                 LL.playerName.color = Color.red;
+                LL.crown_ico.SetActive(false);
             }
         }
     }
@@ -270,6 +334,15 @@ public class PlayFabLogin : MonoBehaviour
         for (int i = listingCoinzContainer.childCount - 1; i >= 0; i--)
         {
             Destroy(listingCoinzContainer.GetChild(i).gameObject);
+        }
+
+    }
+
+    public void CloseRatingboardPanel()
+    {
+        for (int i = listingRatingContainer.childCount - 1; i >= 0; i--)
+        {
+            Destroy(listingRatingContainer.GetChild(i).gameObject);
         }
 
     }

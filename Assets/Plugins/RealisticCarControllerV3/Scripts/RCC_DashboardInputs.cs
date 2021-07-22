@@ -7,6 +7,7 @@
 //----------------------------------------------
 
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using Photon.Pun;
 
@@ -24,6 +25,7 @@ public class RCC_DashboardInputs : MonoBehaviour {
 	public GameObject NoSNeedle;
 	public GameObject infoPanel;
 	public GameObject infoPanelAboutPeople;
+	[SerializeField] GameObject reminderPanel;
 
 	private float RPMNeedleRotation = 0f;
 	private float KMHNeedleRotation = 0f;
@@ -152,7 +154,8 @@ public class RCC_DashboardInputs : MonoBehaviour {
 		DPTrunk.manage.wheels2col.gameObject.SetActive(true);
 		DPTrunk.manage.Blow.SetActive(false);
 		DPTrunk.manage.point = 50;
-		if (PlayerPrefs.GetFloat("DriftCoin") >= 249) { infoPanel.SetActive(true); }
+		infoPanel.SetActive(true);
+		infoPanel.GetComponentInChildren<Text>().text = "-500";
 		GameObject checkpointSound = GameObject.Find("checkpointSnd");
 		checkpointSound.GetComponent<AudioSource>().Play();
 		Pause.manage.PausePanel.SetActive(false);

@@ -15,7 +15,7 @@ public class LoadAssetsBundle : MonoBehaviour
     public string SceneNameToLoadAB;
     bool loadingStart = false;
     [SerializeField] string url = "https://firebasestorage.googleapis.com/v0/b/xracing-290708.appspot.com/o/cuvex?alt=media&token=95adc7db-53ce-4632-bcfd-7e3210aadace";
-    [SerializeField] string url_city_online = "https://drive.google.com/uc?export=download&id=1pggf9vh2u7-UXf_CBO8N8j6f6g_p-kZN";
+    [SerializeField] string url_city_online = "https://drive.google.com/uc?export=download&id=1JPvF5A9Ipel98rKU0_ZOfeKAzpL6bCNh";
     [Header("Other")]
     public GameObject loadingPanel;
     public Image bg_fill;

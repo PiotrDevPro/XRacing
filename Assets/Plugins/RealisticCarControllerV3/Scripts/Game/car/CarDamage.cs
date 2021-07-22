@@ -148,6 +148,7 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
                         PlayerPrefs.SetInt("fragAI", PlayerPrefs.GetInt("fragAI")+1);
                         enemyDestroy.GetComponent<Text>().text = frag.ToString();
                         AiIsDead = true;
+                        PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 35);
                         Amplitude.Instance.logEvent("CarIsDead1");
 
                     }
@@ -158,6 +159,7 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
                         PlayerPrefs.SetInt("fragAI", PlayerPrefs.GetInt("fragAI") + 1);
                         enemyDestroy.GetComponent<Text>().text = frag.ToString();
                         AiIsDead1 = true;
+                        PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 35);
                         Amplitude.Instance.logEvent("CarIsDead2");
                     }
 
@@ -167,6 +169,7 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
                         PlayerPrefs.SetInt("fragAI", PlayerPrefs.GetInt("fragAI") + 1);
                         enemyDestroy.GetComponent<Text>().text = frag.ToString();
                         AiIsDead2 = true;
+                        PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 35);
                         Amplitude.Instance.logEvent("CarIsDead3");
                     }
 

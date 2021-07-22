@@ -25,6 +25,7 @@ public class DriftManager : MonoBehaviour
     private float driftCoins;
     private float timerDrift = 10.0f;
     int count = 0;
+    int countDrift = 0;
     void Start()
     {
         //playerCar = GameObject.FindGameObjectWithTag("Player");
@@ -38,6 +39,9 @@ public class DriftManager : MonoBehaviour
         {
             playerCar = GameObject.FindGameObjectWithTag("Player");
         }
+
+        print(countDrift);
+        print(PlayerPrefs.GetInt("Rating"));
 
     }
 
@@ -53,6 +57,7 @@ public class DriftManager : MonoBehaviour
 
             if (driftAmount > 10)
             {
+                countDrift = 0;
                 driftScore += 0.1f * 2;
                 driftAmount += 0.1f * 2;
                 txDriftX.text = "2X";
@@ -68,10 +73,7 @@ public class DriftManager : MonoBehaviour
                 txDriftX.text = "3X";
                 txDriftX.color = Color.cyan;
                 txDriftX.GetComponent<Animator>().StopPlayback();
-                SaveManager.driftcoin += 0.1f;
-                SaveManager.UpdateDriftCoin();
-                //DriftCoinBouns.SetActive(true);
-                //txDriftCoinsBonus.text = "+" + ((int)driftCoins).ToString();
+                PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 0.1f);
 
             }
 
@@ -83,10 +85,7 @@ public class DriftManager : MonoBehaviour
                 txDriftX.text = "4X";
                 txDriftX.color = Color.magenta;
                 txDriftX.GetComponent<Animator>().StopPlayback();
-                SaveManager.driftcoin += 0.15f;
-                SaveManager.UpdateDriftCoin();
-                //DriftCoinBouns.SetActive(true);
-                //txDriftCoinsBonus.text = "+" + ((int)driftCoins).ToString();
+                PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 0.15f);
             }
 
             if (driftAmount > 2000)
@@ -96,8 +95,7 @@ public class DriftManager : MonoBehaviour
                 txDriftX.text = "5X";
                 txDriftX.color = Color.yellow;
                 txDriftX.GetComponent<Animator>().StopPlayback();
-                SaveManager.driftcoin += 0.2f;
-                SaveManager.UpdateDriftCoin();
+                PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 0.2f);
             }
 
             if (driftAmount > 5000)
@@ -107,22 +105,52 @@ public class DriftManager : MonoBehaviour
                 txDriftX.text = "6X";
                 txDriftX.color = Color.white;
                 txDriftX.GetComponent<Animator>().StopPlayback();
-                SaveManager.driftcoin += 0.3f; 
-                SaveManager.UpdateDriftCoin();
+                
+
+                PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 0.3f);
             }
+
             txDriftAmount.text = ((int)driftAmount).ToString();
             DriftText.SetActive(true);
             //timerDrift = Mathf.MoveTowards(timerDrift, 0.0f, Time.deltaTime);
         }
         else
         {
+            if (driftAmount > 3000)
+            {
+                PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 2);
+            }
+            if (driftAmount > 5000)
+            {
+
+                PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 5);
+            }
+            if (driftAmount > 15000)
+            {
+
+                PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 7);
+            }
+
+            if (driftAmount > 35000)
+            {
+
+                PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 10);
+            }
+
+            if (driftAmount > 100000)
+            {
+
+                PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 30);
+            }
+            if (driftAmount > 200000)
+            {
+
+                PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 50);
+            }
             DriftText.SetActive(false);
             txDriftScore.text = ((int)driftScore).ToString();
             driftAmount = 0;
-            //driftCoins = 0;
-            // txDriftCoins.text = ((int)SaveManager.driftcoin).ToString() + "$";
             txDriftCoins.text = ((int)PlayerPrefs.GetFloat("DriftCoin")).ToString();
-            //DriftCoinBouns.SetActive(false);
 
             if ((SaveManager.drifthigh) < (int)driftScore)
             {
@@ -159,10 +187,9 @@ public class DriftManager : MonoBehaviour
                     txDriftX.text = "3X";
                     txDriftX.color = Color.cyan;
                     txDriftX.GetComponent<Animator>().StopPlayback();
-                    SaveManager.driftcoin += 0.1f;
-                    SaveManager.UpdateDriftCoin();
-                    //DriftCoinBouns.SetActive(true);
-                    //txDriftCoinsBonus.text = "+" + ((int)driftCoins).ToString();
+                    //SaveManager.driftcoin += 0.1f;
+                    PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin")+0.1f);
+                   // SaveManager.UpdateDriftCoin();
                 }
 
 
@@ -170,14 +197,10 @@ public class DriftManager : MonoBehaviour
                 {
                     driftScore += 0.6f * 4;
                     driftAmount += 0.6f * 4;
-                    //driftCoins += 0.5f;
                     txDriftX.text = "4X";
                     txDriftX.color = Color.magenta;
                     txDriftX.GetComponent<Animator>().StopPlayback();
-                    SaveManager.driftcoin += 0.15f;
-                    SaveManager.UpdateDriftCoin();
-                    //DriftCoinBouns.SetActive(true);
-                    //txDriftCoinsBonus.text = "+" + ((int)driftCoins).ToString();
+                    PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 0.15f);
                 }
 
                 if (driftAmount > 2150)
@@ -187,8 +210,7 @@ public class DriftManager : MonoBehaviour
                     txDriftX.text = "5X";
                     txDriftX.color = Color.magenta;
                     txDriftX.GetComponent<Animator>().StopPlayback();
-                    SaveManager.driftcoin += 0.3f;
-                    SaveManager.UpdateDriftCoin();
+                    PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 0.3f);
                 }
 
                 if (driftAmount > 7000)
@@ -198,8 +220,7 @@ public class DriftManager : MonoBehaviour
                     txDriftX.text = "6X";
                     txDriftX.color = Color.white;
                     txDriftX.GetComponent<Animator>().StopPlayback();
-                    SaveManager.driftcoin += 0.5f;
-                    SaveManager.UpdateDriftCoin();
+                    PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 0.5f);
                 }
             }
             txDriftAmount.text = ((int)driftAmount).ToString();

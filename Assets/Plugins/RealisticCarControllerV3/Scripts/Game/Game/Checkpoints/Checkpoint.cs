@@ -179,8 +179,6 @@ using UnityEngine;
                 countPlayerEnter += 1;
                 if (countPass == 0 && countPlayerEnter == 1)
                 {
-
-
                     if (SceneManager.GetActiveScene().name == "level_lap6")
                     {
                         curr += 25f;
@@ -244,6 +242,7 @@ using UnityEngine;
                         pauza.tracks[4].Stop();
                         pauza.tracks[5].Stop();
                         pauza.tracks[6].Stop();
+                        PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 10);
                         Invoke("Win", 1f);
                     }
                     if (SceneManager.GetActiveScene().name == "battle_online")
@@ -417,6 +416,7 @@ using UnityEngine;
                     erndCoin += 150;
                     checkPointlb.GetComponent<Text>().text = totalPoint.ToString();
                     StopAllCoroutines();
+                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 55);
                     count = 0;
                     countPlayerEnter = 0;
                     point1.transform.position = finish.transform.position;

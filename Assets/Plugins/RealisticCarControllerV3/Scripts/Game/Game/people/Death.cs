@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class Death : MonoBehaviour
@@ -18,7 +19,9 @@ public class Death : MonoBehaviour
                     Instantiate(ragdoll, transform.position, transform.rotation);
                     Amplitude.Instance.logEvent("DeadPeople");
                     Destroy(gameObject);
+                    PlayerPrefs.SetInt("Rating",PlayerPrefs.GetInt("Rating")+1);
                     RCC_DashboardInputs.manage.infoPanelAboutPeople.SetActive(true);
+                    RCC_DashboardInputs.manage.infoPanelAboutPeople.GetComponentInChildren<Text>().text = "+100";
                     GameObject checkpointSound = GameObject.Find("checkpointSnd");
                     checkpointSound.GetComponent<AudioSource>().Play();
                     RCC_DashboardInputs.manage.PeoplePanel();
@@ -35,7 +38,9 @@ public class Death : MonoBehaviour
                 Instantiate(ragdoll, transform.position, transform.rotation);
                 Amplitude.Instance.logEvent("DeadPeople");
                 Destroy(gameObject);
+                PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 1);
                 RCC_DashboardInputs.manage.infoPanelAboutPeople.SetActive(true);
+                RCC_DashboardInputs.manage.infoPanelAboutPeople.GetComponentInChildren<Text>().text = "+100";
                 GameObject checkpointSound = GameObject.Find("checkpointSnd");
                 checkpointSound.GetComponent<AudioSource>().Play();
                 RCC_DashboardInputs.manage.PeoplePanel();

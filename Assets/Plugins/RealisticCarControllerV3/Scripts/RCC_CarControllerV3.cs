@@ -1726,18 +1726,20 @@ public class RCC_CarControllerV3 : MonoBehaviour
 
 	public void ResetCarForCoin()
     {
-		if (SceneManager.GetActiveScene().name != "battle_online" || SceneManager.GetActiveScene().name != "city_online")
+		if (SceneManager.GetActiveScene().name != "battle_online" && SceneManager.GetActiveScene().name != "city_online")
 		{
-			if (PlayerPrefs.GetFloat("DriftCoin") >= 249)
+			if (PlayerPrefs.GetFloat("DriftCoin") >= 499)
 			{
+				CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
 				transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
 				transform.position = CarSpawnNew.manage.spawnPoint.position;
 				resetTime = 0f;
-				PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - 250);
+				PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - 500);
 			}
 			else
 			{
 				UniAdManager.manage.ShowAdShop();
+				CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
 				transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
 				transform.position = CarSpawnNew.manage.spawnPoint.position;
 				resetTime = 0f;
@@ -1746,20 +1748,23 @@ public class RCC_CarControllerV3 : MonoBehaviour
 
 		if (SceneManager.GetActiveScene().name == "battle_online" || SceneManager.GetActiveScene().name == "city_online")
         {
-			if (PlayerPrefs.GetFloat("DriftCoin") >= 249)
-			{
+			//if (PlayerPrefs.GetFloat("DriftCoin") >= 2490)
+			//{
+			//	print("ResetCarForCoinz");
+			//	transform.rotation = netManager.manage.spawnPoint.rotation;
+			//	transform.position = netManager.manage.spawnPoint.position;
+			//	resetTime = 0f;
+			//	PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - 2500);
+			//}
+			//	else
+			//{
+				UniAdManager.manage.ShowInterstatial();
+				netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed = 0;
 				transform.rotation = netManager.manage.spawnPoint.rotation;
 				transform.position = netManager.manage.spawnPoint.position;
 				resetTime = 0f;
-				PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - 250);
-			}
-			else
-			{
-				UniAdManager.manage.ShowAdShop();
-				transform.rotation = netManager.manage.spawnPoint.rotation;
-				transform.position = netManager.manage.spawnPoint.position;
-				resetTime = 0f;
-			}
+				print("ResetCarForCoinzForAd");
+		//}
 		}
 	}
 

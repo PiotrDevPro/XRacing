@@ -21,6 +21,7 @@ public class MainMenuManager : MonoBehaviour
     public AudioUI audioUi;
     public AudioSource[] tracks;
     public Text cashAmount;
+    [SerializeField] Text Rating;
     public Text energyTx;
     [SerializeField] private GameObject versionApp;
     public GameObject network_manager_active;
@@ -122,6 +123,7 @@ public class MainMenuManager : MonoBehaviour
         public GameObject Settings;
         public GameObject Auth;
         public GameObject Leaderboard;
+        public GameObject Ratingboard;
     }
 
     [System.Serializable]
@@ -3798,6 +3800,25 @@ public class MainMenuManager : MonoBehaviour
         menuPanels.Leaderboard.SetActive(false);
         Amplitude.Instance.logEvent("LeaderboardClose");
     }
+
+
+    public void RatingBoardOpen()
+    {
+
+        menuPanels.Ratingboard.SetActive(true);
+        PlayFabLogin.manage.GetStats();
+        PlayFabLogin.manage.SetStats();
+        PlayFabLogin.manage.GetRatingboard();
+        Amplitude.Instance.logEvent("RatingBoardOpen");
+    }
+
+    public void RatingBoardClose()
+    {
+
+        PlayFabLogin.manage.CloseRatingboardPanel();
+        menuPanels.Ratingboard.SetActive(false);
+        Amplitude.Instance.logEvent("RatingBoardClose");
+    }
     #endregion
 
     #region CoinFX
@@ -3871,17 +3892,10 @@ public class MainMenuManager : MonoBehaviour
     void Start()
     {
        // PlayerPrefs.DeleteAll();
-        //if (PlayerPrefs.GetInt("NoAds") != 0)
-        //{
-        //    menuGUI.NoAdsBtn.SetActive(false);
-        //}
-
         //config
-
         menuGUI.RUSure.SetActive(false);
         network_manager_active.SetActive(false);
         menuGUI._playerName.text = PlayerPrefs.GetString("Player");
-        //print(_systemLang = Application.systemLanguage);
         if (PlayerPrefs.GetInt("Energy") == 25)
         {
             menuGUI.adsEnergyBtn.interactable = false;
@@ -3949,6 +3963,7 @@ public class MainMenuManager : MonoBehaviour
 
         /////Coin Display
         cashAmount.text = ((int)PlayerPrefs.GetFloat("DriftCoin")).ToString() + "$";
+        Rating.text = PlayerPrefs.GetInt("Rating").ToString();
         //menuGUI.CarMaxSpeed.text = carSetting[currentCarNumber].carPower.speed.ToString() + "KMH";
         menuGUI.CarName.text = carSetting[currentCarNumber].name.ToString();
         //speedfill = (carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().maxspeed) / 550f;

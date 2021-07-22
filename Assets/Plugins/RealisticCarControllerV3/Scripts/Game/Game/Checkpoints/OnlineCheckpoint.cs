@@ -22,7 +22,6 @@ public class OnlineCheckpoint : MonoBehaviour
     {
         cashSnd = GameObject.Find("ch");
         checkpointSound = GameObject.Find("checkpointSnd");
-        print(PlayerPrefs.GetInt("AppActive"));
     }
 
     private void OnTriggerEnter(Collider col)
@@ -36,10 +35,14 @@ public class OnlineCheckpoint : MonoBehaviour
             checkpointSound.GetComponent<AudioSource>().Play();
             Invoke("latency",0.5f);
             MainPoint.transform.position = Point1.transform.position;
+            PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 5);
+            Amplitude.Instance.logEvent("HighwayNetworkCheckpoint1");
             counter += 1;
 
             if (counter == 2)
             {
+                Amplitude.Instance.logEvent("HighwayNetworkCheckpoint2");
+                PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 15);
                 MainPoint.SetActive(false);
             }
         }
