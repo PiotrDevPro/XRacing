@@ -37,7 +37,7 @@ public class DPTrunk : MonoBehaviour
 
             if (point <= 35)
             {
-                if (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 1 || PlayerPrefs.GetInt("CurrentCar") == 7)
+                if (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 1 || PlayerPrefs.GetInt("CurrentCar") == 7 || PlayerPrefs.GetInt("CurrentCar") == 11)
                 {
                     carPart.gameObject.SetActive(false);
                     Amplitude.Instance.logEvent("TrunkPartsDamaged");

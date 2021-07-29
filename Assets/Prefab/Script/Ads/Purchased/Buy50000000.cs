@@ -8,12 +8,15 @@ public class Buy50000000 : MonoBehaviour
 
     public void OnPurchaseComplete(Product product)
     {
-
-        GameObject snd = GameObject.Find("Purchased");
-        snd.GetComponent<AudioSource>().Play();
-        Amplitude.Instance.logEvent("50 000 000gold");
-        Invoke("CoinLatency", 0.7f);
-        Invoke("CashFlow", 1.7f);
+        if (product.definition.id == "com.gamedevcorp.xracing.gold50000000")
+        {
+            GameObject snd = GameObject.Find("Purchased");
+            snd.GetComponent<AudioSource>().Play();
+            Amplitude.Instance.logEvent("50 000 000gold");
+            Invoke("CoinLatency", 0.7f);
+            Invoke("CashFlow", 1.7f);
+        }
+        
     }
 
     public void OnPurchaseFailure(Product product, PurchaseFailureReason reason)

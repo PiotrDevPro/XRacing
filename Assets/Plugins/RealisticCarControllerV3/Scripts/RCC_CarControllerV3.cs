@@ -990,7 +990,8 @@ public class RCC_CarControllerV3 : MonoBehaviour
 
 	void Engine()
 	{
-
+		// SteeringWheel Rotation
+		
 		//Speed.
 		speed = rigid.velocity.magnitude * 3.6f;
 
@@ -999,8 +1000,19 @@ public class RCC_CarControllerV3 : MonoBehaviour
 		steerAngle = Mathf.Lerp(orgSteerAngle, highspeedsteerAngle, (speed / highspeedsteerAngleAtspeed));
 
 		//Driver SteeringWheel Transform.
-		if (SteeringWheel)
-			SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
+		if (SteeringWheel) //&& canControl)
+		{ 		
+			if (!canControl)
+			{
+				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
+			}
+			if (PlayerPrefs.GetInt("CurrentCar") == 11)
+			{
+				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(0, (FrontLeftWheelCollider.steerAngle) * 6, 0);
+			}
+		}
+			
+		
 
 		if (rigid.velocity.magnitude < .01f && Mathf.Abs(steerInput) < .01f && Mathf.Abs(_gasInput) < .01f && Mathf.Abs(rigid.angularVelocity.magnitude) < .01f)
 			sleepingRigid = true;
@@ -1724,6 +1736,13 @@ public class RCC_CarControllerV3 : MonoBehaviour
 
 	}
 
+	public void ResetCrashedCar()
+    {
+		transform.rotation = Quaternion.identity;
+		transform.position = new Vector3(transform.position.x, transform.position.y + 3, transform.position.z);
+		resetTime = 0f;
+	}
+
 	public void ResetCarForCoin()
     {
 		if (SceneManager.GetActiveScene().name != "battle_online" && SceneManager.GetActiveScene().name != "city_online")
@@ -1731,8 +1750,8 @@ public class RCC_CarControllerV3 : MonoBehaviour
 			if (PlayerPrefs.GetFloat("DriftCoin") >= 499)
 			{
 				CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
-				transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
-				transform.position = CarSpawnNew.manage.spawnPoint.position;
+				//transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
+				//transform.position = CarSpawnNew.manage.spawnPoint.position;
 				resetTime = 0f;
 				PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - 500);
 			}
@@ -1740,31 +1759,21 @@ public class RCC_CarControllerV3 : MonoBehaviour
 			{
 				UniAdManager.manage.ShowAdShop();
 				CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
-				transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
-				transform.position = CarSpawnNew.manage.spawnPoint.position;
+				//transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
+				//transform.position = CarSpawnNew.manage.spawnPoint.position;
 				resetTime = 0f;
 			}
 		}
 
 		if (SceneManager.GetActiveScene().name == "battle_online" || SceneManager.GetActiveScene().name == "city_online")
         {
-			//if (PlayerPrefs.GetFloat("DriftCoin") >= 2490)
-			//{
-			//	print("ResetCarForCoinz");
-			//	transform.rotation = netManager.manage.spawnPoint.rotation;
-			//	transform.position = netManager.manage.spawnPoint.position;
-			//	resetTime = 0f;
-			//	PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - 2500);
-			//}
-			//	else
-			//{
+
 				UniAdManager.manage.ShowInterstatial();
 				netManager.manage.newVehicle.GetComponent<RCC_CarControllerV3>().speed = 0;
 				transform.rotation = netManager.manage.spawnPoint.rotation;
 				transform.position = netManager.manage.spawnPoint.position;
 				resetTime = 0f;
-				print("ResetCarForCoinzForAd");
-		//}
+				print("ResetCarForAdOnline");
 		}
 	}
 

@@ -14,13 +14,15 @@ public class LoadAssetsBundle : MonoBehaviour
     WWW www;
     public string SceneNameToLoadAB;
     bool loadingStart = false;
-    [SerializeField] string url = "https://firebasestorage.googleapis.com/v0/b/xracing-290708.appspot.com/o/cuvex?alt=media&token=95adc7db-53ce-4632-bcfd-7e3210aadace";
+    [SerializeField] Transform parentForAB;
+    [SerializeField] string url = "https://drive.google.com/uc?export=download&id=1xVWP64yAxmdg_SDxTDn_Qa9IV9A5Koxr";
     [SerializeField] string url_city_online = "https://drive.google.com/uc?export=download&id=1JPvF5A9Ipel98rKU0_ZOfeKAzpL6bCNh";
     [Header("Other")]
     public GameObject loadingPanel;
     public Image bg_fill;
     public Text percent;
-    
+    [Header("Loaded Object")]
+    [SerializeField] GameObject obj;
 
     private void Awake()
     {
@@ -28,13 +30,6 @@ public class LoadAssetsBundle : MonoBehaviour
         {
             manage = this;
         }
-    }
-    void Start()
-    {
-        
-        //WWW www = new WWW(url_lev);
-        // StartCoroutine(webReq(www));
-
     }
 
     // Update is called once per frame
@@ -52,32 +47,13 @@ public class LoadAssetsBundle : MonoBehaviour
             print("loadingStart");
         }
     }
-    IEnumerator webReq(WWW www)
-    {
-        yield return www;
 
-        while (www.isDone == false)
-        {
-            yield return null;
-        }
-
-        AssetBundle bundle = www.assetBundle;
-        if (www.error == null)
-        {
-            GameObject obj = (GameObject)bundle.LoadAsset("cuvex");
-            Instantiate(obj);
-            print("Assets loading is completed");
-        }
-        else
-        {
-            Debug.Log(www.error);
-        }
-    }
     IEnumerator DownloadFiles()
     {
         if (!assetBundle)
         {
-            using (www = new WWW(url_city_online))
+           // using (www =  WWW.LoadFromCacheOrDownload(url_city_online,0))
+           using (www = new WWW(url_city_online))
             {
                 print("Using Now");
                 loadingPanel.SetActive(true);

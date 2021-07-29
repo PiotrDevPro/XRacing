@@ -140,6 +140,8 @@ public class UniAdManager : MonoBehaviour
 
                     AudioListener.pause = false;
                     PlayerPrefs.SetInt("crashed", 0);
+                    CarDamage.manage.isDead = false;
+                    CarDamage.manage.energy = 25;
                     if (PlayerPrefs.GetInt("Soundtrack") == 0)
                     {
                         Pause.manage.tracks[Random.Range(0, 6)].Play();
@@ -149,6 +151,19 @@ public class UniAdManager : MonoBehaviour
                     Amplitude.Instance.logEvent("OnRewardedVideoForCrashCar");
                     Time.timeScale = 1;
                     isAdsForCarCrashed = false;
+                    DamagePartsHood.manage.wheels1.gameObject.SetActive(true);
+                    DamagePartsHood.manage.wheels2.gameObject.SetActive(true);
+                    DamagePartsHood.manage.wheels1col.gameObject.SetActive(true);
+                    DamagePartsHood.manage.wheels2col.gameObject.SetActive(true);
+                    DamagePartsHood.manage.blow.SetActive(false);
+                    DamagePartsHood.manage.point = 50;
+                    DPTrunk.manage.wheels1.gameObject.SetActive(true);
+                    DPTrunk.manage.wheels2.gameObject.SetActive(true);
+                    DPTrunk.manage.wheels1col.gameObject.SetActive(true);
+                    DPTrunk.manage.wheels2col.gameObject.SetActive(true);
+                    DPTrunk.manage.Blow.SetActive(false);
+                    DPTrunk.manage.point = 50;
+                    RCC_CarControllerV3.manage.ResetCrashedCar();
                 }
 
                 if (isAdsEnergyInShop)

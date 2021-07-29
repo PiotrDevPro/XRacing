@@ -120,10 +120,13 @@ public class MainMenuManager : MonoBehaviour
         public GameObject SelectLevel;
         public GameObject _NetworkRoom;
         public GameObject EnoughMoney;
+        public GameObject FreeridePanel;
         public GameObject Settings;
         public GameObject Auth;
         public GameObject Leaderboard;
         public GameObject Ratingboard;
+        [Header("Buttons")]
+        public Button FreerideBtn;
     }
 
     [System.Serializable]
@@ -134,6 +137,7 @@ public class MainMenuManager : MonoBehaviour
         public Text bestTime;
         public Image lockImage;
         public StarClass stars;
+        
 
         [System.Serializable]
         public class StarClass
@@ -364,19 +368,23 @@ public class MainMenuManager : MonoBehaviour
         if (currentCarNumber != PlayerPrefs.GetInt("CurrentCar"))
         {
             currentCarNumber = PlayerPrefs.GetInt("CurrentCar");
+            
 
             foreach (CarSetting VSetting in carSetting)
             {
 
                 if (VSetting == carSetting[currentCarNumber])
                 {
+                    
                     VSetting.car.SetActive(true);
+                    print(currentCarNumber);
+                    print(VSetting.car);
                     currentCar = VSetting;
                 }
                 else
                 {
                     VSetting.car.SetActive(false);
-
+            
                 }
             }
         }
@@ -385,6 +393,7 @@ public class MainMenuManager : MonoBehaviour
         {
 
             case PanelsUI.MainMenu:
+                
                 network_manager_active.SetActive(true);
                 menuPanels.MainMenu.SetActive(true);
                 menuPanels.SelectCar.SetActive(false);
@@ -409,6 +418,16 @@ public class MainMenuManager : MonoBehaviour
                 menuPanels._NetworkRoom.SetActive(false);
                 menuGUI._playerName.text = PlayerPrefs.GetString("Player");
                 Amplitude.Instance.logEvent("SelectLevel");
+                if (PlayerPrefs.GetInt("Rating") >= 50)
+                {
+                    menuPanels.FreeridePanel.SetActive(false);
+                    menuPanels.FreerideBtn.interactable = true;
+                }
+                else
+                {
+                    menuPanels.FreeridePanel.SetActive(true);
+                    menuPanels.FreerideBtn.interactable = false;
+                }
                 break;
             case PanelsUI.Auth:
                 menuPanels.MainMenu.SetActive(false);
@@ -792,8 +811,8 @@ public class MainMenuManager : MonoBehaviour
             menuGUI.RearS.interactable = false;
             menuGUI.WheelSusspPriceF.gameObject.SetActive(true);
             menuGUI.WheelSusspPriceR.gameObject.SetActive(true);
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
         }
 
         if (PlayerPrefs.GetInt("TCS" + PlayerPrefs.GetInt("CurrentCar").ToString()) == 1)
@@ -812,7 +831,7 @@ public class MainMenuManager : MonoBehaviour
             menuGUI.TCSPrice.gameObject.SetActive(true);
             menuGUI.TCS.interactable = false;
             menuGUI.TCStgl.interactable = false;
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().TCSThreshold = 0.25f;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().TCSThreshold = 0.25f;
         }
 
         if (PlayerPrefs.GetInt("ESP" + PlayerPrefs.GetInt("CurrentCar").ToString()) == 1)
@@ -832,7 +851,7 @@ public class MainMenuManager : MonoBehaviour
             menuGUI.ESPPrice.gameObject.SetActive(true);
             menuGUI.ESP.interactable = false;
             menuGUI.ESPtgl.interactable = false;
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ESPThreshold = 0.25f;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ESPThreshold = 0.25f;
             PlayerPrefs.SetInt("selectESP" + PlayerPrefs.GetInt("CurrentCar").ToString(), 0);
         }
 
@@ -855,7 +874,7 @@ public class MainMenuManager : MonoBehaviour
             menuGUI.TractionTgl.interactable = false;
             //TractionIsChecked = false;
             menuGUI.Traction.interactable = false;
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().tractionHelperStrength = 0.1f;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().tractionHelperStrength = 0.1f;
             PlayerPrefs.SetInt("selectTraction" + PlayerPrefs.GetInt("CurrentCar").ToString(), 0);
         }
 
@@ -899,7 +918,7 @@ public class MainMenuManager : MonoBehaviour
             svChecked.engine13 = false;
             svChecked.engine14 = false;
             svChecked.engine15 = false;
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque = carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque = carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque;
 
         }
         if (PlayerPrefs.GetInt("Engine" + currentCarNumber.ToString()) == 1)
@@ -923,7 +942,7 @@ public class MainMenuManager : MonoBehaviour
             if (svChecked.engin1 == true)
             {
                 carSetting[currentCarNumber].carPower.speed += 15;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 250f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 250f;
                 svChecked.engin1 = false;
             }
         }
@@ -948,7 +967,7 @@ public class MainMenuManager : MonoBehaviour
             if (svChecked.engin2 == true)
             {
                 carSetting[currentCarNumber].carPower.speed += 30;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 350f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 350f;
                 svChecked.engin2 = false;
             }
 
@@ -974,7 +993,7 @@ public class MainMenuManager : MonoBehaviour
             if (svChecked.engin3 == true)
             {
                 carSetting[currentCarNumber].carPower.speed += 50;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 500f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 500f;
                 svChecked.engin3 = false;
             }
         }
@@ -999,7 +1018,7 @@ public class MainMenuManager : MonoBehaviour
             if (svChecked.engin4 == true)
             {
                 carSetting[currentCarNumber].carPower.speed += 70;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 600f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 600f;
                 svChecked.engin4 = false;
             }
         }
@@ -1024,7 +1043,7 @@ public class MainMenuManager : MonoBehaviour
             if (svChecked.engin5 == true)
             {
                 carSetting[currentCarNumber].carPower.speed += 80;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 700f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 700f;
                 svChecked.engin5 = false;
             }
         }
@@ -1050,7 +1069,7 @@ public class MainMenuManager : MonoBehaviour
             if (svChecked.engin6 == true)
             {
                 carSetting[currentCarNumber].carPower.speed += 90;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 800f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 800f;
                 svChecked.engin6 = false;
             }
         }
@@ -1075,7 +1094,7 @@ public class MainMenuManager : MonoBehaviour
             if (svChecked.engin7 == true)
             {
                 carSetting[currentCarNumber].carPower.speed += 100;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 900f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 900f;
                 svChecked.engin7 = false;
             }
         }
@@ -1100,7 +1119,7 @@ public class MainMenuManager : MonoBehaviour
             if (svChecked.engin8 == true)
             {
                 carSetting[currentCarNumber].carPower.speed += 110;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 1200f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 1200f;
                 svChecked.engin8 = false;
             }
         }
@@ -1125,7 +1144,7 @@ public class MainMenuManager : MonoBehaviour
             if (svChecked.engin9 == true)
             {
                 carSetting[currentCarNumber].carPower.speed += 115;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 1300f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 1300f;
                 svChecked.engin9 = false;
             }
         }
@@ -1150,7 +1169,7 @@ public class MainMenuManager : MonoBehaviour
             if (svChecked.engin10 == true)
             {
                 carSetting[currentCarNumber].carPower.speed += 125;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 1400f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 1400f;
                 svChecked.engin10 = false;
             }
         }
@@ -1175,7 +1194,7 @@ public class MainMenuManager : MonoBehaviour
             if (svChecked.engin11 == true)
             {
                 carSetting[currentCarNumber].carPower.speed += 135;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 1500f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 1500f;
                 svChecked.engin11 = false;
             }
         }
@@ -1202,7 +1221,7 @@ public class MainMenuManager : MonoBehaviour
             {
 
                 carSetting[currentCarNumber].carPower.speed += 145;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 1600f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 1600f;
                 svChecked.engin12 = false;
 
             }
@@ -1229,7 +1248,7 @@ public class MainMenuManager : MonoBehaviour
             {
 
                 carSetting[currentCarNumber].carPower.speed += 155;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 1700f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 1700f;
                 svChecked.engin13 = false;
             }
         }
@@ -1255,7 +1274,7 @@ public class MainMenuManager : MonoBehaviour
             {
 
                 carSetting[currentCarNumber].carPower.speed += 175;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 1850f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 1850f;
                 svChecked.engine14 = false;
 
             }
@@ -1281,7 +1300,7 @@ public class MainMenuManager : MonoBehaviour
             if (svChecked.engin15 == true)
             {
                 carSetting[currentCarNumber].carPower.speed += 195;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 2150f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 2150f;
                 svChecked.engin15 = false;
             }
         }
@@ -1332,7 +1351,7 @@ public class MainMenuManager : MonoBehaviour
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
                 carSetting[currentCarNumber].carPower.speed += 15;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 250f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 250f;
             }
 
         }
@@ -1357,7 +1376,7 @@ public class MainMenuManager : MonoBehaviour
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
                 carSetting[currentCarNumber].carPower.speed += 30;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 350f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 350f;
             }
         }
         if (PlayerPrefs.GetInt("Engine" + currentCarNumber.ToString()) == 3)
@@ -1381,7 +1400,7 @@ public class MainMenuManager : MonoBehaviour
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
                 carSetting[currentCarNumber].carPower.speed += 50;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 500f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 500f;
             }
         }
         if (PlayerPrefs.GetInt("Engine" + currentCarNumber.ToString()) == 4)
@@ -1405,7 +1424,7 @@ public class MainMenuManager : MonoBehaviour
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
                 carSetting[currentCarNumber].carPower.speed += 70;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 600f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 600f;
             }
 
         }
@@ -1430,7 +1449,7 @@ public class MainMenuManager : MonoBehaviour
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
                 carSetting[currentCarNumber].carPower.speed += 80;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 700f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 700f;
             }
 
             if (PlayerPrefs.GetInt("Engine" + currentCarNumber.ToString()) == 6)
@@ -1454,7 +1473,7 @@ public class MainMenuManager : MonoBehaviour
                 if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
                 { 
                     carSetting[currentCarNumber].carPower.speed += 90;
-                    carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 800f;
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 800f;
                 }
             }
             if (PlayerPrefs.GetInt("Engine" + currentCarNumber.ToString()) == 7)
@@ -1480,7 +1499,7 @@ public class MainMenuManager : MonoBehaviour
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
                 {
                     carSetting[currentCarNumber].carPower.speed += 100;
-                    carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 900f;
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 900f;
                 }
             }
             if (PlayerPrefs.GetInt("Engine" + currentCarNumber.ToString()) == 8)
@@ -1506,7 +1525,7 @@ public class MainMenuManager : MonoBehaviour
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
                 {
                     carSetting[currentCarNumber].carPower.speed += 110;
-                    carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 1200f;
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 1200f;
                 }
             }
             if (PlayerPrefs.GetInt("Engine" + currentCarNumber.ToString()) == 9)
@@ -1531,7 +1550,7 @@ public class MainMenuManager : MonoBehaviour
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
                 {
                     carSetting[currentCarNumber].carPower.speed += 115;
-                    carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 1300f;
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 1300f;
                 }
             }
             if (PlayerPrefs.GetInt("Engine" + currentCarNumber.ToString()) == 10)
@@ -1555,7 +1574,7 @@ public class MainMenuManager : MonoBehaviour
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
                     carSetting[currentCarNumber].carPower.speed += 125;
-                    carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 1400f;
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 1400f;
                 }
             }
             if (PlayerPrefs.GetInt("Engine" + currentCarNumber.ToString()) == 11)
@@ -1579,7 +1598,7 @@ public class MainMenuManager : MonoBehaviour
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
                     carSetting[currentCarNumber].carPower.speed += 135;
-                    carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 1500f;
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 1500f;
                 }
 
             }
@@ -1604,7 +1623,7 @@ public class MainMenuManager : MonoBehaviour
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
                     carSetting[currentCarNumber].carPower.speed += 145;
-                    carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 1600f;
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 1600f;
                 }
 
             }
@@ -1630,7 +1649,7 @@ public class MainMenuManager : MonoBehaviour
             {
 
                     carSetting[currentCarNumber].carPower.speed += 155;
-                    carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 1700f;
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 1700f;
                 }
 
             }
@@ -1656,7 +1675,7 @@ public class MainMenuManager : MonoBehaviour
             {
 
                     carSetting[currentCarNumber].carPower.speed += 175;
-                    carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 1850f;
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 1850f;
                 }
 
             }
@@ -1682,7 +1701,7 @@ public class MainMenuManager : MonoBehaviour
             {
 
                     carSetting[currentCarNumber].carPower.speed += 195;
-                    carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 2150f;
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 2150f;
                 }
             }
         }
@@ -1723,8 +1742,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (svChecked.handl1 == true)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.05f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.05f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.05f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.05f;
                 svChecked.handl1 = false;
             }
 
@@ -1747,8 +1766,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (svChecked.handl2 == true)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.1f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.1f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.1f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.1f;
                 svChecked.handl2 = false;
             }
         }
@@ -1769,8 +1788,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (svChecked.handl3 == true)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.15f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.15f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.15f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.15f;
                 svChecked.handl3 = false;
             }
         }
@@ -1791,8 +1810,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (svChecked.handl4 == true)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.2f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.2f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.2f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.2f;
                 svChecked.handl4 = false;
             }
         }
@@ -1813,8 +1832,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (svChecked.handl5 == true)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.25f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.25f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.25f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.25f;
                 svChecked.handl5 = false;
             }
         }
@@ -1835,8 +1854,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (svChecked.handl6 == true)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.28f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.28f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.28f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.28f;
                 svChecked.handl6 = false;
             }
         }
@@ -1858,8 +1877,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (svChecked.handl7 == true)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.35f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.35f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.35f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.35f;
                 svChecked.handl7 = false;
             }
         }
@@ -1880,8 +1899,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (svChecked.handl8 == true)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.45f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.45f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.45f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.45f;
                 svChecked.handl8 = false;
             }
         }
@@ -1903,8 +1922,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (svChecked.handl9 == true)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.6f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.6f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.6f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.6f;
                 svChecked.handl9 = false;
             }
         }
@@ -1925,8 +1944,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (svChecked.handl10 == true)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.7f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.7f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.7f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.7f;
                 svChecked.handl10 = false;
             }
         }
@@ -1947,8 +1966,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (svChecked.handl11 == true)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.8f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.8f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.8f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.8f;
                 svChecked.handl11 = false;
             }
         }
@@ -1969,8 +1988,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = true;
             if (svChecked.handl12 == true)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.9f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.9f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.9f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.9f;
                 svChecked.handl12 = false;
             }
         }
@@ -2013,8 +2032,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.05f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.05f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.05f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.05f;
             }
         }
         if (PlayerPrefs.GetInt("Handling" + currentCarNumber.ToString()) == 2)
@@ -2034,8 +2053,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.1f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.1f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.1f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.1f;
             }
         }
         if (PlayerPrefs.GetInt("Handling" + currentCarNumber.ToString()) == 3)
@@ -2055,8 +2074,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.15f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.15f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.15f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.15f;
             }
         }
         if (PlayerPrefs.GetInt("Handling" + currentCarNumber.ToString()) == 4)
@@ -2076,8 +2095,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.2f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.2f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.2f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.2f;
             }
         }
 
@@ -2098,8 +2117,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.25f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.25f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.25f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.25f;
             }
         }
         if (PlayerPrefs.GetInt("Handling" + currentCarNumber.ToString()) == 6)
@@ -2119,8 +2138,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.28f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.28f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.28f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.28f;
             }
         }
 
@@ -2141,8 +2160,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.35f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.35f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.35f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.35f;
             }
         }
         if (PlayerPrefs.GetInt("Handling" + currentCarNumber.ToString()) == 8)
@@ -2162,8 +2181,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.45f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.45f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.45f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.45f;
             }
         }
 
@@ -2184,8 +2203,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.6f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.6f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.6f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.6f;
             }
         }
         if (PlayerPrefs.GetInt("Handling" + currentCarNumber.ToString()) == 10)
@@ -2205,8 +2224,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.7f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.7f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.7f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.7f;
             }
         }
 
@@ -2227,8 +2246,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.8f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.8f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.8f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.8f;
             }
         }
         if (PlayerPrefs.GetInt("Handling" + currentCarNumber.ToString()) == 12)
@@ -2248,8 +2267,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.handling12 = true;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.9f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.9f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.9f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.9f;
             }
         }
     }
@@ -2287,8 +2306,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.025f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 100f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.025f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 100f;
             }
         }
         if (PlayerPrefs.GetInt("Brake" + currentCarNumber.ToString()) == 2)
@@ -2306,8 +2325,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.05f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 200f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.05f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 200f;
             }
         }
         if (PlayerPrefs.GetInt("Brake" + currentCarNumber.ToString()) == 3)
@@ -2325,8 +2344,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.075f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 300f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.075f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 300f;
 
             }
         }
@@ -2345,8 +2364,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.125f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 400f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.125f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 400f;
             }
         }
 
@@ -2365,8 +2384,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.2f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 500f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.2f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 500f;
             }
         }
         if (PlayerPrefs.GetInt("Brake" + currentCarNumber.ToString()) == 6)
@@ -2384,8 +2403,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.225f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 600f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.225f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 600f;
             }
         }
 
@@ -2404,8 +2423,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.3f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 700f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.3f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 700f;
             }
         }
         if (PlayerPrefs.GetInt("Brake" + currentCarNumber.ToString()) == 8)
@@ -2423,8 +2442,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.35f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 800f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.35f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 800f;
             }
         }
 
@@ -2443,8 +2462,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.4f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 900f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.4f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 900f;
             }
         }
         if (PlayerPrefs.GetInt("Brake" + currentCarNumber.ToString()) == 10)
@@ -2462,8 +2481,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = true;
             if (PlayerPrefs.GetInt("CurrentCar") != 0 && PlayerPrefs.GetInt("CurrentCar") != 1 && PlayerPrefs.GetInt("CurrentCar") != 2 && PlayerPrefs.GetInt("CurrentCar") != 3 && PlayerPrefs.GetInt("CurrentCar") != 4 && PlayerPrefs.GetInt("CurrentCar") != 5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.45f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 1000f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.45f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 1000f;
             }
         }
     }
@@ -2500,8 +2519,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (svChecked.brak1)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.025f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 100f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.025f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 100f;
                 svChecked.brak1 = false;
             }
         }
@@ -2520,8 +2539,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (svChecked.brak2)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.05f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 200f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.05f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 200f;
                 svChecked.brak2 = false;
             }
         }
@@ -2540,8 +2559,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (svChecked.brak3)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.075f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 300f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.075f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 300f;
                 svChecked.brak3 = false;
             }
         }
@@ -2560,8 +2579,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (svChecked.brak4)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.125f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 400f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.125f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 400f;
                 svChecked.brak4 = false;
             }
         }
@@ -2581,8 +2600,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (svChecked.brak5)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.2f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 500f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.2f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 500f;
                 svChecked.brak5 = false;
             }
         }
@@ -2601,8 +2620,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (svChecked.brak6)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.225f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 600f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.225f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 600f;
                 svChecked.brak6 = false;
             }
         }
@@ -2622,8 +2641,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (svChecked.brak7)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.3f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 700f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.3f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 700f;
                 svChecked.brak7 = false;
             }
         }
@@ -2642,8 +2661,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (svChecked.brak8)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.35f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 800f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.35f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 800f;
                 svChecked.brak8 = false;
             }
         }
@@ -2663,8 +2682,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = false;
             if (svChecked.brak9)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.4f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 900f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.4f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 900f;
                 svChecked.brak9 = false;
             }
         }
@@ -2683,8 +2702,8 @@ public class MainMenuManager : MonoBehaviour
             svChecked.brake10 = true;
             if (svChecked.brak10)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.45f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().brakeTorque += 1000f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.45f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 1000f;
                 svChecked.brak10 = false;
             }
         }
@@ -2720,9 +2739,11 @@ public class MainMenuManager : MonoBehaviour
 
             if (VSetting == carSetting[currentCarNumber])
             {
+                
                 VSetting.car.SetActive(true);
                 currentCar = VSetting;
                 PlayerPrefs.SetInt("CurrentCar", currentCarNumber);
+                print(PlayerPrefs.GetInt("CurrentCar"));
                 energyTx.text = "Energy: " + (carSetting[currentCarNumber].energy + PlayerPrefs.GetInt("Energy"));
                 if (PlayerPrefs.GetInt("CurrentCar") == 0)
                 {
@@ -2761,11 +2782,30 @@ public class MainMenuManager : MonoBehaviour
                 {
                     Amplitude.Instance.logEvent("The Bison Monster");
                 }
+
+                /// AssetBundle Cars
+                if (PlayerPrefs.GetInt("CurrentCar") == 9)
+                {
+                    Amplitude.Instance.logEvent("Tesla T");
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().KillOrStartEngine();
+                }
+
+                if (PlayerPrefs.GetInt("CurrentCar") == 10)
+                {
+                    Amplitude.Instance.logEvent("TestCar");
+                    carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().StartEngineNow();
+                }
+
+                if (PlayerPrefs.GetInt("CurrentCar") == 11)
+                {
+                    Amplitude.Instance.logEvent("Ikarus280");
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().StartEngineNow();
+                }
             }
             else
             {
                 VSetting.car.SetActive(false);
-
 
             }
         }
@@ -2780,9 +2820,12 @@ public class MainMenuManager : MonoBehaviour
         {
             if (VSetting == carSetting[currentCarNumber])
             {
+                print(currentCarNumber);
                 VSetting.car.SetActive(true);
                 currentCar = VSetting;
+
                 PlayerPrefs.SetInt("CurrentCar", currentCarNumber);
+                print(PlayerPrefs.GetInt("CurrentCar"));
                 energyTx.text = "Energy: " + (carSetting[currentCarNumber].energy + PlayerPrefs.GetInt("Energy"));
 
                 if (PlayerPrefs.GetInt("CurrentCar")==0)
@@ -2822,9 +2865,26 @@ public class MainMenuManager : MonoBehaviour
                 {
                     Amplitude.Instance.logEvent("The Bison Monster");
                 }
+
+
+                /// AssetBundle Cars
                 if (PlayerPrefs.GetInt("CurrentCar") == 9)
                 {
                     Amplitude.Instance.logEvent("Tesla T");
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().KillOrStartEngine();
+                }
+                
+                if (PlayerPrefs.GetInt("CurrentCar") == 10)
+                {
+                    Amplitude.Instance.logEvent("TestCar");
+                    carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().StartEngineNow();
+                }
+
+                if (PlayerPrefs.GetInt("CurrentCar") == 11)
+                {
+                    Amplitude.Instance.logEvent("Ikarus280");
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().StartEngineNow();
                 }
             }
             else
@@ -2881,7 +2941,7 @@ public class MainMenuManager : MonoBehaviour
             ABSisChecked = true;
             if (svChecked._ABSisChecked_ == true)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.06f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.06f;
                 svChecked._ABSisChecked_ = false;
             }
 
@@ -2895,14 +2955,14 @@ public class MainMenuManager : MonoBehaviour
 
         if (PlayerPrefs.GetInt("TCS" + currentCarNumber.ToString()) == 1 && PlayerPrefs.GetInt("selectTCS" + currentCarNumber.ToString()) == 1)
         {
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().TCS = true;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().TCS = true;
             menuGUI.TCStgl.isOn = true;
             menuGUI.TCS.interactable = true;
 
         }
         else
         {
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().TCS = false;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().TCS = false;
             menuGUI.TCStgl.isOn = false;
             menuGUI.TCStgl.interactable = false;
             menuGUI.TCS.interactable = false;
@@ -2910,14 +2970,14 @@ public class MainMenuManager : MonoBehaviour
 
         if (PlayerPrefs.GetInt("ESP" + currentCarNumber.ToString()) == 1 && PlayerPrefs.GetInt("selectESP" + currentCarNumber.ToString()) == 1)
         {
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ESP = true;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ESP = true;
             menuGUI.ESPtgl.isOn = true;
             menuGUI.ESP.interactable = true;
 
         }
         else
         {
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ESP = false;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ESP = false;
             menuGUI.ESPtgl.isOn = false;
             menuGUI.ESPtgl.interactable = false;
             menuGUI.ESP.interactable = false;
@@ -3015,13 +3075,13 @@ public class MainMenuManager : MonoBehaviour
     {
         if (toggle.isOn)
         {
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.06f;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.06f;
             PlayerPrefs.SetInt("selectABS" + currentCarNumber.ToString(), 1);
             ABSisChecked = true;
         }
         else
         {
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold -= 0.06f;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold -= 0.06f;
             PlayerPrefs.SetInt("selectABS" + currentCarNumber.ToString(), 0);
             ABSisChecked = false;
         }
@@ -3031,14 +3091,14 @@ public class MainMenuManager : MonoBehaviour
     {
         if (toggle.isOn)
         {
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().TCS = true;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().TCS = true;
             TCSisChecked = true;
             menuGUI.TCS.interactable = true;
             PlayerPrefs.SetInt("selectTCS" + currentCarNumber.ToString(), 1);
         }
         else
         {
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().TCS = false;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().TCS = false;
             TCSisChecked = false;
             menuGUI.TCS.interactable = false;
             PlayerPrefs.SetInt("selectTCS" + currentCarNumber.ToString(), 0);
@@ -3049,14 +3109,14 @@ public class MainMenuManager : MonoBehaviour
     {
         if (toggle.isOn)
         {
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ESP = true;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ESP = true;
             ESPisChecked = true;
             menuGUI.ESP.interactable = true;
             PlayerPrefs.SetInt("selectESP" + currentCarNumber.ToString(), 1);
         }
         else
         {
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ESP = false;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ESP = false;
             ESPisChecked = false;
             menuGUI.ESP.interactable = false;
             PlayerPrefs.SetInt("selectESP" + currentCarNumber.ToString(), 0);
@@ -3188,13 +3248,13 @@ public class MainMenuManager : MonoBehaviour
             WheelSusspIsChecked = false;
             if (PlayerPrefs.GetInt("CurrentCar") != 8)
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
             }
             else
             {
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.022f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.022f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.022f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.022f;
             }
 
             audioUi.Denied.Play();
@@ -3211,7 +3271,7 @@ public class MainMenuManager : MonoBehaviour
             menuGUI.lockedTCS.SetActive(false);
             menuGUI.TCSPrice.gameObject.SetActive(false);
             TCSisChecked = true;
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().TCS = true;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().TCS = true;
             menuGUI.TCStgl.isOn = true;
             menuGUI.TCS.interactable = true;
             audioUi.audSource.Play();
@@ -3322,7 +3382,7 @@ public class MainMenuManager : MonoBehaviour
                 PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - carSetting[currentCarNumber].carPower.engine[tEngine]);
                 tEngine++;
                 carSetting[currentCarNumber].carPower.speed += 15;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque += 150f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 150f;
                 PlayerPrefs.SetInt("Engine" + currentCarNumber.ToString(), tEngine);
                 menuGUI.engineUpLevel.text = carSetting[currentCarNumber].carPower.engine.ToString() + "/" + carSetting[currentCarNumber].carPower.maxUpgradeLevel.ToString();
                 audioUi.audSource.Play();
@@ -3349,8 +3409,8 @@ public class MainMenuManager : MonoBehaviour
             {
                 PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - carSetting[currentCarNumber].carPower.handling[tHandling]);
                 tHandling++;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.05f;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.05f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.05f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.05f;
                 PlayerPrefs.SetInt("Handling" + currentCarNumber.ToString(), tHandling);
                 menuGUI.HandlingUpLevel.text = carSetting[currentCarNumber].carPower.handling.ToString() + "/" + carSetting[currentCarNumber].carPower.maxUpgradeLevelHandling.ToString();
                 audioUi.audSource.Play();
@@ -3379,7 +3439,7 @@ public class MainMenuManager : MonoBehaviour
             {
                 PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - carSetting[currentCarNumber].carPower.brake[tBrake]);
                 tBrake++;
-                carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.05f;
+                carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.05f;
                 PlayerPrefs.SetInt("Brake" + currentCarNumber.ToString(), tBrake);
                 menuGUI.BrakeUpLevel.text = carSetting[currentCarNumber].carPower.brake.ToString() + "/" + carSetting[currentCarNumber].carPower.maxUpgradeLevelBrake.ToString();
                 audioUi.audSource.Play();
@@ -3431,7 +3491,7 @@ public class MainMenuManager : MonoBehaviour
         }
         if (PlayerPrefs.GetInt("ABS" + currentCarNumber.ToString()) == 1 && PlayerPrefs.GetInt("selectABS" + currentCarNumber.ToString()) == 1)
         {
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.06f;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.06f;
             menuGUI.carUseABS.isOn = true;
             ABSisChecked = true;
 
@@ -3443,28 +3503,28 @@ public class MainMenuManager : MonoBehaviour
         }
         if(PlayerPrefs.GetInt("TCS"+currentCarNumber.ToString()) == 1 && PlayerPrefs.GetInt("selectTCS" + currentCarNumber.ToString()) == 1)
         {
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().TCS = true;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().TCS = true;
             menuGUI.TCStgl.isOn = true;
             menuGUI.TCS.interactable = true;
 
         }
         else
         {
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().TCS = false;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().TCS = false;
             menuGUI.TCStgl.isOn = false;
             menuGUI.TCStgl.interactable = false;
             menuGUI.TCS.interactable = false;
         }
         if (PlayerPrefs.GetInt("ESP" + currentCarNumber.ToString()) == 1 && PlayerPrefs.GetInt("selectESP" + currentCarNumber.ToString()) == 1)
         {
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ESP = true;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ESP = true;
             menuGUI.ESPtgl.isOn = true;
             menuGUI.ESP.interactable = true;
 
         }
         else
         {
-            carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ESP = false;
+            carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ESP = false;
             menuGUI.ESPtgl.isOn = false;
             menuGUI.ESPtgl.interactable = false;
             menuGUI.ESP.interactable = false;
@@ -3637,34 +3697,34 @@ public class MainMenuManager : MonoBehaviour
 
     public void FrontWheelSusspession()
     {
-        carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = menuGUI.frontS.value;
-        carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = menuGUI.frontS.value;
+        carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = menuGUI.frontS.value;
+        carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = menuGUI.frontS.value;
         PlayerPrefs.SetFloat("WheelSusspFront" + PlayerPrefs.GetInt("CurrentCar").ToString(), menuGUI.frontS.value);
 
     }
 
     public void TCSsetup()
     {
-        carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().TCSThreshold = menuGUI.TCS.value;
+        carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().TCSThreshold = menuGUI.TCS.value;
         PlayerPrefs.SetFloat("TCSsetup" + PlayerPrefs.GetInt("CurrentCar").ToString(), menuGUI.TCS.value);
     }
 
     public void ESPsetup()
     {
-        carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ESPThreshold = menuGUI.ESP.value;
+        carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ESPThreshold = menuGUI.ESP.value;
         PlayerPrefs.SetFloat("ESPsetup" + PlayerPrefs.GetInt("CurrentCar").ToString(), menuGUI.ESP.value);
     }
 
     public void TractionSetup()
     {
-        carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().tractionHelperStrength = menuGUI.Traction.value;
+        carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().tractionHelperStrength = menuGUI.Traction.value;
         PlayerPrefs.SetFloat("TractionSetup" + PlayerPrefs.GetInt("CurrentCar").ToString(), menuGUI.Traction.value);
     }
 
     public void RearWheelSusspession()
     {
-        carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = menuGUI.RearS.value;
-        carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = menuGUI.RearS.value;
+        carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = menuGUI.RearS.value;
+        carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = menuGUI.RearS.value;
         PlayerPrefs.SetFloat("WheelSusspRear"+ PlayerPrefs.GetInt("CurrentCar").ToString(), menuGUI.RearS.value);
 
     }
@@ -3696,7 +3756,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void EngineOnOff()
     {
-        carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().KillOrStartEngine();
+        carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().KillOrStartEngine();
     }
 
     public void EnoughMoneyButtonOk()
@@ -3853,7 +3913,7 @@ public class MainMenuManager : MonoBehaviour
         
         manage = this;
         Application.targetFrameRate = 300;
-        CurrentPanel(0);
+        //CurrentPanel(0);
         ResolutionOnAwake();
         LoadEngineUprgadeOnAwake();
         LoadHandlingOnAwake();
@@ -3900,6 +3960,7 @@ public class MainMenuManager : MonoBehaviour
         {
             menuGUI.adsEnergyBtn.interactable = false;
         }
+        CurrentPanel(0);
     }
 
 
@@ -3968,9 +4029,9 @@ public class MainMenuManager : MonoBehaviour
         menuGUI.CarName.text = carSetting[currentCarNumber].name.ToString();
         //speedfill = (carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().maxspeed) / 550f;
         speedfill = (carSetting[currentCarNumber].carPower.speed) / 550f;
-        turbofill = ((carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().maxspeed + carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().engineTorque) / 8f) / 1000f;
-        handlingfill = ((carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength * 600f) + (carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength * 600f + carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().maxspeed / 20f) + carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold * 100f) / 1000f;  
-        driftfill = (carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().ABSThreshold)*2f;
+        turbofill = ((carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().maxspeed + carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().engineTorque) / 8f) / 1000f;
+        handlingfill = ((carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength * 600f) + (carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength * 600f + carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().maxspeed / 20f) + carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold * 100f) / 1000f;  
+        driftfill = (carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold)*2f;
         menuGUI.barSpeed.fillAmount = speedfill;
         menuGUI.barTurbo.fillAmount = turbofill;
         menuGUI.barHandling.fillAmount = handlingfill;

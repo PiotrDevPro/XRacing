@@ -6,6 +6,8 @@ public class DamagePartsHood : MonoBehaviour
 {
     public static DamagePartsHood manage;
     [SerializeField] Transform carPart;
+    [SerializeField] Transform carPart2;
+    [SerializeField] Transform carPart3;
     public Transform wheels1;
     public Transform wheels2;
     public Transform wheels1col;
@@ -39,10 +41,22 @@ public class DamagePartsHood : MonoBehaviour
 
             if (point <= 30)
             {
-                if (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 1 || PlayerPrefs.GetInt("CurrentCar") == 2 || PlayerPrefs.GetInt("CurrentCar") == 7)
+                if (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 1 || PlayerPrefs.GetInt("CurrentCar") == 2 || PlayerPrefs.GetInt("CurrentCar") == 7
+                    || PlayerPrefs.GetInt("CurrentCar") == 11)
                 {
                     carPart.gameObject.SetActive(false);
                     Amplitude.Instance.logEvent("FrontPartsDamaged");
+                }
+                
+            }
+
+            if (point <= 27)
+            {
+                if (PlayerPrefs.GetInt("CurrentCar") == 11)
+                {
+                    carPart2.gameObject.SetActive(false);
+                    carPart3.gameObject.SetActive(false);
+                    Amplitude.Instance.logEvent("WindowDoorsIkarusDamaged");
                 }
             }
             if (point <= 25)

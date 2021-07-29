@@ -243,6 +243,7 @@ public class CarDamage : MonoBehaviourPunCallbacks, IDamageble
 
         if (SceneManager.GetActiveScene().name == "level_top_speed_test")
         {
+
             if (other.CompareTag("Car") && !isDead && !Checkpoint.manage.isWin || other.CompareTag("CarAI") && !isDead && !Checkpoint.manage.isWin)
             {
                 energyBarProgress = GameObject.Find("LifeGauge");

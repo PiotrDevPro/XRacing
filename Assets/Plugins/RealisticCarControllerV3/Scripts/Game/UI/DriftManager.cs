@@ -40,9 +40,6 @@ public class DriftManager : MonoBehaviour
             playerCar = GameObject.FindGameObjectWithTag("Player");
         }
 
-        print(countDrift);
-        print(PlayerPrefs.GetInt("Rating"));
-
     }
 
     void FixedUpdate()

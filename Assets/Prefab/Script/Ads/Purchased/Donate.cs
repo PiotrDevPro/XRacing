@@ -7,14 +7,17 @@ public class Donate : MonoBehaviour
 {
     public void OnPurchaseComplete(Product product)
     {
+        if (product.definition.id == "com.gamedevcorp.xracing.donate")
+        {
+            GameObject snd = GameObject.Find("Purchased");
+            snd.GetComponent<AudioSource>().Play();
+            Amplitude.Instance.logEvent("Donate");
+            Invoke("CoinFx", 0.5f);
 
-        GameObject snd = GameObject.Find("Purchased");
-        snd.GetComponent<AudioSource>().Play();
-        Amplitude.Instance.logEvent("Donate");
-        Invoke("CoinFx", 0.5f);
-
-        Invoke("CoinLatency", 0.5f);
-        Invoke("CashFlow", 1.7f);
+            Invoke("CoinLatency", 0.5f);
+            Invoke("CashFlow", 1.7f);
+        }
+        
     }
 
     public void OnPurchaseFailure(Product product, PurchaseFailureReason reason)

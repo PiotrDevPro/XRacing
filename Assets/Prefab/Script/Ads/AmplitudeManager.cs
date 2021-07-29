@@ -47,8 +47,6 @@ public class AmplitudeManager : MonoBehaviour
 
     private void Update()
     {
-        print(PlayerPrefs.GetInt("AppActive"));
-        print(PlayerPrefs.GetInt("AppActivate"));
     }
     private void OnApplicationFocus(bool focus)
     {

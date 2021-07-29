@@ -48,15 +48,57 @@ public class netManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.CurrentRoom.Name == "Highway") 
         {
-            Amplitude.Instance.logEvent("HighwayLevelNetwork");
-            newVehicle = PhotonNetwork.Instantiate("Cars/" + CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")].name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
-            isHighwayNetworkActive = true;
+            /// fog
+            RenderSettings.fog = true;
+            RenderSettings.fogColor = new Color(0.9622642f, 0.7006145f, 0.4130474f);
+            RenderSettings.fogMode = FogMode.Exponential;
+            RenderSettings.fogDensity = 0.003f;
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 10 )
+            {
+                Amplitude.Instance.logEvent("HighwayLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate(CathingLoadFiles.manage.car_buick.name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                
+                isHighwayNetworkActive = true;
+            }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 11)
+            {
+                Amplitude.Instance.logEvent("HighwayLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate(CathingLoadFiles.manage.ikarus.name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+
+                isHighwayNetworkActive = true;
+            }
+
+            else if (PlayerPrefs.GetInt("CurrentCar") != 10  || PlayerPrefs.GetInt("CurrentCar") != 11)
+            {
+                Amplitude.Instance.logEvent("HighwayLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate("Cars/" + CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")].name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                isHighwayNetworkActive = true;
+            }
+            
 
         } 
         else if (PhotonNetwork.CurrentRoom.Name == "City")
         {
-            Amplitude.Instance.logEvent("CityLevelNetwork");
-            newVehicle = PhotonNetwork.Instantiate("Cars/" + CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")].name, new Vector3(Random.Range(-755f, -757f), Random.Range(2f,4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+            if (PlayerPrefs.GetInt("CurrentCar") == 10 )
+            {
+                Amplitude.Instance.logEvent("CityLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate(CathingLoadFiles.manage.car_buick.name, new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+            }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 11)
+            {
+                Amplitude.Instance.logEvent("CityLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate(CathingLoadFiles.manage.ikarus.name, new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+            }
+            else if (PlayerPrefs.GetInt("CurrentCar") != 10 || PlayerPrefs.GetInt("CurrentCar") != 11)
+            {
+                Amplitude.Instance.logEvent("CityLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate("Cars/" + CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")].name, new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+            }
+
+            
         }
 
         RCC.RegisterPlayerVehicle(newVehicle);
@@ -73,19 +115,19 @@ public class netManager : MonoBehaviourPunCallbacks
         #region Load Wheel Susspens
         if (PlayerPrefs.GetInt("WheelSussp" + PlayerPrefs.GetInt("CurrentCar")) != 0)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspFront" + PlayerPrefs.GetInt("CurrentCar"));
-            newVehicle.GetComponent<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspFront" + PlayerPrefs.GetInt("CurrentCar"));
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspFront" + PlayerPrefs.GetInt("CurrentCar"));
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspFront" + PlayerPrefs.GetInt("CurrentCar"));
 
-            newVehicle.GetComponent<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspRear" + PlayerPrefs.GetInt("CurrentCar"));
-            newVehicle.GetComponent<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspRear" + PlayerPrefs.GetInt("CurrentCar"));
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspRear" + PlayerPrefs.GetInt("CurrentCar"));
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspRear" + PlayerPrefs.GetInt("CurrentCar"));
         }
         else
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
 
-            newVehicle.GetComponent<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
         }
 
         #endregion
@@ -93,18 +135,18 @@ public class netManager : MonoBehaviourPunCallbacks
         #region Load EngineUpdate
         if (MainMenuManager.manage.svChecked.engine0)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().maxspeed = newVehicle.GetComponent<RCC_CarControllerV3>().defMaxSpeed;
-            newVehicle.GetComponent<RCC_CarControllerV3>().engineTorque = newVehicle.GetComponent<RCC_CarControllerV3>().engineTorque;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().maxspeed = newVehicle.GetComponentInChildren<RCC_CarControllerV3>().defMaxSpeed;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().engineTorque = newVehicle.GetComponentInChildren<RCC_CarControllerV3>().engineTorque;
         }
         if (MainMenuManager.manage.svChecked.engine1)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().maxspeed += 15f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().engineTorque += 250f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().maxspeed += 15f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 250f;
         }
         if (MainMenuManager.manage.svChecked.engine2)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().maxspeed += 30f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().engineTorque += 350f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().maxspeed += 30f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().engineTorque += 350f;
         }
 
         if (MainMenuManager.manage.svChecked.engine3)
@@ -184,34 +226,34 @@ public class netManager : MonoBehaviourPunCallbacks
         #region TCS 
         if (PlayerPrefs.GetInt("TCS" + PlayerPrefs.GetInt("CurrentCar")) == 1 && PlayerPrefs.GetInt("selectTCS" + PlayerPrefs.GetInt("CurrentCar")) == 1)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().TCSThreshold = PlayerPrefs.GetFloat("TCSsetup" + PlayerPrefs.GetInt("CurrentCar"));
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().TCSThreshold = PlayerPrefs.GetFloat("TCSsetup" + PlayerPrefs.GetInt("CurrentCar"));
         }
         else
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().TCS = false;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().TCS = false;
         }
         #endregion
 
         #region ESP
         if (PlayerPrefs.GetInt("ESP" + PlayerPrefs.GetInt("CurrentCar")) == 1 && PlayerPrefs.GetInt("selectESP" + PlayerPrefs.GetInt("CurrentCar")) == 1)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().ESPThreshold = PlayerPrefs.GetFloat("ESPsetup" + PlayerPrefs.GetInt("CurrentCar"));
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().ESPThreshold = PlayerPrefs.GetFloat("ESPsetup" + PlayerPrefs.GetInt("CurrentCar"));
         }
         else
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().ESP = false;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().ESP = false;
         }
         #endregion
 
         #region Traction 
         if (PlayerPrefs.GetInt("Traction" + PlayerPrefs.GetInt("CurrentCar")) == 1 && PlayerPrefs.GetInt("selectTraction" + PlayerPrefs.GetInt("CurrentCar")) == 1)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().tractionHelperStrength = PlayerPrefs.GetFloat("TractionSetup" + PlayerPrefs.GetInt("CurrentCar"));
-            newVehicle.GetComponent<RCC_CarControllerV3>().tractionHelper = true;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().tractionHelperStrength = PlayerPrefs.GetFloat("TractionSetup" + PlayerPrefs.GetInt("CurrentCar"));
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().tractionHelper = true;
         }
         else
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().tractionHelper = false;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().tractionHelper = false;
         }
 
         #endregion
@@ -219,7 +261,7 @@ public class netManager : MonoBehaviourPunCallbacks
         #region load Car Config
         if (!MainMenuManager.NOSisChecked)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().useNOS = false;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().useNOS = false;
             nosButton.SetActive(false);
             noslevel.interactable = false;
             noslevel.maxValue = 0;
@@ -227,31 +269,31 @@ public class netManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().useNOS = true;
-            newVehicle.GetComponent<RCC_CarControllerV3>().maxspeed += 35f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().useNOS = true;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().maxspeed += 35f;
             nosButton.SetActive(true);
             noslevel.interactable = true;
         }
         if (!MainMenuManager.TurboisChecked)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().useTurbo = false;
-            newVehicle.GetComponent<RCC_CarControllerV3>().useExhaustFlame = false;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().useTurbo = false;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().useExhaustFlame = false;
 
         }
         else
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().useTurbo = true;
-            newVehicle.GetComponent<RCC_CarControllerV3>().maxspeed += 10f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().useExhaustFlame = true;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().useTurbo = true;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().maxspeed += 10f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().useExhaustFlame = true;
         }
         if (!MainMenuManager.ABSisChecked)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().ABS = false;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().ABS = false;
         }
         else
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().ABS = true;
-            newVehicle.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.1f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().ABS = true;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.1f;
         }
 
         #endregion
@@ -264,122 +306,122 @@ public class netManager : MonoBehaviourPunCallbacks
         }
         if (MainMenuManager.manage.svChecked.handling1)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.05f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.05f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.05f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.05f;
         }
         if (MainMenuManager.manage.svChecked.handling2)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.1f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.1f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.1f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.1f;
         }
         if (MainMenuManager.manage.svChecked.handling3)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.15f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.15f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.15f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.15f;
         }
         if (MainMenuManager.manage.svChecked.handling4)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.2f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.2f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.2f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.2f;
         }
         if (MainMenuManager.manage.svChecked.handling5)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.25f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.25f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.25f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.25f;
         }
         if (MainMenuManager.manage.svChecked.handling6)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.28f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.28f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.28f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.28f;
         }
         if (MainMenuManager.manage.svChecked.handling7)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.35f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.35f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.35f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.35f;
         }
         if (MainMenuManager.manage.svChecked.handling8)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.45f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.45f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.45f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.45f;
         }
         if (MainMenuManager.manage.svChecked.handling9)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.6f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.6f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.6f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.6f;
         }
         if (MainMenuManager.manage.svChecked.handling10)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.7f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.7f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.7f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.7f;
         }
         if (MainMenuManager.manage.svChecked.handling11)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.8f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.8f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.8f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.8f;
         }
         if (MainMenuManager.manage.svChecked.handling12)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.9f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.9f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.9f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().steerHelperAngularVelStrength += 0.9f;
         }
         #endregion
 
         #region BrakeUpdate
         if (MainMenuManager.manage.svChecked.brake0)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().ABSThreshold = 0.1f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold = 0.1f;
             // InstantiatedCar.GetComponent<RCC_CarControllerV3>().brakeTorque = 1200f;
 
         }
         if (MainMenuManager.manage.svChecked.brake1)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.025f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().brakeTorque += 100f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.025f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 100f;
         }
         if (MainMenuManager.manage.svChecked.brake2)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.05f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().brakeTorque += 200f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.05f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 200f;
         }
         if (MainMenuManager.manage.svChecked.brake3)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.075f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().brakeTorque += 300f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.075f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 300f;
         }
         if (MainMenuManager.manage.svChecked.brake4)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.125f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().brakeTorque += 400f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.125f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 400f;
         }
         if (MainMenuManager.manage.svChecked.brake5)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.2f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().brakeTorque += 500f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.2f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 500f;
         }
         if (MainMenuManager.manage.svChecked.brake6)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.225f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().brakeTorque += 600f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.225f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 600f;
         }
         if (MainMenuManager.manage.svChecked.brake7)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.3f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().brakeTorque += 700f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.3f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 700f;
         }
         if (MainMenuManager.manage.svChecked.brake8)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.35f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().brakeTorque += 800f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.35f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 800f;
         }
         if (MainMenuManager.manage.svChecked.brake9)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.4f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().brakeTorque += 900f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.4f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 900f;
         }
         if (MainMenuManager.manage.svChecked.brake10)
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>().ABSThreshold += 0.45f;
-            newVehicle.GetComponent<RCC_CarControllerV3>().brakeTorque += 1000f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold += 0.45f;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>().brakeTorque += 1000f;
         }
         #endregion
 
@@ -389,22 +431,22 @@ public class netManager : MonoBehaviourPunCallbacks
             switch (PlayerPrefs.GetString("DriveMode"))
             {
                 case "":
-                    newVehicle.GetComponent<RCC_CarControllerV3>()._wheelTypeChoise = RCC_CarControllerV3.WheelType.RWD;
+                    newVehicle.GetComponentInChildren<RCC_CarControllerV3>()._wheelTypeChoise = RCC_CarControllerV3.WheelType.RWD;
                     break;
                 case "RWD":
-                    newVehicle.GetComponent<RCC_CarControllerV3>()._wheelTypeChoise = RCC_CarControllerV3.WheelType.RWD;
+                    newVehicle.GetComponentInChildren<RCC_CarControllerV3>()._wheelTypeChoise = RCC_CarControllerV3.WheelType.RWD;
                     break;
                 case "FWD":
-                    newVehicle.GetComponent<RCC_CarControllerV3>()._wheelTypeChoise = RCC_CarControllerV3.WheelType.FWD;
+                    newVehicle.GetComponentInChildren<RCC_CarControllerV3>()._wheelTypeChoise = RCC_CarControllerV3.WheelType.FWD;
                     break;
                 case "AWD":
-                    newVehicle.GetComponent<RCC_CarControllerV3>()._wheelTypeChoise = RCC_CarControllerV3.WheelType.AWD;
+                    newVehicle.GetComponentInChildren<RCC_CarControllerV3>()._wheelTypeChoise = RCC_CarControllerV3.WheelType.AWD;
                     break;
             }
         }
         else
         {
-            newVehicle.GetComponent<RCC_CarControllerV3>()._wheelTypeChoise = RCC_CarControllerV3.WheelType.RWD;
+            newVehicle.GetComponentInChildren<RCC_CarControllerV3>()._wheelTypeChoise = RCC_CarControllerV3.WheelType.RWD;
         }
         #endregion
 
@@ -414,6 +456,7 @@ public class netManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        
         maxspd.text = "MAX:" + newVehicle.GetComponent<RCC_CarControllerV3>().maxspeed.ToString() + "KM/H";
         if (newVehicle.GetComponent<RCC_CarControllerV3>().speed > 5f)
         {
