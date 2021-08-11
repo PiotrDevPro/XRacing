@@ -70,7 +70,6 @@ public class RCC_DetachablePart : MonoBehaviour{
 
 		//	Locks all motions of Configurable Joint at start.
 		if (lockAtStart)
-			print(lockAtStart);
 			StartCoroutine(LockParts ());
 
 	}

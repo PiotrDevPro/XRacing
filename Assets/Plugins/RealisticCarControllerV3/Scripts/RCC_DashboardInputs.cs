@@ -154,6 +154,11 @@ public class RCC_DashboardInputs : MonoBehaviour {
 		DPTrunk.manage.wheels2col.gameObject.SetActive(true);
 		DPTrunk.manage.Blow.SetActive(false);
 		DPTrunk.manage.point = 50;
+		DPTrunkTwo.manage.wheels1.gameObject.SetActive(true);
+		DPTrunkTwo.manage.wheels2.gameObject.SetActive(true);
+		DPTrunkTwo.manage.wheels1col.gameObject.SetActive(true);
+		DPTrunkTwo.manage.wheels2col.gameObject.SetActive(true);
+		DPTrunkTwo.manage.point = 50;
 		infoPanel.SetActive(true);
 		infoPanel.GetComponentInChildren<Text>().text = "-500";
 		GameObject checkpointSound = GameObject.Find("checkpointSnd");

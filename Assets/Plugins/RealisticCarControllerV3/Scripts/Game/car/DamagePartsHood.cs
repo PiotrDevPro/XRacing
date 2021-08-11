@@ -27,7 +27,11 @@ public class DamagePartsHood : MonoBehaviour
     {
         if (col.CompareTag("CarAI") || col.CompareTag("Car"))
         {
-             point -= 1;
+            
+            if (carController.speed <= 50)
+            {
+                point -= 1;
+            }
 
              if (carController.speed > 50)
               {
@@ -73,6 +77,8 @@ public class DamagePartsHood : MonoBehaviour
                 wheels2col.gameObject.SetActive(false);
                 Amplitude.Instance.logEvent("wheel1damaged + wheel1damaged");
             }
+
+            print(point);
         }
     }
 }

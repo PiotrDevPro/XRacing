@@ -57,7 +57,7 @@ public class netManager : MonoBehaviourPunCallbacks
             if (PlayerPrefs.GetInt("CurrentCar") == 10 )
             {
                 Amplitude.Instance.logEvent("HighwayLevelNetwork");
-                newVehicle = PhotonNetwork.Instantiate(CathingLoadFiles.manage.car_buick.name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle = PhotonNetwork.Instantiate(CathingLoadFiles.manage.townCar_ab.name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
                 
                 isHighwayNetworkActive = true;
             }
@@ -84,7 +84,7 @@ public class netManager : MonoBehaviourPunCallbacks
             if (PlayerPrefs.GetInt("CurrentCar") == 10 )
             {
                 Amplitude.Instance.logEvent("CityLevelNetwork");
-                newVehicle = PhotonNetwork.Instantiate(CathingLoadFiles.manage.car_buick.name, new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle = PhotonNetwork.Instantiate(CathingLoadFiles.manage.townCar_ab.name, new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
             }
 
             if (PlayerPrefs.GetInt("CurrentCar") == 11)

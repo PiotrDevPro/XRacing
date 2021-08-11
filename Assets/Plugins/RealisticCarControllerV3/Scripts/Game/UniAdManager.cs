@@ -117,7 +117,7 @@ public class UniAdManager : MonoBehaviour
                     CarManager.manage.lose.SetActive(false);
                     if (PlayerPrefs.GetInt("Soundtrack") == 0)
                     {
-                        Pause.manage.tracks[Random.Range(0, 6)].Play();
+                        Pause.manage.StartSoundtrack();
                     }
                     isAdsEnergy = false;
                     RCC_CarControllerV3.manage.ResetCarForCoin();
@@ -132,6 +132,11 @@ public class UniAdManager : MonoBehaviour
                     DPTrunk.manage.wheels1col.gameObject.SetActive(true);
                     DPTrunk.manage.wheels2col.gameObject.SetActive(true);
                     DPTrunk.manage.point = 50;
+                    DPTrunkTwo.manage.point = 50;
+                    DPTrunkTwo.manage.wheels1.gameObject.SetActive(true);
+                    DPTrunkTwo.manage.wheels2.gameObject.SetActive(true);
+                    DPTrunkTwo.manage.wheels1col.gameObject.SetActive(true);
+                    DPTrunkTwo.manage.wheels2col.gameObject.SetActive(true);
                     Amplitude.Instance.logEvent("OnRewardedVideoForEnergy");
                 }
                 if (isAdsForCarCrashed)
@@ -163,6 +168,11 @@ public class UniAdManager : MonoBehaviour
                     DPTrunk.manage.wheels2col.gameObject.SetActive(true);
                     DPTrunk.manage.Blow.SetActive(false);
                     DPTrunk.manage.point = 50;
+                    DPTrunkTwo.manage.point = 50;
+                    DPTrunkTwo.manage.wheels1.gameObject.SetActive(true);
+                    DPTrunkTwo.manage.wheels2.gameObject.SetActive(true);
+                    DPTrunkTwo.manage.wheels1col.gameObject.SetActive(true);
+                    DPTrunkTwo.manage.wheels2col.gameObject.SetActive(true);
                     RCC_CarControllerV3.manage.ResetCrashedCar();
                 }
 

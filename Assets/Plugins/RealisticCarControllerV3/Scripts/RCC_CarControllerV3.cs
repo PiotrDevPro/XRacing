@@ -1010,6 +1010,68 @@ public class RCC_CarControllerV3 : MonoBehaviour
 			{
 				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(0, (FrontLeftWheelCollider.steerAngle) * 6, 0);
 			}
+
+			if (PlayerPrefs.GetInt("CurrentCar") == 0)
+			{
+				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
+			}
+
+			if (PlayerPrefs.GetInt("CurrentCar") == 1)
+			{
+				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
+			}
+
+			if (PlayerPrefs.GetInt("CurrentCar") == 2)
+			{
+				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
+			}
+
+			if (PlayerPrefs.GetInt("CurrentCar") == 3)
+			{
+				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
+			}
+
+			if (PlayerPrefs.GetInt("CurrentCar") == 4)
+			{
+				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
+			}
+
+			if (PlayerPrefs.GetInt("CurrentCar") == 5)
+			{
+				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
+			}
+
+			if (PlayerPrefs.GetInt("CurrentCar") == 6)
+			{
+				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
+			}
+
+			if (PlayerPrefs.GetInt("CurrentCar") == 7)
+			{
+				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
+			}
+
+			if (PlayerPrefs.GetInt("CurrentCar") == 8)
+			{
+				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
+			}
+
+			if (PlayerPrefs.GetInt("CurrentCar") == 9)
+			{
+				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
+			}
+
+			if (PlayerPrefs.GetInt("CurrentCar") == 10)
+			{
+				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
+			}
+
+			if (PlayerPrefs.GetInt("CurrentCar") == 12)
+			{
+				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
+			}
+
+
 		}
 			
 		
@@ -1724,7 +1786,7 @@ public class RCC_CarControllerV3 : MonoBehaviour
 			if (transform.eulerAngles.z < 300 && transform.eulerAngles.z > 60)
 			{
 				resetTime += Time.deltaTime;
-				if (resetTime > 3)
+				if (resetTime > 0.7f)
 				{
 					transform.rotation = Quaternion.identity;
 					transform.position = new Vector3(transform.position.x, transform.position.y + 3, transform.position.z);
@@ -1739,13 +1801,13 @@ public class RCC_CarControllerV3 : MonoBehaviour
 	public void ResetCrashedCar()
     {
 		transform.rotation = Quaternion.identity;
-		transform.position = new Vector3(transform.position.x, transform.position.y + 3, transform.position.z);
+		transform.position = new Vector3(transform.position.x, transform.position.y + 5, transform.position.z);
 		resetTime = 0f;
 	}
 
 	public void ResetCarForCoin()
     {
-		if (SceneManager.GetActiveScene().name != "battle_online" && SceneManager.GetActiveScene().name != "city_online")
+		if (SceneManager.GetActiveScene().name != "battle_online" && SceneManager.GetActiveScene().name != "city_online" && SceneManager.GetActiveScene().name != "level_lap6")
 		{
 			if (PlayerPrefs.GetFloat("DriftCoin") >= 499)
 			{
@@ -1761,6 +1823,26 @@ public class RCC_CarControllerV3 : MonoBehaviour
 				CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
 				//transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
 				//transform.position = CarSpawnNew.manage.spawnPoint.position;
+				resetTime = 0f;
+			}
+		}
+
+		if (SceneManager.GetActiveScene().name == "level_lap6")
+        {
+			if (PlayerPrefs.GetFloat("DriftCoin") >= 499)
+			{
+				CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
+				transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
+				transform.position = CarSpawnNew.manage.spawnPoint.position;
+				resetTime = 0f;
+				PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - 500);
+			}
+			else
+			{
+				UniAdManager.manage.ShowAdShop();
+				CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
+				transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
+				transform.position = CarSpawnNew.manage.spawnPoint.position;
 				resetTime = 0f;
 			}
 		}

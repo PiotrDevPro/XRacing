@@ -236,26 +236,31 @@ public class RCC_Camera : MonoBehaviour {
                 case 0:
                     cameraMode = CameraMode.TPS;
                     print("Camera_TPS");
+                    Amplitude.Instance.logEvent("Camera_TPS");
                     break;
                 case 1:
                     cameraMode = CameraMode.FPS;
                     print("Camera_FPS");
-                     break;
+                    Amplitude.Instance.logEvent("Camera_FPS");
+                    break;
                 case 2:
                     cameraMode = CameraMode.DRIVER;
                     print("Camera_Driver");
+                Amplitude.Instance.logEvent("Camera_Driver");
                     break;
                 case 3:
                      cameraMode = CameraMode.WHEEL;
                      print("Camera_Wheel");
-                     break;
+                Amplitude.Instance.logEvent("Camera_Wheel");
+                    break;
                 //case 4:
                     //cameraMode = CameraMode.FREE;
                     //break;
                 case 4:
                     cameraMode = CameraMode.FIXED;
                     print("Camera_FIXED");
-                    break;
+                Amplitude.Instance.logEvent("Camera_FIXED");
+                break;
             }
 	}
 

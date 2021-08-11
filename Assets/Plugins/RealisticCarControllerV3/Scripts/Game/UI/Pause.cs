@@ -49,7 +49,16 @@ public class Pause : MonoBehaviour
 
         if (PlayerPrefs.GetInt("Soundtrack") == 0)
         {
-                tracks[Random.Range(0, 6)].Play();
+            //tracks[Random.Range(0, 6)].Play();
+            LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.782f;
+
+            LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.25f;
+            AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], tracks[6], LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponent<AudioSource>(),
+            LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponent<AudioSource>(),
+            LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponent<AudioSource>(),LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponent<AudioSource>(),
+            LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponent<AudioSource>()};
+            _tracks[Random.Range(0, _tracks.Length)].Play();
+            print(Random.Range(0, _tracks.Length));
         }
 
         if (SceneManager.GetActiveScene().name == "city_online")
@@ -62,6 +71,18 @@ public class Pause : MonoBehaviour
         PausePanel.SetActive(false);
         _blur = FindObjectOfType<CameraMotionBlur>();
 
+    }
+
+    public void StartSoundtrack()
+    {
+        LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.782f;
+        LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>().volume = 0.247f;
+        AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], tracks[6], LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponent<AudioSource>(),
+        LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>(),
+        LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponent<AudioSource>(),LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponent<AudioSource>(),
+        LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponent<AudioSource>(),
+        LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponent<AudioSource>()};
+        _tracks[Random.Range(0, _tracks.Length)].Play();
     }
 
     private void Update()
@@ -99,6 +120,14 @@ public class Pause : MonoBehaviour
             tracks[4].Stop();
             tracks[5].Stop();
             tracks[6].Stop();
+            LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponentInChildren<AudioSource>().Stop();
         }
     }
 
@@ -209,7 +238,16 @@ public class Pause : MonoBehaviour
         if (toggle.isOn)
         {
             PlayerPrefs.SetInt("Soundtrack", 0);
-            tracks[Random.Range(0, 7)].GetComponent<AudioSource>().Play();
+            LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.782f;
+            LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>().volume = 0.25f;
+            AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], tracks[6], LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponent<AudioSource>(),
+            LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>(),LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponent<AudioSource>(),
+            LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponent<AudioSource>(),LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponent<AudioSource>(),
+            LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponent<AudioSource>()};
+
+            _tracks[Random.Range(0, _tracks.Length)].Play();
+            print(Random.Range(0, _tracks.Length));
+            //tracks[Random.Range(0, 7)].GetComponent<AudioSource>().Play();
             Amplitude.Instance.logEvent("SoundeEnable");
             if (SceneManager.GetActiveScene().name == "city_online")
             {
@@ -226,6 +264,14 @@ public class Pause : MonoBehaviour
             tracks[4].GetComponent<AudioSource>().Stop();
             tracks[5].GetComponent<AudioSource>().Stop();
             tracks[6].GetComponent<AudioSource>().Stop();
+            LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponentInChildren<AudioSource>().Stop();
             Amplitude.Instance.logEvent("SoundeDisable");
             if (SceneManager.GetActiveScene().name == "city_online")
             {

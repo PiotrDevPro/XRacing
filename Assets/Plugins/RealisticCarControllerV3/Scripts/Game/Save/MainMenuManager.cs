@@ -26,6 +26,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject versionApp;
     public GameObject network_manager_active;
     public bool isFreerideActive = false;
+    public bool isCheckpointLevel = false;
     public bool isAllvsYou = false;
     public bool isTopSpeedActive = false;
     //public bool isCityNetworkRoom;
@@ -378,7 +379,6 @@ public class MainMenuManager : MonoBehaviour
                     
                     VSetting.car.SetActive(true);
                     print(currentCarNumber);
-                    print(VSetting.car);
                     currentCar = VSetting;
                 }
                 else
@@ -394,7 +394,7 @@ public class MainMenuManager : MonoBehaviour
 
             case PanelsUI.MainMenu:
                 
-                network_manager_active.SetActive(true);
+                network_manager_active.SetActive(false);
                 menuPanels.MainMenu.SetActive(true);
                 menuPanels.SelectCar.SetActive(false);
                 menuPanels.SelectLevel.SetActive(false);
@@ -418,7 +418,7 @@ public class MainMenuManager : MonoBehaviour
                 menuPanels._NetworkRoom.SetActive(false);
                 menuGUI._playerName.text = PlayerPrefs.GetString("Player");
                 Amplitude.Instance.logEvent("SelectLevel");
-                if (PlayerPrefs.GetInt("Rating") >= 50)
+                if (PlayerPrefs.GetInt("Rating") >= 60)
                 {
                     menuPanels.FreeridePanel.SetActive(false);
                     menuPanels.FreerideBtn.interactable = true;
@@ -488,7 +488,16 @@ public class MainMenuManager : MonoBehaviour
     {
         if (toggle.isOn)
         {
-            tracks[Random.Range(0, 5)].Play();
+            CathingLoadFiles.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.732f;
+            CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.5f;
+            CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.25f;
+
+            AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], 
+                CathingLoadFiles.manage.track12_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track11_isLoaded.GetComponentInChildren<AudioSource>(),
+                    CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>(),CathingLoadFiles.manage.track14_isLoaded.GetComponentInChildren<AudioSource>(),
+                        CathingLoadFiles.manage.track15_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track16_isLoaded.GetComponentInChildren<AudioSource>(),
+                            CathingLoadFiles.manage.track17_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track18_isLoaded.GetComponentInChildren<AudioSource>()};
+            _tracks[Random.Range(0, _tracks.Length)].Play();
             PlayerPrefs.SetInt("MusicActive", 0);
         }
         else
@@ -499,6 +508,14 @@ public class MainMenuManager : MonoBehaviour
             tracks[3].Stop();
             tracks[4].Stop();
             tracks[5].Stop();
+            CathingLoadFiles.manage.track11_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            CathingLoadFiles.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            CathingLoadFiles.manage.track14_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            CathingLoadFiles.manage.track15_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            CathingLoadFiles.manage.track16_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            CathingLoadFiles.manage.track17_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            CathingLoadFiles.manage.track18_isLoaded.GetComponentInChildren<AudioSource>().Stop();
             PlayerPrefs.SetInt("MusicActive", 1);
         }
     }
@@ -557,8 +574,21 @@ public class MainMenuManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("MusicActive") != 1)
         {
-            tracks[Random.Range(0, 5)].GetComponent<AudioSource>().Play();
+            tracks[Random.Range(0,5)].GetComponent<AudioSource>().Play();
         }
+    }
+
+    public void StartSoundtrack()
+    {
+            CathingLoadFiles.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.732f;
+            CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.5f;
+            CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.25f;
+
+            AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], CathingLoadFiles.manage.track12_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track11_isLoaded.GetComponentInChildren<AudioSource>(), 
+                CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>(),CathingLoadFiles.manage.track14_isLoaded.GetComponentInChildren<AudioSource>(),
+                    CathingLoadFiles.manage.track15_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track16_isLoaded.GetComponentInChildren<AudioSource>(),
+                        CathingLoadFiles.manage.track17_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track18_isLoaded.GetComponentInChildren<AudioSource>()};
+            _tracks[Random.Range(0, _tracks.Length)].Play();
     }
 
     public void RWDMode(Toggle value)
@@ -2749,18 +2779,7 @@ public class MainMenuManager : MonoBehaviour
                 {
                     Amplitude.Instance.logEvent("Hevy666");
                 }
-                if (PlayerPrefs.GetInt("CurrentCar") == 1)
-                {
-                    Amplitude.Instance.logEvent("HotRodd 1937");
-                }
-                if (PlayerPrefs.GetInt("CurrentCar") == 2)
-                {
-                    Amplitude.Instance.logEvent("Buggy GTR");
-                }
-                if (PlayerPrefs.GetInt("CurrentCar") == 3)
-                {
-                    Amplitude.Instance.logEvent("GT 350");
-                }
+
                 if (PlayerPrefs.GetInt("CurrentCar") == 4)
                 {
                     Amplitude.Instance.logEvent("Rasta 1970");
@@ -2784,23 +2803,45 @@ public class MainMenuManager : MonoBehaviour
                 }
 
                 /// AssetBundle Cars
+                /// 
+                if (PlayerPrefs.GetInt("CurrentCar") == 1)
+                {
+                    Amplitude.Instance.logEvent("HotRodd 1937");
+                    carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 2)
+                {
+                    Amplitude.Instance.logEvent("Buggy GTR");
+                    carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 3)
+                {
+                    Amplitude.Instance.logEvent("GT 350");
+                    carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().StartEngine();
+                }
                 if (PlayerPrefs.GetInt("CurrentCar") == 9)
                 {
                     Amplitude.Instance.logEvent("Tesla T");
-                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().KillOrStartEngine();
+                    
                 }
 
                 if (PlayerPrefs.GetInt("CurrentCar") == 10)
                 {
-                    Amplitude.Instance.logEvent("TestCar");
+                    Amplitude.Instance.logEvent("TownCar");
                     carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
-                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().StartEngineNow();
+                    
                 }
 
                 if (PlayerPrefs.GetInt("CurrentCar") == 11)
                 {
                     Amplitude.Instance.logEvent("Ikarus280");
-                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().StartEngineNow();
+                   
+                }
+
+                if (PlayerPrefs.GetInt("CurrentCar") == 12)
+                {
+                    Amplitude.Instance.logEvent("ChevyGodlenWings");
                 }
             }
             else
@@ -2823,27 +2864,14 @@ public class MainMenuManager : MonoBehaviour
                 print(currentCarNumber);
                 VSetting.car.SetActive(true);
                 currentCar = VSetting;
-
                 PlayerPrefs.SetInt("CurrentCar", currentCarNumber);
-                print(PlayerPrefs.GetInt("CurrentCar"));
                 energyTx.text = "Energy: " + (carSetting[currentCarNumber].energy + PlayerPrefs.GetInt("Energy"));
 
                 if (PlayerPrefs.GetInt("CurrentCar")==0)
                 {
                     Amplitude.Instance.logEvent("Hevy666");
                 }
-                if (PlayerPrefs.GetInt("CurrentCar") == 1)
-                {
-                    Amplitude.Instance.logEvent("HotRodd 1937");
-                }
-                if (PlayerPrefs.GetInt("CurrentCar") == 2)
-                {
-                    Amplitude.Instance.logEvent("Buggy GTR");
-                }
-                if (PlayerPrefs.GetInt("CurrentCar") == 3)
-                {
-                    Amplitude.Instance.logEvent("GT 350");
-                }
+                
                 if (PlayerPrefs.GetInt("CurrentCar") == 4)
                 {
                     Amplitude.Instance.logEvent("Rasta 1970");
@@ -2868,23 +2896,42 @@ public class MainMenuManager : MonoBehaviour
 
 
                 /// AssetBundle Cars
+                /// 
+                if (PlayerPrefs.GetInt("CurrentCar") == 1)
+                {
+                    Amplitude.Instance.logEvent("HotRodd 1937");
+                    carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 2)
+                {
+                    Amplitude.Instance.logEvent("Buggy GTR");
+                    carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 3)
+                {
+                    Amplitude.Instance.logEvent("GT 350");
+                    carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                }
                 if (PlayerPrefs.GetInt("CurrentCar") == 9)
                 {
                     Amplitude.Instance.logEvent("Tesla T");
-                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().KillOrStartEngine();
                 }
                 
                 if (PlayerPrefs.GetInt("CurrentCar") == 10)
                 {
-                    Amplitude.Instance.logEvent("TestCar");
+                    Amplitude.Instance.logEvent("TownCar");
                     carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
-                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().StartEngineNow();
+                    //carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().StartEngineNow();
                 }
 
                 if (PlayerPrefs.GetInt("CurrentCar") == 11)
                 {
                     Amplitude.Instance.logEvent("Ikarus280");
-                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().StartEngineNow();
+                }
+
+                if (PlayerPrefs.GetInt("CurrentCar") == 12)
+                {
+                    Amplitude.Instance.logEvent("ChevyGodlenWings");
                 }
             }
             else
@@ -3781,6 +3828,7 @@ public class MainMenuManager : MonoBehaviour
     public void loadlevel()
     {
         Amplitude.Instance.logEvent("CheckpointsLevel");
+        isCheckpointLevel = true;
         SceneManager.LoadScene("level_lap6");
         LoadEngineUpgradeOnSelectedCar();
         LoadHandlingOnSelectedCar();
@@ -3929,7 +3977,7 @@ public class MainMenuManager : MonoBehaviour
         LoadQualitySetting();
         ButtonScale();
         SoundOnOff();
-        Soundtracks();
+        
         //// Audio
         menuGUI.audio.isOn = (PlayerPrefs.GetInt("AudioActive") == 0) ? true : false;
         audioUi.fxAudio.GetComponent<AudioSource>().mute = (PlayerPrefs.GetInt("AudioActive") == 0) ? false : true;
@@ -3961,6 +4009,7 @@ public class MainMenuManager : MonoBehaviour
             menuGUI.adsEnergyBtn.interactable = false;
         }
         CurrentPanel(0);
+        Soundtracks();
     }
 
 

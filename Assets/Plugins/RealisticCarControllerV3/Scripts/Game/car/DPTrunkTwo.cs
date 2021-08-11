@@ -11,6 +11,7 @@ public class DPTrunkTwo : MonoBehaviour
     public Transform wheels2;
     public Transform wheels1col;
     public Transform wheels2col;
+    [SerializeField] Transform carPart;
 
 
     private void Awake()
@@ -22,8 +23,11 @@ public class DPTrunkTwo : MonoBehaviour
     {
         if (col.CompareTag("CarAI") || col.CompareTag("Car"))
         {
-            point -= 1;
-            print(point);
+            
+            if (carController.speed <= 50)
+            {
+                point -= 1;
+            }
 
             if (carController.speed > 50)
             {
@@ -39,6 +43,10 @@ public class DPTrunkTwo : MonoBehaviour
             {
                 wheels1.gameObject.SetActive(false);
                 wheels1col.gameObject.SetActive(false);
+               if (PlayerPrefs.GetInt("CurrentCar")==10) //bullet car
+                {
+                    carPart.gameObject.SetActive(false);
+                }
             }
 
             if (point <= 15)
@@ -46,6 +54,8 @@ public class DPTrunkTwo : MonoBehaviour
                 wheels2.gameObject.SetActive(false);
                 wheels2col.gameObject.SetActive(false);
             }
+
+            print(point);
         }
     }
 }

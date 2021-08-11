@@ -39,6 +39,7 @@ using UnityEngine;
         private GameObject erndCoinTx;
         [SerializeField] Text maxPointNumberWinPanel;
         [SerializeField] Text maxPointNumberLosePanel;
+        [SerializeField] Text maxPointNumber;
         [SerializeField] GameObject CheckpointContainer;
         [SerializeField] Text energy;
         [SerializeField] GameObject EnergyBar;
@@ -49,6 +50,8 @@ using UnityEngine;
         private GameObject point4;
         private GameObject point5;
         private GameObject point6;
+        [SerializeField] private GameObject point7;
+        [SerializeField] private GameObject point8;
         private GameObject finish;
         private GameObject CheckPointNetwork;
         private GameObject AnimBonus;
@@ -56,7 +59,14 @@ using UnityEngine;
 
         public bool isWin = false;
 
-        private GameObject[] carAi1;
+        [Header("LoadingObjects")]
+        [SerializeField] GameObject moutnting_vsAll;
+        [SerializeField] GameObject moutnting_Checkpoint;
+        [SerializeField] GameObject moutnting_desert;
+    [SerializeField] GameObject ground_green;
+        [SerializeField] GameObject ground_desert;
+
+    private GameObject[] carAi1;
         private void Awake()
         {
             manage = this;
@@ -115,20 +125,47 @@ using UnityEngine;
 
             PlayerPrefs.SetInt("erndcoin", 0);
             SaveManager.laps = 0;
-
+        // Start All time [depend by Levels]
             if (SceneManager.GetActiveScene().name == "level_top_speed_test")
             {
-                curr += 55f;
-                maxPointNumberWinPanel.text = "/2";
-                maxPointNumberLosePanel.text = "/2";
+                curr = 93f;
+                maxPointNumberWinPanel.text = "/5";
+                maxPointNumberLosePanel.text = "/5";
+                maxPointNumber.text = "/5";
             }
 
-            if (SceneManager.GetActiveScene().name == "level_lap6")
+        if (SceneManager.GetActiveScene().name == "level_lap6" && MainMenuManager.manage.isCheckpointLevel)
             {
+
+                moutnting_vsAll.SetActive(false);
+                moutnting_Checkpoint.SetActive(true);
+                moutnting_desert.SetActive(false);
+                ground_desert.SetActive(false);
                 maxPointNumberLosePanel.text = "/10";
                 maxPointNumberWinPanel.text = "/10";
+                
             }
+
+        if (SceneManager.GetActiveScene().name == "level_lap6" && MainMenuManager.manage.isAllvsYou)
+        {
+
+            moutnting_vsAll.SetActive(true);
+            moutnting_Checkpoint.SetActive(false);
+            moutnting_desert.SetActive(false);
+            ground_desert.SetActive(false);
+
         }
+
+        if (SceneManager.GetActiveScene().name == "level_lap6" && MainMenuManager.manage.isFreerideActive)
+        {
+            moutnting_vsAll.SetActive(false);
+            moutnting_Checkpoint.SetActive(false);
+            ground_green.SetActive(false);
+            moutnting_desert.SetActive(true);
+            ground_desert.SetActive(true);
+
+        }
+    }
         private void Update()
         {
 
@@ -187,7 +224,7 @@ using UnityEngine;
 
                     if (SceneManager.GetActiveScene().name == "level_top_speed_test")
                     {
-                        curr += 40f;
+                        curr += 37f;
                         Amplitude.Instance.logEvent("TopSpeedMode1");
                     }
                     if (SceneManager.GetActiveScene().name == "battle_online")
@@ -199,15 +236,16 @@ using UnityEngine;
                     else if (SceneManager.GetActiveScene().name != "battle_online")
                     {
                         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
-                        //print(PlayerPrefs.GetFloat("DriftCoin"));
                         checkpointSound.GetComponent<AudioSource>().Play();
                         totalPoint += 1;
                         coinAddAnim.GetComponent<Animator>().SetBool("push", true);
                         anim.GetComponent<Animator>().SetBool("push", false);
                         erndCoin += 150;
+                        PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 1);
                         checkPointlb.GetComponent<Text>().text = totalPoint.ToString();
                         StopAllCoroutines();
                     }
+
                     countPass += 1;
                     count = 0;
                     countPlayerEnter = 0;
@@ -222,6 +260,7 @@ using UnityEngine;
                     if (SceneManager.GetActiveScene().name != "battle_online")
                     {
                         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
+                        PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 1);
                         Amplitude.Instance.logEvent("CheckpointMode2");
                         countPass += 1;
                         totalPoint += 1;
@@ -231,20 +270,26 @@ using UnityEngine;
                         erndCoin += 150;
                         checkPointlb.GetComponent<Text>().text = totalPoint.ToString();
                         StopAllCoroutines();
-                    }
+                        point1.transform.position = point3.transform.position;
+                }
                     if (SceneManager.GetActiveScene().name == "level_top_speed_test")
                     {
-                        Amplitude.Instance.logEvent("TopSpeedModeWin");
-                        pauza.tracks[0].Stop();
-                        pauza.tracks[1].Stop();
-                        pauza.tracks[2].Stop();
-                        pauza.tracks[3].Stop();
-                        pauza.tracks[4].Stop();
-                        pauza.tracks[5].Stop();
-                        pauza.tracks[6].Stop();
-                        PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 10);
-                        Invoke("Win", 1f);
-                    }
+
+                        Amplitude.Instance.logEvent("TopSpeedMode2");
+                        PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 7);
+                        countPass += 1;
+                        totalPoint += 1;
+                        curr += 20f;
+                        coinAddAnim.GetComponent<Animator>().SetBool("push", true);
+                        anim.GetComponent<Animator>().SetBool("push", false);
+                        erndCoin += 150;
+                        checkPointlb.GetComponent<Text>().text = totalPoint.ToString();
+                        StopAllCoroutines();
+                        point1.transform.position = point3.transform.position;
+
+                        
+
+                }
                     if (SceneManager.GetActiveScene().name == "battle_online")
                     {
                         Amplitude.Instance.logEvent("Battle_Online_Checkpoint2");
@@ -255,12 +300,15 @@ using UnityEngine;
                     countPlayerEnter = 0;
                     checkpointSound.GetComponent<AudioSource>().Play();
                     cashSnd.GetComponent<AudioSource>().Play();
-                    point1.transform.position = point3.transform.position;
+                    
                 }
 
-                if (countPass == 2 && countPlayerEnter == 1)
+            if (countPass == 2 && countPlayerEnter == 1)
+            {
+                if (SceneManager.GetActiveScene().name == "level_lap6")
                 {
                     PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
+                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 1);
                     Amplitude.Instance.logEvent("CheckpointMode3");
                     checkpointSound.GetComponent<AudioSource>().Play();
                     countPass += 1;
@@ -275,13 +323,13 @@ using UnityEngine;
                     count = 0;
                     countPlayerEnter = 0;
                     point1.transform.position = point4.transform.position;
-
                 }
 
-                if (countPass == 3 && countPlayerEnter == 1)
+                if (SceneManager.GetActiveScene().name == "level_top_speed_test")
                 {
                     PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
-                    Amplitude.Instance.logEvent("CheckpointMode3");
+                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 2);
+                    Amplitude.Instance.logEvent("TopSpeedMode3");
                     checkpointSound.GetComponent<AudioSource>().Play();
                     countPass += 1;
                     totalPoint += 1;
@@ -294,13 +342,58 @@ using UnityEngine;
                     StopAllCoroutines();
                     count = 0;
                     countPlayerEnter = 0;
-                    point1.transform.position = point5.transform.position;
+                    point1.transform.position = point7.transform.position;
+                }
+            }
+
+                if (countPass == 3 && countPlayerEnter == 1)
+                {
+                    if (SceneManager.GetActiveScene().name == "level_lap6")
+                    {
+                        PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
+                        PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 1);
+                        Amplitude.Instance.logEvent("CheckpointMode3");
+                        checkpointSound.GetComponent<AudioSource>().Play();
+                        countPass += 1;
+                        totalPoint += 1;
+                        curr += 20f;
+                        coinAddAnim.GetComponent<Animator>().SetBool("push", true);
+                        cashSnd.GetComponent<AudioSource>().Play();
+                        anim.GetComponent<Animator>().SetBool("push", false);
+                        erndCoin += 150;
+                        checkPointlb.GetComponent<Text>().text = totalPoint.ToString();
+                        StopAllCoroutines();
+                        count = 0;
+                        countPlayerEnter = 0;
+                        point1.transform.position = point5.transform.position;
+                    }
+
+                    if (SceneManager.GetActiveScene().name == "level_top_speed_test")
+                    {
+                        PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
+                        PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 4);
+                        Amplitude.Instance.logEvent("TopSpeedMode4");
+                        checkpointSound.GetComponent<AudioSource>().Play();
+                        countPass += 1;
+                        totalPoint += 1;
+                        curr += 25f;
+                        coinAddAnim.GetComponent<Animator>().SetBool("push", true);
+                        cashSnd.GetComponent<AudioSource>().Play();
+                        anim.GetComponent<Animator>().SetBool("push", false);
+                        erndCoin += 150;
+                        checkPointlb.GetComponent<Text>().text = totalPoint.ToString();
+                        StopAllCoroutines();
+                        count = 0;
+                        countPlayerEnter = 0;
+                        point1.transform.position = point8.transform.position;
+                    }
 
                 }
 
                 if (countPass == 4 && countPlayerEnter == 1)
                 {
                     PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
+                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 1);
                     Amplitude.Instance.logEvent("CheckpointMode4");
                     checkpointSound.GetComponent<AudioSource>().Play();
                     countPass += 1;
@@ -318,12 +411,36 @@ using UnityEngine;
                     point1.transform.rotation = point6.transform.rotation;
                     finish.GetComponent<BoxCollider>().enabled = true;
 
-
+                if (SceneManager.GetActiveScene().name == "level_top_speed_test")
+                {
+                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 12);
+                    Amplitude.Instance.logEvent("TopSpeedModeWin");
+                    checkpointSound.GetComponent<AudioSource>().Play();
+                    pauza.tracks[0].Stop();
+                    pauza.tracks[1].Stop();
+                    pauza.tracks[2].Stop();
+                    pauza.tracks[3].Stop();
+                    pauza.tracks[4].Stop();
+                    pauza.tracks[5].Stop();
+                    pauza.tracks[6].Stop();
+                    LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+                    LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+                    LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+                    LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+                    LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+                    LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+                    LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+                    LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+                    Invoke("Win", 1f);
+                    point1.transform.position = point2.transform.position;
                 }
+
+            }
 
                 if (countPass == 5 && countPlayerEnter == 1)
                 {
                     PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
+                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 1);
                     Amplitude.Instance.logEvent("CheckpointMode5");
                     checkpointSound.GetComponent<AudioSource>().Play();
                     countPass += 1;
@@ -344,6 +461,7 @@ using UnityEngine;
                 if (countPass == 6 && countPlayerEnter == 1)
                 {
                     PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
+                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 1);
                     Amplitude.Instance.logEvent("CheckpointMode6");
                     checkpointSound.GetComponent<AudioSource>().Play();
                     countPass += 1;
@@ -364,6 +482,7 @@ using UnityEngine;
                 if (countPass == 7 && countPlayerEnter == 1)
                 {
                     PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
+                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 1);
                     Amplitude.Instance.logEvent("CheckpointMode7");
                     checkpointSound.GetComponent<AudioSource>().Play();
                     countPass += 1;
@@ -384,6 +503,7 @@ using UnityEngine;
                 if (countPass == 8 && countPlayerEnter == 1)
                 {
                     PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
+                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 1);
                     Amplitude.Instance.logEvent("CheckpointMode8");
                     checkpointSound.GetComponent<AudioSource>().Play();
                     countPass += 1;
@@ -427,6 +547,14 @@ using UnityEngine;
                     pauza.tracks[4].Stop();
                     pauza.tracks[5].Stop();
                     pauza.tracks[6].Stop();
+                    LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+                    LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+                    LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+                    LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+                    LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+                    LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+                    LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+                    LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponentInChildren<AudioSource>().Stop();
                     carController.KillOrStartEngine();
                     Invoke("Win", 1f);
 
@@ -582,7 +710,7 @@ using UnityEngine;
     public void ContinueAdsForTimeCheckpoint()
     {
         losePanel.SetActive(false);
-        curr += 25;
+        curr = 25;
         carController.StartEngine();
         count = 0;
         StopAllCoroutines();
