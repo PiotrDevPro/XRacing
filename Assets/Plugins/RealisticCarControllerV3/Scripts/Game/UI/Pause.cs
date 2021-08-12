@@ -45,13 +45,13 @@ public class Pause : MonoBehaviour
 
     void Start()
     {
-        
 
+        _blur = FindObjectOfType<CameraMotionBlur>();
         if (PlayerPrefs.GetInt("Soundtrack") == 0)
         {
             //tracks[Random.Range(0, 6)].Play();
             LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.782f;
-
+            LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponent<AudioSource>().volume = 0.7f;
             LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.25f;
             AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], tracks[6], LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponent<AudioSource>(),
             LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponent<AudioSource>(),
@@ -69,7 +69,7 @@ public class Pause : MonoBehaviour
             }
         }
         PausePanel.SetActive(false);
-        _blur = FindObjectOfType<CameraMotionBlur>();
+        
 
     }
 
@@ -77,6 +77,7 @@ public class Pause : MonoBehaviour
     {
         LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.782f;
         LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>().volume = 0.247f;
+        LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponent<AudioSource>().volume = 0.7f;
         AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], tracks[6], LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponent<AudioSource>(),
         LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>(),
         LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponent<AudioSource>(),LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponent<AudioSource>(),

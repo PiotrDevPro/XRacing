@@ -2,11 +2,12 @@
 using UnityEngine;
 using System.Collections;
 using System.IO;
+using Photon;
+using Photon.Pun;
 
 public class CathingLoadFiles : MonoBehaviour
 {
     public static CathingLoadFiles manage;
-
     [SerializeField] string SceneBundleURL;
     [SerializeField] string SceneNameToLoadAB;
     [SerializeField] int version;
@@ -85,8 +86,15 @@ public class CathingLoadFiles : MonoBehaviour
     public bool track16_isloaded = false;
     public bool track17_isloaded = false;
     public bool track18_isloaded = false;
+    public bool car_hotrodd = false;
+    public bool car_buggy = false;
+    public bool car_gt500 = false;
+    public bool car_bullet = false;
+    public bool car_bus = false;
+    public bool car_modelt = false;
 
     int count = 0;
+    int count_ = 0;
 
     private void Awake()
     {
@@ -108,7 +116,7 @@ public class CathingLoadFiles : MonoBehaviour
 
         //Cars
         StartCoroutine(townCarLoad());
-        StartCoroutine(DownloadAndCacheBus());
+        StartCoroutine(Bus());
         StartCoroutine(ModelT());
         StartCoroutine(BuggyGTR());
         StartCoroutine(GT500());
@@ -168,37 +176,34 @@ public class CathingLoadFiles : MonoBehaviour
 
                 for (int i = 0; i < bundle_tc.GetAllAssetNames().Length; i++)
                 {
-                    //Debug.Log(bundle_tc.GetAllAssetNames()[i]);
+                    Debug.Log(bundle_tc.GetAllAssetNames()[i]);
                 }
 
                 if (assetsTownCar == "")
                 {
                     townCar_ab = (GameObject)(bundle_tc.mainAsset);
                     print(townCar_ab);
-                    // townCar_ab.GetComponentInChildren<Rigidbody>().isKinematic = true;
                     townCar_ab.transform.position = new Vector3(0, 1.3f, 0);
-                    // townCar_ab.transform.eulerAngles = new Vector2(0, 0);
                     Instantiate(townCar_ab).transform.SetParent(towncar_parent);
                     Amplitude.Instance.logEvent("TownCarLoadedFirstTime");
                 }
                 else
                 {
                     townCar_ab = (GameObject)(bundle_tc.LoadAsset(assetsTownCar));
-                    //townCar_ab.GetComponentInChildren<Rigidbody>().isKinematic = true;
                     townCar_ab.transform.position = new Vector3(0, 1.3f, 0);
-                    //townCar_ab.transform.eulerAngles = new Vector2(0, 0);
                     Instantiate(townCar_ab).transform.SetParent(towncar_parent);
                     // Unload the AssetBundles compressed contents to conserve memory
                     //Debug.Log(bundle_tc.name);
                     bundle_tc.Unload(false);
                     Amplitude.Instance.logEvent("TownCarLoadedCashed");
                     LoadingPanel.SetActive(false);
+                    car_bullet = true;
                 }
             }
 
         } // memory is freed from the web stream (www.Dispose() gets called implicitly)
     }
-    IEnumerator DownloadAndCacheBus()
+    IEnumerator Bus()
     {
         // Wait for the Caching system to be ready
         while (!Caching.ready)
@@ -251,6 +256,7 @@ public class CathingLoadFiles : MonoBehaviour
                     bundle_bus.Unload(false);
                     Amplitude.Instance.logEvent("IkarusLoadedCashed");
                     LoadingPanel.SetActive(false);
+                    car_bus = true;
                 }
             }
 
@@ -310,6 +316,7 @@ public class CathingLoadFiles : MonoBehaviour
                     bundle_modelT.Unload(false);
                     Amplitude.Instance.logEvent("TeslaTLoadedCashed");
                     LoadingPanel.SetActive(false);
+                    car_modelt = true;
                 }
             }
 
@@ -369,6 +376,7 @@ public class CathingLoadFiles : MonoBehaviour
                     bundle_gtr.Unload(false);
                     Amplitude.Instance.logEvent("BuggyLoadedCashed");
                     LoadingPanel.SetActive(false);
+                    car_buggy = true;
                 }
             }
 
@@ -427,6 +435,7 @@ public class CathingLoadFiles : MonoBehaviour
                     bundle_gt500.Unload(false);
                     Amplitude.Instance.logEvent("GT500Cashed");
                     LoadingPanel.SetActive(false);
+                    car_gt500 = true;
                 }
             }
 
@@ -471,7 +480,7 @@ public class CathingLoadFiles : MonoBehaviour
                 {
                     hot_rodd_ab = (GameObject)(bundle_hot_rodd.mainAsset);
                     hot_rodd_ab.GetComponentInChildren<Rigidbody>().isKinematic = true;
-                    hot_rodd_ab.transform.position = new Vector3(0, 1.3f, 0);
+                    hot_rodd_ab.transform.position = new Vector3(0, 1, 0);
                     hot_rodd_ab.transform.eulerAngles = new Vector2(0, 0);
                     Instantiate(hot_rodd_ab).transform.SetParent(hotrodd_parent);
                     Amplitude.Instance.logEvent("HotRoddLoaded");
@@ -480,13 +489,14 @@ public class CathingLoadFiles : MonoBehaviour
                 {
                     hot_rodd_ab = (GameObject)(bundle_hot_rodd.LoadAsset(assetsHotRodd));
                     hot_rodd_ab.GetComponentInChildren<Rigidbody>().isKinematic = true;
-                    hot_rodd_ab.transform.position = new Vector3(0, 1.3f, 0);
+                    hot_rodd_ab.transform.position = new Vector3(0, 1, 0);
                     hot_rodd_ab.transform.eulerAngles = new Vector2(0, 0);
                     Instantiate(hot_rodd_ab).transform.SetParent(hotrodd_parent);
                     // Unload the AssetBundles compressed contents to conserve memory
                     bundle_hot_rodd.Unload(false);
                     Amplitude.Instance.logEvent("HotRoddCashed");
                     LoadingPanel.SetActive(false);
+                    car_hotrodd = true;
                 }
             }
 
@@ -535,13 +545,13 @@ public class CathingLoadFiles : MonoBehaviour
         // Wait for the Caching system to be ready
         while (!Caching.ready)
             yield return null;
-
+        
 
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
         using (WWW www = WWW.LoadFromCacheOrDownload(track11_url + "", 21))
         {
 
-            LoadingPanel.SetActive(true);
+            
             //    WWW www = WWW.LoadFromCacheOrDownload(BundleURL + "", version);
 
 
@@ -576,6 +586,10 @@ public class CathingLoadFiles : MonoBehaviour
                 }
                 else
                 {
+                    if (PlayerPrefs.GetInt("AppActive") > 1)
+                    {
+                        LoadingPanel.SetActive(true);
+                    }
                     track11_ab = (GameObject)(bundle_track11.LoadAsset(assets_track11));
                     Instantiate(track11_ab).transform.SetParent(parentForTrack11);
                     // Unload the AssetBundles compressed contents to conserve memory
@@ -583,7 +597,6 @@ public class CathingLoadFiles : MonoBehaviour
                     bundle_track11.Unload(false);
                     Amplitude.Instance.logEvent("track11Cashed");
                     track11_isloaded = true;
-                    LoadingPanel.SetActive(false);
                 }
             }
 
@@ -595,7 +608,7 @@ public class CathingLoadFiles : MonoBehaviour
         // Wait for the Caching system to be ready
         while (!Caching.ready)
             yield return null;
-
+        
 
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
         using (WWW www = WWW.LoadFromCacheOrDownload(track12_url + "", 22))
@@ -636,6 +649,10 @@ public class CathingLoadFiles : MonoBehaviour
                 }
                 else
                 {
+                    if (PlayerPrefs.GetInt("AppActive") > 1)
+                    {
+                        LoadingPanel.SetActive(true);
+                    }
                     track12_ab = (GameObject)(bundle_track12.LoadAsset(assets_track12));
                     Instantiate(track12_ab).transform.SetParent(parentForTrack11);
                     // Unload the AssetBundles compressed contents to conserve memory
@@ -652,10 +669,11 @@ public class CathingLoadFiles : MonoBehaviour
     IEnumerator track13()
     {
         // Wait for the Caching system to be ready
+        
         while (!Caching.ready)
             yield return null;
 
-
+        
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
         using (WWW www = WWW.LoadFromCacheOrDownload(track13_url + "", 25))
         {
@@ -695,6 +713,10 @@ public class CathingLoadFiles : MonoBehaviour
                 }
                 else
                 {
+                    if (PlayerPrefs.GetInt("AppActive") > 1)
+                    {
+                        LoadingPanel.SetActive(true);
+                    }
                     track13_ab = (GameObject)(bundle_track13.LoadAsset(assets_track13));
                     Instantiate(track13_ab).transform.SetParent(parentForTrack11);
                     // Unload the AssetBundles compressed contents to conserve memory
@@ -714,7 +736,7 @@ public class CathingLoadFiles : MonoBehaviour
         while (!Caching.ready)
             yield return null;
 
-
+        
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
         using (WWW www = WWW.LoadFromCacheOrDownload(track14_url + "", 24))
         {
@@ -754,6 +776,10 @@ public class CathingLoadFiles : MonoBehaviour
                 }
                 else
                 {
+                    if (PlayerPrefs.GetInt("AppActive") > 1)
+                    {
+                        LoadingPanel.SetActive(true);
+                    }
                     track14_ab = (GameObject)(bundle_track14.LoadAsset(assets_track14));
                     Instantiate(track14_ab).transform.SetParent(parentForTrack11);
                     // Unload the AssetBundles compressed contents to conserve memory
@@ -769,10 +795,11 @@ public class CathingLoadFiles : MonoBehaviour
 
     IEnumerator track15()
     {
+        
         // Wait for the Caching system to be ready
         while (!Caching.ready)
             yield return null;
-
+        
 
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
         using (WWW www = WWW.LoadFromCacheOrDownload(track15_url + "", 27))
@@ -813,6 +840,10 @@ public class CathingLoadFiles : MonoBehaviour
                 }
                 else
                 {
+                    if (PlayerPrefs.GetInt("AppActive") > 1)
+                    {
+                        LoadingPanel.SetActive(true);
+                    }
                     track15_ab = (GameObject)(bundle_track15.LoadAsset(assets_track15));
                     Instantiate(track15_ab).transform.SetParent(parentForTrack11);
                     // Unload the AssetBundles compressed contents to conserve memory
@@ -828,10 +859,11 @@ public class CathingLoadFiles : MonoBehaviour
 
     IEnumerator track16()
     {
+        LoadingPanel.SetActive(true);
         // Wait for the Caching system to be ready
         while (!Caching.ready)
             yield return null;
-
+        
 
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
         using (WWW www = WWW.LoadFromCacheOrDownload(track16_url + "", 26))
@@ -872,6 +904,10 @@ public class CathingLoadFiles : MonoBehaviour
                 }
                 else
                 {
+                    if (PlayerPrefs.GetInt("AppActive") > 1)
+                    {
+                        LoadingPanel.SetActive(true);
+                    }
                     track16_ab = (GameObject)(bundle_track16.LoadAsset(assets_track16));
                     Instantiate(track16_ab).transform.SetParent(parentForTrack11);
                     // Unload the AssetBundles compressed contents to conserve memory
@@ -887,11 +923,12 @@ public class CathingLoadFiles : MonoBehaviour
 
     IEnumerator track17()
     {
+
         // Wait for the Caching system to be ready
         while (!Caching.ready)
             yield return null;
 
-
+        
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
         using (WWW www = WWW.LoadFromCacheOrDownload(track17_url + "", 28))
         {
@@ -931,6 +968,10 @@ public class CathingLoadFiles : MonoBehaviour
                 }
                 else
                 {
+                    if (PlayerPrefs.GetInt("AppActive") > 1)
+                    {
+                        LoadingPanel.SetActive(true);
+                    }
                     track17_ab = (GameObject)(bundle_track17.LoadAsset(assets_track17));
                     Instantiate(track17_ab).transform.SetParent(parentForTrack11);
                     // Unload the AssetBundles compressed contents to conserve memory
@@ -950,7 +991,7 @@ public class CathingLoadFiles : MonoBehaviour
         while (!Caching.ready)
             yield return null;
 
-
+        
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
         using (WWW www = WWW.LoadFromCacheOrDownload(track18_url + "", 29))
         {
@@ -990,6 +1031,10 @@ public class CathingLoadFiles : MonoBehaviour
                 }
                 else
                 {
+                    if (PlayerPrefs.GetInt("AppActive") > 1)
+                    {
+                        LoadingPanel.SetActive(true);
+                    }
                     track18_ab = (GameObject)(bundle_track18.LoadAsset(assets_track18));
                     Instantiate(track18_ab).transform.SetParent(parentForTrack11);
                     // Unload the AssetBundles compressed contents to conserve memory
@@ -1007,41 +1052,63 @@ public class CathingLoadFiles : MonoBehaviour
 
     private void Update()
     {
-
-        if (track11_isloaded && track12_isloaded && track13_isloaded
-                && track14_isloaded && track15_isloaded && track16_isloaded
-                    && track17_isloaded && track18_isloaded)
+        print(PlayerPrefs.GetInt("AppActive"));
+        if (PlayerPrefs.GetInt("AppActive") > 1)
         {
-            count += 1;
-            if (count == 1)
-            {
-
-                track11_isLoaded = GameObject.Find("track11(Clone)");
-                track12_isLoaded = GameObject.Find("track12(Clone)");
-                track13_isLoaded = GameObject.Find("track13(Clone)");
-                track14_isLoaded = GameObject.Find("track14(Clone)");
-                track15_isLoaded = GameObject.Find("track15(Clone)");
-                track16_isLoaded = GameObject.Find("track16(Clone)");
-                track17_isLoaded = GameObject.Find("track17(Clone)");
-                track18_isLoaded = GameObject.Find("track18(Clone)");
-
-
-                if (PlayerPrefs.GetInt("MusicActive") != 1)
+            if (track11_isloaded || track12_isloaded || track13_isloaded
+                && track14_isloaded || track15_isloaded || track16_isloaded
+                    && track17_isloaded || track18_isloaded)
+        
+            
+                count += 1;
+                if (count == 1)
                 {
-                    MainMenuManager.manage.tracks[0].Stop();
-                    MainMenuManager.manage.tracks[1].Stop();
-                    MainMenuManager.manage.tracks[2].Stop();
-                    MainMenuManager.manage.tracks[3].Stop();
-                    MainMenuManager.manage.tracks[4].Stop();
-                    MainMenuManager.manage.tracks[5].Stop();
-                    MainMenuManager.manage.StartSoundtrack();
-                }
-                count = 2;
+
+                    track11_isLoaded = GameObject.Find("track11(Clone)");
+                    track12_isLoaded = GameObject.Find("track12(Clone)");
+                    track13_isLoaded = GameObject.Find("track13(Clone)");
+                    track14_isLoaded = GameObject.Find("track14(Clone)");
+                    track15_isLoaded = GameObject.Find("track15(Clone)");
+                    track16_isLoaded = GameObject.Find("track16(Clone)");
+                    track17_isLoaded = GameObject.Find("track17(Clone)");
+                    track18_isLoaded = GameObject.Find("track18(Clone)");
+                    print("NewMusicFinded");
+
+                    if (PlayerPrefs.GetInt("MusicActive") != 1)
+                    {
+                        MainMenuManager.manage.tracks[0].Stop();
+                        MainMenuManager.manage.tracks[1].Stop();
+                        MainMenuManager.manage.tracks[2].Stop();
+                        MainMenuManager.manage.tracks[3].Stop();
+                        MainMenuManager.manage.tracks[4].Stop();
+                        MainMenuManager.manage.tracks[5].Stop();
+                        MainMenuManager.manage.StartSoundtrack();
+                        print("MusicOn");
+                    }
+                    LoadingPanel.SetActive(false);
+                    count = 2;
+                
             }
 
         }
-
     }
-}
+
     #endregion
+
+    #region IPunPrefabPool
+    public GameObject Instantiate(string prefabId, Vector3 position, Quaternion rotation)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Destroy(GameObject gameObject)
+    {
+        throw new NotImplementedException();
+    }
+
+    #endregion
+}
+
+
+
 

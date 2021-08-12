@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class netManager : MonoBehaviourPunCallbacks
+public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
 {
     public static netManager manage;
     public ChatClient chatClient;
@@ -36,6 +36,7 @@ public class netManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        Application.targetFrameRate = 300;
         if (SceneManager.GetActiveScene().name == "battle_online")
         {
             LosePanel.SetActive(false);
@@ -48,51 +49,109 @@ public class netManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.CurrentRoom.Name == "Highway") 
         {
+            
             /// fog
             RenderSettings.fog = true;
             RenderSettings.fogColor = new Color(0.9622642f, 0.7006145f, 0.4130474f);
             RenderSettings.fogMode = FogMode.Exponential;
             RenderSettings.fogDensity = 0.003f;
 
-            if (PlayerPrefs.GetInt("CurrentCar") == 10 )
-            {
-                Amplitude.Instance.logEvent("HighwayLevelNetwork");
-                newVehicle = PhotonNetwork.Instantiate(CathingLoadFiles.manage.townCar_ab.name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
-                
-                isHighwayNetworkActive = true;
-            }
-
-            if (PlayerPrefs.GetInt("CurrentCar") == 11)
-            {
-                Amplitude.Instance.logEvent("HighwayLevelNetwork");
-                newVehicle = PhotonNetwork.Instantiate(CathingLoadFiles.manage.ikarus.name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
-
-                isHighwayNetworkActive = true;
-            }
-
-            else if (PlayerPrefs.GetInt("CurrentCar") != 10  || PlayerPrefs.GetInt("CurrentCar") != 11)
+            if (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 4
+                || PlayerPrefs.GetInt("CurrentCar") == 5 || PlayerPrefs.GetInt("CurrentCar") == 6 || PlayerPrefs.GetInt("CurrentCar") == 7 || PlayerPrefs.GetInt("CurrentCar") == 8 || PlayerPrefs.GetInt("CurrentCar") == 12)
             {
                 Amplitude.Instance.logEvent("HighwayLevelNetwork");
                 newVehicle = PhotonNetwork.Instantiate("Cars/" + CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")].name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
                 isHighwayNetworkActive = true;
             }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 1)
+            {
+                Amplitude.Instance.logEvent("HighwayLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate("hotrodd", new Vector3(Random.Range(0f, -100.19f), Random.Range(3.5f, 5f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle.GetComponent<Rigidbody>().isKinematic = false;
+                isHighwayNetworkActive = true;
+            }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 2)
+            {
+                Amplitude.Instance.logEvent("HighwayLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate("buggy", new Vector3(Random.Range(0f, -100.19f), Random.Range(3.5f, 5f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle.GetComponent<Rigidbody>().isKinematic = false;
+                isHighwayNetworkActive = true;
+            }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 3)
+            {
+                Amplitude.Instance.logEvent("HighwayLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate("gt500", new Vector3(Random.Range(0f, -100.19f), Random.Range(3.5f, 5f)), spawnPoint.rotation,0).GetComponent<RCC_CarControllerV3>();
+                isHighwayNetworkActive = true;
+            }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 9)
+            {
+                Amplitude.Instance.logEvent("HighwayLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate("modelt", new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+
+                isHighwayNetworkActive = true;
+            }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 10)
+            {
+                Amplitude.Instance.logEvent("HighwayLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate("towncar", new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+
+                isHighwayNetworkActive = true;
+            }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 11)
+            {
+                Amplitude.Instance.logEvent("HighwayLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate("karus_bus", new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+
+                isHighwayNetworkActive = true;
+            }
+
+            
             
 
         } 
         else if (PhotonNetwork.CurrentRoom.Name == "City")
         {
+            if (PlayerPrefs.GetInt("CurrentCar") == 1)
+            {
+                Amplitude.Instance.logEvent("CityLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate("hotrodd", new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+            }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 2)
+            {
+                Amplitude.Instance.logEvent("CityLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate("buggy", new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+            }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 3)
+            {
+                Amplitude.Instance.logEvent("CityLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate("gt500", new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+            }
+            if (PlayerPrefs.GetInt("CurrentCar") == 9)
+            {
+                Amplitude.Instance.logEvent("CityLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate("modelt", new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+            }
             if (PlayerPrefs.GetInt("CurrentCar") == 10 )
             {
                 Amplitude.Instance.logEvent("CityLevelNetwork");
-                newVehicle = PhotonNetwork.Instantiate(CathingLoadFiles.manage.townCar_ab.name, new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle = PhotonNetwork.Instantiate("towncar", new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
             }
 
             if (PlayerPrefs.GetInt("CurrentCar") == 11)
             {
                 Amplitude.Instance.logEvent("CityLevelNetwork");
-                newVehicle = PhotonNetwork.Instantiate(CathingLoadFiles.manage.ikarus.name, new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle = PhotonNetwork.Instantiate("karus_bus", new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
             }
-            else if (PlayerPrefs.GetInt("CurrentCar") != 10 || PlayerPrefs.GetInt("CurrentCar") != 11)
+            else if (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 4
+                 || PlayerPrefs.GetInt("CurrentCar") == 5 || PlayerPrefs.GetInt("CurrentCar") == 6 || PlayerPrefs.GetInt("CurrentCar") == 7 || PlayerPrefs.GetInt("CurrentCar") == 8 || PlayerPrefs.GetInt("CurrentCar") == 12)
             {
                 Amplitude.Instance.logEvent("CityLevelNetwork");
                 newVehicle = PhotonNetwork.Instantiate("Cars/" + CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")].name, new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
@@ -115,11 +174,38 @@ public class netManager : MonoBehaviourPunCallbacks
         #region Load Wheel Susspens
         if (PlayerPrefs.GetInt("WheelSussp" + PlayerPrefs.GetInt("CurrentCar")) != 0)
         {
+            if (PlayerPrefs.GetInt("CurrentCar") != 8 || PlayerPrefs.GetInt("CurrentCar") != 10)
+            {
             newVehicle.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspFront" + PlayerPrefs.GetInt("CurrentCar"));
             newVehicle.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspFront" + PlayerPrefs.GetInt("CurrentCar"));
 
             newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspRear" + PlayerPrefs.GetInt("CurrentCar"));
             newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspRear" + PlayerPrefs.GetInt("CurrentCar"));
+
+            
+                newVehicle.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+                newVehicle.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+
+                newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+                newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+            }
+            if (PlayerPrefs.GetInt("CurrentCar") == 8)
+            {
+                newVehicle.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.02f;
+                newVehicle.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.02f;
+
+                newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = 0.02f;
+                newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = 0.02f;
+            }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 10)
+            {
+                newVehicle.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.05f;
+                newVehicle.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.05f;
+
+                newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = 0.05f;
+                newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = 0.05f;
+            }
         }
         else
         {
@@ -456,7 +542,6 @@ public class netManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        
         maxspd.text = "MAX:" + newVehicle.GetComponent<RCC_CarControllerV3>().maxspeed.ToString() + "KM/H";
         if (newVehicle.GetComponent<RCC_CarControllerV3>().speed > 5f)
         {
@@ -527,5 +612,16 @@ public class netManager : MonoBehaviourPunCallbacks
             CarDamage.manage.isDead = false;
             LosePanel.SetActive(false); 
     }
+    
+   public GameObject Instantiate(string prefabId, Vector3 position, Quaternion rotation)
+    {
+   //     newVehicle = Instantiate(CathingLoadFiles.manage.townCar_ab.name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation).GetComponent<RCC_CarControllerV3>();
+        return null;
+    }
 
+    public void Destroy(GameObject gameObject)
+    {
+        
+    }
+   
 }

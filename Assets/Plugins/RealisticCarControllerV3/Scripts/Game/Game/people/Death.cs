@@ -10,7 +10,14 @@ public class Death : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
-      if (SceneManager.GetActiveScene().name != "level_lap6")
+        if (col.CompareTag("CarAI"))
+        {
+            print("DestroyFromCarAI");
+            Instantiate(ragdoll, transform.position, transform.rotation);
+            Amplitude.Instance.logEvent("DeadPeople");
+            Destroy(gameObject);
+        }
+        if (SceneManager.GetActiveScene().name != "level_lap6")
         {
             if (netManager.manage.DangerSpeed)
             {
@@ -47,13 +54,6 @@ public class Death : MonoBehaviour
                 PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 100);
 
             }
-        }
-
-       else if (col.CompareTag("CarAI"))
-        {
-            Instantiate(ragdoll, transform.position, transform.rotation);
-            Amplitude.Instance.logEvent("DeadPeople");
-            Destroy(gameObject);
         }
     }
 }

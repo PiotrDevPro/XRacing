@@ -80,6 +80,7 @@ public class LoadAstBundleLevelLap : MonoBehaviour
             track13_isloaded || track14_isloaded ||
             track15_isloaded || track16_isloaded ||
             track17_isloaded || track18_isloaded)
+
         {
             count += 1;
             if (count == 1)
