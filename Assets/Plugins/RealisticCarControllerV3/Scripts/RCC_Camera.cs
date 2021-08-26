@@ -337,7 +337,7 @@ public class RCC_Camera : MonoBehaviour {
         // Always look at the target
         //transform.LookAt (new Vector3(playerCar.GetChild(0).position.x, playerCar.GetChild(0).position.y + 1f, playerCar.GetChild(0).position.z));
         transform.LookAt(new Vector3(playerCar.position.x, playerCar.position.y + 1f, playerCar.position.z));
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x,transform.eulerAngles.y, Mathf.Clamp(tiltAngle, -10f, 10f));
+       // transform.eulerAngles = new Vector3(transform.eulerAngles.x,transform.eulerAngles.y, Mathf.Clamp(tiltAngle, -10f, 10f));
 
 		//pivot.transform.localPosition = Vector3.Lerp(pivot.transform.localPosition, (new Vector3(Random.insideUnitSphere.x / 2f, Random.insideUnitSphere.y, Random.insideUnitSphere.z) * speed * maxShakeAmount), Time.deltaTime * 1f);
 		collisionPos = Vector3.Lerp(collisionPos, Vector3.zero, Time.deltaTime * 5f);

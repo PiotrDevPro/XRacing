@@ -10,7 +10,7 @@ using UnityEngine;
 using System.Collections;
 
 public class RCC_EnterExitCar : MonoBehaviour {
-
+	public static RCC_EnterExitCar manage;
 	private RCC_CarControllerV3 carController;
 	private GameObject carCamera;
 	private GameObject player;
@@ -21,14 +21,17 @@ public class RCC_EnterExitCar : MonoBehaviour {
 	private bool  opened = false;
 	private float waitTime = 1f;
 	private bool  temp = false;
+
+	[Header("Camera")]
+	public GameObject mainCam;
+
 	
 	void Awake (){
-
+		manage = this;
 		carController = GetComponent<RCC_CarControllerV3>();
 		carCamera = GameObject.FindObjectOfType<RCC_Camera>().gameObject;
-	
-		if(GameObject.FindObjectOfType<RCC_DashboardInputs>())
-			dashboard = GameObject.FindObjectOfType<RCC_DashboardInputs>().gameObject;
+		//if (GameObject.FindObjectOfType<RCC_DashboardInputs>())
+		//	dashboard = GameObject.FindObjectOfType<RCC_DashboardInputs>().gameObject;
 
 		if(!getOutPosition){
 			GameObject getOutPos = new GameObject("Get Out Position");
@@ -42,8 +45,8 @@ public class RCC_EnterExitCar : MonoBehaviour {
 
 	void Start(){
 
-		if(dashboard)
-			StartCoroutine("DisableDashboard");
+		//if(dashboard)
+		//	StartCoroutine("DisableDashboard");
 
 	}
 
@@ -86,46 +89,53 @@ public class RCC_EnterExitCar : MonoBehaviour {
 	void GetIn (){
 
 		isPlayerIn = true;
-
+		InsideOutsideCar.manage.mainCam.localPosition = new Vector3(0, 0, 0);
+		InsideOutsideCar.manage.mainCam.localEulerAngles = new Vector3(0, 0, 0);
+		InsideOutsideCar.manage.fixThaCam();
 		carCamera.SetActive(true);
-
-		if(carCamera.GetComponent<RCC_Camera>()){
+		//
+		InsideOutsideCar.manage.enter_panel.SetActive(false);
+		InsideOutsideCar.manage.carInput.SetActive(true);
+		InsideOutsideCar.manage._UI.SetActive(true);
+		InsideOutsideCar.manage.Rcc_canvas.SetActive(true);
+		InsideOutsideCar.manage.characterInput.SetActive(false);
+		if (carCamera.GetComponent<RCC_Camera>()){
 			carCamera.GetComponent<RCC_Camera>().cameraSwitchCount = 10;
 			carCamera.GetComponent<RCC_Camera>().ChangeCamera();
 		}
-
+		Amplitude.Instance.logEvent("EnterToCar");
 		carCamera.transform.GetComponent<RCC_Camera>().SetPlayerCar(gameObject);
 		player.transform.SetParent(transform);
 		player.transform.localPosition = Vector3.zero;
 		player.transform.localRotation = Quaternion.identity;
 		player.SetActive(false);
 		GetComponent<RCC_CarControllerV3>().canControl = true;
-		if(dashboard){
-			dashboard.SetActive(true);
-		//	dashboard.GetComponent<RCC_DashboardInputs>().GetVehicle(GetComponent<RCC_CarControllerV3>());
-		}
+		GetComponent<RCC_CarControllerV3>().GetComponentInChildren<BoxCollider>().tag = "Player";
+		//if(dashboard){
+		//	dashboard.SetActive(true);
+		//dashboard.GetComponent<RCC_DashboardInputs>().GetVehicle(GetComponent<RCC_CarControllerV3>());
+		//	}
 
-			if(!GetComponent<RCC_CarControllerV3>().engineRunning)
+		if (!GetComponent<RCC_CarControllerV3>().engineRunning)
 				SendMessage ("StartEngine");
 		
 		//Cursor.lockState = CursorLockMode.None;
 	}
 	
-	void GetOut (){
+	public void GetOut (){
 
 		isPlayerIn = false;
-
 		player.transform.SetParent(null);
 		player.transform.position = getOutPosition.position;
 		player.transform.rotation = getOutPosition.rotation;
-		player.transform.rotation = Quaternion.Euler (0f, player.transform.eulerAngles.y, 0f);
+		player.transform.rotation = Quaternion.Euler(0f, player.transform.eulerAngles.y, 0f);
 		carCamera.SetActive(false);
 		player.SetActive(true);
 		GetComponent<RCC_CarControllerV3>().canControl = false;
 		if(!RCC_Settings.Instance.keepEnginesAlive)
 			GetComponent<RCC_CarControllerV3>().engineRunning = false;
-		if(dashboard)
-			dashboard.SetActive(false);
+		//if(dashboard)
+		//	dashboard.SetActive(false);
 		//Cursor.lockState = CursorLockMode.Locked;
 
 	}

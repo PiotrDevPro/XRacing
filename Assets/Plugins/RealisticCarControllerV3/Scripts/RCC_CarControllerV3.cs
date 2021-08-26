@@ -651,10 +651,19 @@ public class RCC_CarControllerV3 : MonoBehaviour
 		{
 			engineRunning = false;
 			fuelInput = 0f;
+			if (SceneManager.GetActiveScene().name != "garage")
+            {
+				Amplitude.Instance.logEvent("EngineOFF");
+			}
+			
 		}
 		else if (!engineStarting)
 		{
 			StartCoroutine("StartEngine");
+			if (SceneManager.GetActiveScene().name != "garage")
+			{
+				Amplitude.Instance.logEvent("EngineON");
+			}
 		}
 
 	}
@@ -1809,42 +1818,40 @@ public class RCC_CarControllerV3 : MonoBehaviour
     {
 		if (SceneManager.GetActiveScene().name != "battle_online" && SceneManager.GetActiveScene().name != "city_online" && SceneManager.GetActiveScene().name != "level_lap6")
 		{
-			if (PlayerPrefs.GetFloat("DriftCoin") >= 499)
-			{
-				CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
+			//if (PlayerPrefs.GetFloat("DriftCoin") >= 499)
+			//{
+			//	CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
 				//transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
 				//transform.position = CarSpawnNew.manage.spawnPoint.position;
-				resetTime = 0f;
-				PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - 500);
-			}
-			else
-			{
+			//	resetTime = 0f;
+			//	PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - 500);
+			//}
+			///else
+			//{
 				UniAdManager.manage.ShowAdShop();
 				CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
-				//transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
-				//transform.position = CarSpawnNew.manage.spawnPoint.position;
 				resetTime = 0f;
-			}
+			//}
 		}
 
 		if (SceneManager.GetActiveScene().name == "level_lap6")
         {
-			if (PlayerPrefs.GetFloat("DriftCoin") >= 499)
-			{
-				CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
-				transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
-				transform.position = CarSpawnNew.manage.spawnPoint.position;
-				resetTime = 0f;
-				PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - 500);
-			}
-			else
-			{
+			//if (PlayerPrefs.GetFloat("DriftCoin") >= 499)
+			//{
+			//	CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
+			//	transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
+			//	transform.position = CarSpawnNew.manage.spawnPoint.position;
+			//	resetTime = 0f;
+			//	PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - 500);
+			//}
+			//else
+			//{
 				UniAdManager.manage.ShowAdShop();
 				CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
 				transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
 				transform.position = CarSpawnNew.manage.spawnPoint.position;
 				resetTime = 0f;
-			}
+			//}
 		}
 
 		if (SceneManager.GetActiveScene().name == "battle_online" || SceneManager.GetActiveScene().name == "city_online")

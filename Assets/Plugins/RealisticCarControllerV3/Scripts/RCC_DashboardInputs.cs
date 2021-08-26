@@ -141,33 +141,47 @@ public class RCC_DashboardInputs : MonoBehaviour {
 
 	public void ResetCarForCoinz()
     {
-		RCC_CarControllerV3.manage.ResetCarForCoin();
-		DamagePartsHood.manage.wheels1.gameObject.SetActive(true);
-		DamagePartsHood.manage.wheels2.gameObject.SetActive(true);
-		DamagePartsHood.manage.wheels1col.gameObject.SetActive(true);
-		DamagePartsHood.manage.wheels2col.gameObject.SetActive(true);
-		DamagePartsHood.manage.blow.SetActive(false);
-		DamagePartsHood.manage.point = 50;
-		DPTrunk.manage.wheels1.gameObject.SetActive(true);
-		DPTrunk.manage.wheels2.gameObject.SetActive(true);
-		DPTrunk.manage.wheels1col.gameObject.SetActive(true);
-		DPTrunk.manage.wheels2col.gameObject.SetActive(true);
-		DPTrunk.manage.Blow.SetActive(false);
-		DPTrunk.manage.point = 50;
-		DPTrunkTwo.manage.wheels1.gameObject.SetActive(true);
-		DPTrunkTwo.manage.wheels2.gameObject.SetActive(true);
-		DPTrunkTwo.manage.wheels1col.gameObject.SetActive(true);
-		DPTrunkTwo.manage.wheels2col.gameObject.SetActive(true);
-		DPTrunkTwo.manage.point = 50;
-		infoPanel.SetActive(true);
-		infoPanel.GetComponentInChildren<Text>().text = "-500";
-		GameObject checkpointSound = GameObject.Find("checkpointSnd");
-		checkpointSound.GetComponent<AudioSource>().Play();
-		Pause.manage.PausePanel.SetActive(false);
-		Time.timeScale = 1f;
-		AudioListener.pause = false;
-		Amplitude.Instance.logEvent("ResetCarForCoinz");
-		Invoke("latency",0.9f);
+		if (RCC_EnterExitCar.manage.isPlayerIn)
+        {
+			RCC_CarControllerV3.manage.ResetCarForCoin();
+			DamagePartsHood.manage.wheels1.gameObject.SetActive(true);
+			DamagePartsHood.manage.wheels2.gameObject.SetActive(true);
+			DamagePartsHood.manage.wheels1col.gameObject.SetActive(true);
+			DamagePartsHood.manage.wheels2col.gameObject.SetActive(true);
+			DamagePartsHood.manage.blow.SetActive(false);
+			DamagePartsHood.manage.point = 50;
+			DPTrunk.manage.wheels1.gameObject.SetActive(true);
+			DPTrunk.manage.wheels2.gameObject.SetActive(true);
+			DPTrunk.manage.wheels1col.gameObject.SetActive(true);
+			DPTrunk.manage.wheels2col.gameObject.SetActive(true);
+			DPTrunk.manage.Blow.SetActive(false);
+			DPTrunk.manage.point = 50;
+			if (PlayerPrefs.GetInt("CurrentCar") == 10)
+			{
+				DPTrunkTwo.manage.wheels1.gameObject.SetActive(true);
+				DPTrunkTwo.manage.wheels2.gameObject.SetActive(true);
+				DPTrunkTwo.manage.wheels1col.gameObject.SetActive(true);
+				DPTrunkTwo.manage.wheels2col.gameObject.SetActive(true);
+				DPTrunkTwo.manage.point = 50;
+			}
+			infoPanel.SetActive(true);
+			if (Application.systemLanguage != SystemLanguage.Russian)
+			{
+				infoPanel.GetComponentInChildren<Text>().text = "Repaired";
+            }
+            else
+            {
+				infoPanel.GetComponentInChildren<Text>().text = "Восстановлен";
+			}
+			GameObject checkpointSound = GameObject.Find("checkpointSnd");
+			checkpointSound.GetComponent<AudioSource>().Play();
+			Pause.manage.PausePanel.SetActive(false);
+			Time.timeScale = 1f;
+			AudioListener.pause = false;
+			Amplitude.Instance.logEvent("ResetCarForCoinz");
+			Invoke("latency", 0.9f);
+		}
+		
 	}
 
     private void latency()

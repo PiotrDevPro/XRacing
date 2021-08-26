@@ -20,6 +20,8 @@ public class RCC_EnterExitPlayer : MonoBehaviour {
 	public GameObject TPSCamera;
 	private bool showGui = false;
 
+	int count = 0;
+
 	void Start(){
 
 		if (!rootOfPlayer)
@@ -64,8 +66,22 @@ public class RCC_EnterExitPlayer : MonoBehaviour {
 	void OnGUI (){
 		
 		if(showGui){
-			if(RCC_Settings.Instance.controllerType == RCC_Settings.ControllerType.Keyboard)
-				GUI.Label( new Rect(Screen.width - (Screen.width/1.7f),Screen.height - (Screen.height/1.2f),800,100),"Press ''" + RCC_Settings.Instance.enterExitVehicleKB.ToString() + "'' key to Get In");
+			if (RCC_Settings.Instance.controllerType == RCC_Settings.ControllerType.Keyboard)
+				if (Application.systemLanguage != SystemLanguage.Russian)
+				{
+					GUI.Label(new Rect(Screen.width - (Screen.width / 1.7f), Screen.height - (Screen.height / 1.2f), 800, 100), "Press button to Get In");
+					InsideOutsideCar.manage.enter_panel.SetActive(true);
+				} else
+                {
+					GUI.Label(new Rect(Screen.width - (Screen.width / 1.7f), Screen.height - (Screen.height / 1.2f), 800, 100), "Нажмите кнопку чтобы войти");
+					InsideOutsideCar.manage.enter_panel.SetActive(true);
+				}
+			
+		}
+
+		else
+        {
+			InsideOutsideCar.manage.enter_panel.SetActive(false);
 		}
 		
 	}

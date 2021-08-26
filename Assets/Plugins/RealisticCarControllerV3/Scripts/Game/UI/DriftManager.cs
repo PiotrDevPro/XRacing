@@ -44,7 +44,7 @@ public class DriftManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (playerCar.GetComponent<RCC_CarControllerV3>().speed > 25f && playerCar.GetComponent<RCC_CarControllerV3>().driftingNow)
+        if (playerCar.GetComponent<RCC_CarControllerV3>().speed > 45f && playerCar.GetComponent<RCC_CarControllerV3>().driftingNow)
         {
             txDriftX.GetComponent<Animator>().StartPlayback();
             driftAmount += 0.1f;
@@ -160,7 +160,7 @@ public class DriftManager : MonoBehaviour
         }
 
 
-        if (playerCar.GetComponent<RCC_CarControllerV3>().speed > 40f && playerCar.GetComponentInChildren<RCC_CarControllerV3>().driftingNow)
+        if (playerCar.GetComponent<RCC_CarControllerV3>().speed > 55f && playerCar.GetComponentInChildren<RCC_CarControllerV3>().driftingNow)
         {
             txDriftX.GetComponent<Animator>().StartPlayback();
             driftAmount += 0.6f;

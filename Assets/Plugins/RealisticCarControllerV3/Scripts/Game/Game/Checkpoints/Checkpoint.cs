@@ -393,7 +393,7 @@ using UnityEngine;
                 if (countPass == 4 && countPlayerEnter == 1)
                 {
                     PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
-                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 1);
+                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 3);
                     Amplitude.Instance.logEvent("CheckpointMode4");
                     checkpointSound.GetComponent<AudioSource>().Play();
                     countPass += 1;
@@ -440,7 +440,7 @@ using UnityEngine;
                 if (countPass == 5 && countPlayerEnter == 1)
                 {
                     PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
-                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 1);
+                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 2);
                     Amplitude.Instance.logEvent("CheckpointMode5");
                     checkpointSound.GetComponent<AudioSource>().Play();
                     countPass += 1;
@@ -461,7 +461,7 @@ using UnityEngine;
                 if (countPass == 6 && countPlayerEnter == 1)
                 {
                     PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
-                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 1);
+                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 3);
                     Amplitude.Instance.logEvent("CheckpointMode6");
                     checkpointSound.GetComponent<AudioSource>().Play();
                     countPass += 1;
@@ -482,7 +482,7 @@ using UnityEngine;
                 if (countPass == 7 && countPlayerEnter == 1)
                 {
                     PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
-                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 1);
+                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 2);
                     Amplitude.Instance.logEvent("CheckpointMode7");
                     checkpointSound.GetComponent<AudioSource>().Play();
                     countPass += 1;
@@ -503,7 +503,7 @@ using UnityEngine;
                 if (countPass == 8 && countPlayerEnter == 1)
                 {
                     PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 150);
-                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 1);
+                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 3);
                     Amplitude.Instance.logEvent("CheckpointMode8");
                     checkpointSound.GetComponent<AudioSource>().Play();
                     countPass += 1;
@@ -536,7 +536,7 @@ using UnityEngine;
                     erndCoin += 150;
                     checkPointlb.GetComponent<Text>().text = totalPoint.ToString();
                     StopAllCoroutines();
-                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 55);
+                    PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 35);
                     count = 0;
                     countPlayerEnter = 0;
                     point1.transform.position = finish.transform.position;
@@ -572,7 +572,8 @@ using UnityEngine;
 
         void Timer()
         {
-
+            if (!CarDamage.manage.isDead)
+        { 
             curr -= 1 * Time.deltaTime;
             if (curr <= 0)
             {
@@ -586,8 +587,8 @@ using UnityEngine;
                     StartCoroutine(TimeOver());
                 }
             }
-
         }
+    }
 
         void LatencyFinishActive()
         {

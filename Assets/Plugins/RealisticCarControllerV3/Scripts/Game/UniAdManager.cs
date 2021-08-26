@@ -149,7 +149,7 @@ public class UniAdManager : MonoBehaviour
                     CarDamage.manage.energy = 25;
                     if (PlayerPrefs.GetInt("Soundtrack") == 0)
                     {
-                        Pause.manage.tracks[Random.Range(0, 6)].Play();
+                        Pause.manage.StartSoundtrack();
                     }
                     LevelManager.manage.Crashed.SetActive(false);
                     CarDamage.manage.energyBarProgress.GetComponent<Text>().text = CarDamage.manage.energy.ToString();

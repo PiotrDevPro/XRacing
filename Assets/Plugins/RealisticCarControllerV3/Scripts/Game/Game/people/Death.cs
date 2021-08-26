@@ -12,9 +12,8 @@ public class Death : MonoBehaviour
     {
         if (col.CompareTag("CarAI"))
         {
-            print("DestroyFromCarAI");
             Instantiate(ragdoll, transform.position, transform.rotation);
-            Amplitude.Instance.logEvent("DeadPeople");
+            Amplitude.Instance.logEvent("DeadPeopleFromCarAI");
             Destroy(gameObject);
         }
         if (SceneManager.GetActiveScene().name != "level_lap6")

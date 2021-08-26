@@ -35,7 +35,8 @@ public class LoadAssetsBundle : MonoBehaviour
 
     private void Update()
     {
-
+        //print("CityisLoaded: " + PlayerPrefs.GetInt("CityisLoaded"));
+        //print("AppActivate: " + PlayerPrefs.GetInt("AppActivate"));
         if (loadingStart)
         {
             double v = www.progress;
@@ -52,8 +53,7 @@ public class LoadAssetsBundle : MonoBehaviour
         while (!Caching.ready)
             yield return null;
 
-        using (www = WWW.LoadFromCacheOrDownload(url_city_online + "", 30))
-        // using (www = new WWW(url_city_online))
+        using (www = WWW.LoadFromCacheOrDownload(url_city_online + "", 33))
         {
             print("Using Now");
             loadingPanel.SetActive(true);
@@ -82,20 +82,9 @@ public class LoadAssetsBundle : MonoBehaviour
                     SceneNameToLoadAB = Path.GetFileNameWithoutExtension(scenename).ToString();
                     print("Scene: " + Path.GetFileNameWithoutExtension(scenename));
                     LobbyManager.manage.CreateRoomCity();
-                    PlayerPrefs.SetInt("isLoaded", 1);
+                    PlayerPrefs.SetInt("CityisLoaded", 1);
                 }
-
             }
-
-            //  string[] scenes = assetBundle.GetAllScenePaths();
-            //  print("scenes.Lengths " + scenes.Length);
-            //  foreach (string scenename in scenes)
-            // {
-            //     SceneNameToLoadAB = Path.GetFileNameWithoutExtension(scenename).ToString();
-            //     print("Scene: " + Path.GetFileNameWithoutExtension(scenename));
-            //     LobbyManager.manage.CreateRoomCity();
-            //     PlayerPrefs.SetInt("isLoaded", 1);
-            //  }
         }
     }
 

@@ -32,8 +32,9 @@ public class CarSpawnNew : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "level_lap6" && MainMenuManager.manage.isAllvsYou)
         {
+            PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 2);
             if (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 1 || PlayerPrefs.GetInt("CurrentCar") == 4
-                || PlayerPrefs.GetInt("CurrentCar") == 5 || PlayerPrefs.GetInt("CurrentCar") == 6 || PlayerPrefs.GetInt("CurrentCar") == 7 || PlayerPrefs.GetInt("CurrentCar") == 8
+                || PlayerPrefs.GetInt("CurrentCar") == 5 ||  PlayerPrefs.GetInt("CurrentCar") == 8
                 || PlayerPrefs.GetInt("CurrentCar") == 12)
             {
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
@@ -59,6 +60,19 @@ public class CarSpawnNew : MonoBehaviour
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
                 InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.gt500_ab, spawnPoint.position, spawnPoint.rotation);
                 InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+            }
+            if (PlayerPrefs.GetInt("CurrentCar") == 6)
+            {
+                spawnPoint.position = new Vector3(53, 3.95f, 205f);
+                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.i8_ab, spawnPoint.position, spawnPoint.rotation);
+                InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+            }
+            if (PlayerPrefs.GetInt("CurrentCar") == 7)
+            {
+
+                spawnPoint.position = new Vector3(53, 3.95f, 205f);
+                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.lambo_ab, spawnPoint.position, spawnPoint.rotation);
+
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 9)
             {
@@ -86,8 +100,9 @@ public class CarSpawnNew : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "level_lap6" && !MainMenuManager.manage.isAllvsYou)
         {
+            PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 2);
             if (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 4
-                 || PlayerPrefs.GetInt("CurrentCar") == 5 || PlayerPrefs.GetInt("CurrentCar") == 6 || PlayerPrefs.GetInt("CurrentCar") == 7 || PlayerPrefs.GetInt("CurrentCar") == 8 || PlayerPrefs.GetInt("CurrentCar") == 12)
+                 || PlayerPrefs.GetInt("CurrentCar") == 5 || PlayerPrefs.GetInt("CurrentCar") == 8 || PlayerPrefs.GetInt("CurrentCar") == 12)
             {
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
                 InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")], spawnPoint.position, spawnPoint.rotation);
@@ -110,6 +125,22 @@ public class CarSpawnNew : MonoBehaviour
                 InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.gt500_ab, spawnPoint.position, spawnPoint.rotation);
                 InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
             }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 6)
+            {
+                spawnPoint.position = new Vector3(53, 3.95f, 205f);
+                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.i8_ab, spawnPoint.position, spawnPoint.rotation);
+                InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+            }
+            if (PlayerPrefs.GetInt("CurrentCar") == 7)
+            {
+
+                spawnPoint.position = new Vector3(53, 3.95f, 205f);
+                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.lambo_ab, spawnPoint.position, spawnPoint.rotation);
+
+            }
+
+
             if (PlayerPrefs.GetInt("CurrentCar") == 9)
             {
 
@@ -136,50 +167,198 @@ public class CarSpawnNew : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "level_top_speed_test")
         {
+            PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 2);
             if (PlayerPrefs.GetInt("CurrentCar") == 1)
             {
-                spawnPoint.position = new Vector3(-97.56f, 0, 2171.69f);
-                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.hot_rodd_ab, spawnPoint.position, spawnPoint.rotation);
-                InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                if (MainMenuManager.manage.isQuickRace)
+                {
+                    if (PlayerPrefs.GetInt("myCar") == 1)
+                    {
+                        spawnPoint.position = new Vector3(-97.56f, 0, 2171.69f);
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.hot_rodd_ab, spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                    }
+                    else
+                    {
+                        spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                    }
+                } else
+                {
+                    spawnPoint.position = new Vector3(-97.56f, 0, 2171.69f);
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.hot_rodd_ab, spawnPoint.position, spawnPoint.rotation);
+                    InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                }
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 2)
             {
-                spawnPoint.position = new Vector3(-97.39f, 2f, 2171.69f);
-                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.buggy_gtr_ab, spawnPoint.position, spawnPoint.rotation);
-                InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                if (MainMenuManager.manage.isQuickRace)
+                {
+                    if (PlayerPrefs.GetInt("myCar") == 1)
+                    {
+                        spawnPoint.position = new Vector3(-97.39f, 2f, 2171.69f);
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.buggy_gtr_ab, spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                    }
+                    else
+                    {
+                        spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                    }
+                } else
+                {
+                    spawnPoint.position = new Vector3(-97.39f, 2f, 2171.69f);
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.buggy_gtr_ab, spawnPoint.position, spawnPoint.rotation);
+                    InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                }
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 3)
             {
-                spawnPoint.position = new Vector3(-97.39f, 2f, 2171.69f);
-                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.gt500_ab, spawnPoint.position, spawnPoint.rotation);
-                InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                if (MainMenuManager.manage.isQuickRace)
+                {
+                    if (PlayerPrefs.GetInt("myCar") == 1)
+                    {
+                        spawnPoint.position = new Vector3(-97.39f, 2f, 2171.69f);
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.gt500_ab, spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                    } else
+                    {
+                        spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                    } 
+
+                } else
+                {
+                    spawnPoint.position = new Vector3(-97.39f, 2f, 2171.69f);
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.gt500_ab, spawnPoint.position, spawnPoint.rotation);
+                    InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                } 
             }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 6)
+            {
+                if (MainMenuManager.manage.isQuickRace)
+                {
+                    if (PlayerPrefs.GetInt("myCar") == 1)
+                    {
+                        spawnPoint.position = new Vector3(-97.39f, 2.80f, 2171.69f);
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.i8_ab, spawnPoint.position, spawnPoint.rotation);
+                    }
+
+                    else
+                    {
+                        spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                    }
+                }
+                else
+                {
+                    spawnPoint.position = new Vector3(-97.39f, 2.80f, 2171.69f);
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.i8_ab, spawnPoint.position, spawnPoint.rotation);
+                }
+            }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 7)
+            {
+                if (MainMenuManager.manage.isQuickRace)
+                {
+                    if (PlayerPrefs.GetInt("myCar") == 1)
+                    {
+                        spawnPoint.position = new Vector3(-97.39f, 2.80f, 2171.69f);
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.lambo_ab, spawnPoint.position, spawnPoint.rotation);
+                    }
+
+                    else
+                    {
+                        spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                    }
+                }
+                else
+                {
+                    spawnPoint.position = new Vector3(-97.39f, 2.80f, 2171.69f);
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.lambo_ab, spawnPoint.position, spawnPoint.rotation);
+                }
+            }
+
             if (PlayerPrefs.GetInt("CurrentCar") == 9)
             {
-                spawnPoint.position = new Vector3(-97.39f, 2.80f, 2171.69f);
-                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.modelT_ab, spawnPoint.position, spawnPoint.rotation);
+                if (MainMenuManager.manage.isQuickRace)
+                {
+                    if (PlayerPrefs.GetInt("myCar") == 1)
+                    {
+                        spawnPoint.position = new Vector3(-97.39f, 2.80f, 2171.69f);
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.modelT_ab, spawnPoint.position, spawnPoint.rotation);
+                    }
 
+                    else
+                    {
+                        spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                    }
+                } else
+                {
+                    spawnPoint.position = new Vector3(-97.39f, 2.80f, 2171.69f);
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.modelT_ab, spawnPoint.position, spawnPoint.rotation);
+                }
             }
 
             if (PlayerPrefs.GetInt("CurrentCar") == 10)
             {
-                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.townCar_ab, spawnPoint.position, spawnPoint.rotation);
-                InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
-                Amplitude.Instance.logEvent("LevelStart");
+                if (MainMenuManager.manage.isQuickRace)
+                {
+                    if (PlayerPrefs.GetInt("myCar") == 1)
+                    {
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.townCar_ab, spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                    } else
+                    {
+                        spawnPoint.position = new Vector3(-97.39f, 2.80f, 2171.69f);
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                    }
+                } else
+                {
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.townCar_ab, spawnPoint.position, spawnPoint.rotation);
+                    InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                }
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 11)
             {
-
-                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.ikarus, spawnPoint.position, spawnPoint.rotation);
-                Amplitude.Instance.logEvent("LevelStart");
+                if (MainMenuManager.manage.isQuickRace)
+                {
+                    if (PlayerPrefs.GetInt("myCar") == 1)
+                    {
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.ikarus, spawnPoint.position, spawnPoint.rotation);
+                    } else
+                    {
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                    }
+                } else
+                {
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.ikarus, spawnPoint.position, spawnPoint.rotation);
+                }
             }
 
             else if (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 4
-                || PlayerPrefs.GetInt("CurrentCar") == 5 || PlayerPrefs.GetInt("CurrentCar") == 6 || PlayerPrefs.GetInt("CurrentCar") == 7 || PlayerPrefs.GetInt("CurrentCar") == 8
+                || PlayerPrefs.GetInt("CurrentCar") == 5 || PlayerPrefs.GetInt("CurrentCar") == 8
                 || PlayerPrefs.GetInt("CurrentCar") == 12)
             {
-                spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
-                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")], spawnPoint.position, spawnPoint.rotation);
+                if (MainMenuManager.manage.isQuickRace)
+                {
+                    if (PlayerPrefs.GetInt("myCar") == 1)
+                    {
+                        spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")], spawnPoint.position, spawnPoint.rotation);
+                    } else
+                    {
+                        spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
+                        InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                    }
+                } else
+                {
+                    spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")], spawnPoint.position, spawnPoint.rotation);
+                }
             }
         }
 
@@ -187,14 +366,21 @@ public class CarSpawnNew : MonoBehaviour
         #region Car Lights
         if (PlayerPrefs.GetInt("CurrentCar") == 4 || PlayerPrefs.GetInt("CurrentCar") == 6)
         {
-            GameObject light = GameObject.Find("Ilum");
-            light.SetActive(false);
+            if (PlayerPrefs.GetInt("myCar") == 1)
+            {
+                GameObject light = GameObject.Find("Ilum");
+                light.SetActive(false);
+            }
         }
 
-        if (PlayerPrefs.GetInt("CurrentCar") == 12)
+        if (PlayerPrefs.GetInt("CurrentCar") == 12 )
         {
-            GameObject light = GameObject.Find("rearGroundFlares");
-            light.SetActive(false);
+            if (PlayerPrefs.GetInt("myCar") == 1)
+            {
+                GameObject light = GameObject.Find("rearGroundFlares");
+                light.SetActive(false);
+            }
+
         }
 
         #endregion
@@ -208,41 +394,38 @@ public class CarSpawnNew : MonoBehaviour
             InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspRear" + PlayerPrefs.GetInt("CurrentCar"));
             InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspRear" + PlayerPrefs.GetInt("CurrentCar"));
         }
-        else if (PlayerPrefs.GetInt("WheelSussp" + PlayerPrefs.GetInt("CurrentCar")) == 0)
+        if (PlayerPrefs.GetInt("WheelSussp" + PlayerPrefs.GetInt("CurrentCar")) == 0)
         {
-            if
-                (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 1 ||
-                PlayerPrefs.GetInt("CurrentCar") == 2 || PlayerPrefs.GetInt("CurrentCar") == 3 ||
-                PlayerPrefs.GetInt("CurrentCar") == 4 || PlayerPrefs.GetInt("CurrentCar") == 5 ||
-                PlayerPrefs.GetInt("CurrentCar") == 6 || PlayerPrefs.GetInt("CurrentCar") == 7 ||
-                PlayerPrefs.GetInt("CurrentCar") == 9 || PlayerPrefs.GetInt("CurrentCar") == 11 ||
-                PlayerPrefs.GetInt("CurrentCar") == 12)
-            {
-                InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
-                InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+            // if    (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 1 ||
+            //   PlayerPrefs.GetInt("CurrentCar") == 2 || PlayerPrefs.GetInt("CurrentCar") == 3 ||
+            //   PlayerPrefs.GetInt("CurrentCar") == 4 || PlayerPrefs.GetInt("CurrentCar") == 5 ||
+            //   PlayerPrefs.GetInt("CurrentCar") == 6 || PlayerPrefs.GetInt("CurrentCar") == 7 ||
+            //   PlayerPrefs.GetInt("CurrentCar") == 9 || PlayerPrefs.GetInt("CurrentCar") == 11 ||
+            //   PlayerPrefs.GetInt("CurrentCar") == 12)
+            //{
+            InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+            InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
 
-                InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
-                InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
-            }
-            if (PlayerPrefs.GetInt("CurrentCar") == 8)
-            {
-                InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.02f;
-                InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.02f;
+            InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+            InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+        }
+        if (PlayerPrefs.GetInt("CurrentCar") == 8)
+        {
+            InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.02f;
+            InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.02f;
 
-                InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = 0.02f;
-                InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = 0.02f;
-            }
+            InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = 0.02f;
+            InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = 0.02f;
+        }
 
-            if (PlayerPrefs.GetInt("CurrentCar") == 10)
-            {
-                InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.05f;
-                InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.05f;
+        if (PlayerPrefs.GetInt("CurrentCar") == 10)
+        {
+            InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.05f;
+            InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.05f;
 
-                InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = 0.05f;
-                InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = 0.05f;
-            }
-            else
-
+            InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = 0.05f;
+            InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = 0.05f;
+        }
 
 
             #endregion
@@ -541,7 +724,7 @@ public class CarSpawnNew : MonoBehaviour
 
                 #endregion
 
-                #region Wheel Drive Mode
+            #region Wheel Drive Mode
                 if (MainMenuManager.WheelDriveisChecked)
                 {
                     switch (PlayerPrefs.GetString("DriveMode"))
@@ -568,11 +751,8 @@ public class CarSpawnNew : MonoBehaviour
 
             }
         }
-    }
-
         void Update()
         {
-            print(InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().maxspeed);
             maxspd.text = "MAX:" + InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().maxspeed.ToString() + "KM/H";
             if (InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed > 30f)
             {

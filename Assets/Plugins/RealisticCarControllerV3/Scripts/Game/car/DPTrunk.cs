@@ -38,6 +38,11 @@ public class DPTrunk : MonoBehaviour
             {
                 point -= 8;
             }
+            if (carController.speed > 300)
+            {
+                point -= 50;
+            }
+
 
             if (point <= 35)
             {

@@ -13,14 +13,16 @@ public class CathingLoadFiles : MonoBehaviour
     [SerializeField] int version;
     [SerializeField] int pesen;
     [SerializeField] GameObject LoadingPanel;
-    [Header("URL")]
+    [Header("URL Cars")]
     [SerializeField] string karus_bus;
     [SerializeField] string modelT;
     [SerializeField] string buggy_gtr;
     [SerializeField] string gt500_url;
     [SerializeField] string towncar_url;
     [SerializeField] string hotrodd_url;
-    //Soundtrack
+    [SerializeField] string lambo_url;
+    [SerializeField] string i8_url;
+    [Header("URL Soundtracks")]
     [SerializeField] string track11_url;
     [SerializeField] string track12_url;
     [SerializeField] string track13_url;
@@ -36,6 +38,8 @@ public class CathingLoadFiles : MonoBehaviour
     [SerializeField] Transform gt500_parent;
     [SerializeField] Transform towncar_parent;
     [SerializeField] Transform hotrodd_parent;
+    [SerializeField] Transform lambo_parent;
+    [SerializeField] Transform i8_parent;
     //Cars
     public GameObject ikarus;
     public GameObject modelT_ab;
@@ -43,6 +47,8 @@ public class CathingLoadFiles : MonoBehaviour
     public GameObject gt500_ab;
     public GameObject townCar_ab;
     public GameObject hot_rodd_ab;
+    public GameObject i8_ab;
+    public GameObject lambo_ab;
     //Soundtracks
     public GameObject track11_ab;
     public GameObject track12_ab;
@@ -61,6 +67,8 @@ public class CathingLoadFiles : MonoBehaviour
     [SerializeField] string assetgt500;
     [SerializeField] string assetsTownCar;
     [SerializeField] string assetsHotRodd;
+    [SerializeField] string assetsLambo;
+    [SerializeField] string assetsi8;
     [SerializeField] string assets_track11;
     [SerializeField] string assets_track12;
     [SerializeField] string assets_track13;
@@ -92,6 +100,8 @@ public class CathingLoadFiles : MonoBehaviour
     public bool car_bullet = false;
     public bool car_bus = false;
     public bool car_modelt = false;
+    public bool car_lambo = false;
+    public bool car_i8 = false;
 
     int count = 0;
     int count_ = 0;
@@ -108,7 +118,6 @@ public class CathingLoadFiles : MonoBehaviour
     private void Start()
     {
         loadCar();
-        SoundTrackPlay();
     }
 
     public void loadCar()
@@ -121,6 +130,8 @@ public class CathingLoadFiles : MonoBehaviour
         StartCoroutine(BuggyGTR());
         StartCoroutine(GT500());
         StartCoroutine(hotRodd());
+        StartCoroutine(lambo());
+        StartCoroutine(i8());
     }
 
     public void SoundTrackPlay()
@@ -141,20 +152,21 @@ public class CathingLoadFiles : MonoBehaviour
     }
 
     #region LoadOrCashedObjects
+    //Cars
     IEnumerator townCarLoad()
     {
         // Wait for the Caching system to be ready
         while (!Caching.ready)
             yield return null;
 
-
+        LoadingPanel.SetActive(true);
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
         using (WWW www = WWW.LoadFromCacheOrDownload(towncar_url + "", 18))
         {
 
 
             //    WWW www = WWW.LoadFromCacheOrDownload(BundleURL + "", version);
-            LoadingPanel.SetActive(true);
+            
 
             yield return www;
 
@@ -208,7 +220,7 @@ public class CathingLoadFiles : MonoBehaviour
         // Wait for the Caching system to be ready
         while (!Caching.ready)
             yield return null;
-
+        LoadingPanel.SetActive(true);
 
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
         using (WWW www = WWW.LoadFromCacheOrDownload(karus_bus + "", 2))
@@ -217,7 +229,7 @@ public class CathingLoadFiles : MonoBehaviour
 
             //    WWW www = WWW.LoadFromCacheOrDownload(BundleURL + "", version);
 
-            LoadingPanel.SetActive(true);
+            
             yield return www;
 
 
@@ -268,7 +280,7 @@ public class CathingLoadFiles : MonoBehaviour
         while (!Caching.ready)
             yield return null;
 
-        
+        LoadingPanel.SetActive(true);
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
         using (WWW www = WWW.LoadFromCacheOrDownload(modelT + "", 3))
         {
@@ -276,7 +288,7 @@ public class CathingLoadFiles : MonoBehaviour
 
             //    WWW www = WWW.LoadFromCacheOrDownload(BundleURL + "", version);
 
-            LoadingPanel.SetActive(true);
+            
             yield return www;
 
 
@@ -327,6 +339,7 @@ public class CathingLoadFiles : MonoBehaviour
         // Wait for the Caching system to be ready
         while (!Caching.ready)
             yield return null;
+        LoadingPanel.SetActive(true);
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
         using (WWW www = WWW.LoadFromCacheOrDownload(buggy_gtr + "", 4))
         {
@@ -334,7 +347,7 @@ public class CathingLoadFiles : MonoBehaviour
 
             //    WWW www = WWW.LoadFromCacheOrDownload(BundleURL + "", version);
 
-            LoadingPanel.SetActive(true);
+            
             yield return www;
 
 
@@ -359,7 +372,7 @@ public class CathingLoadFiles : MonoBehaviour
                 if (assetbuggyGtr == "")
                 {
                     buggy_gtr_ab = (GameObject)(bundle_gtr.mainAsset);
-                    buggy_gtr_ab.GetComponentInChildren<Rigidbody>().isKinematic = true;
+                    buggy_gtr_ab.GetComponentInChildren<Rigidbody>().isKinematic = false;
                     buggy_gtr_ab.transform.position = new Vector3(0, 1.3f, 0);
                     buggy_gtr_ab.transform.eulerAngles = new Vector2(0, 0);
                     Instantiate(buggy_gtr_ab).transform.SetParent(_buggy_gtr_parent);
@@ -368,7 +381,7 @@ public class CathingLoadFiles : MonoBehaviour
                 else
                 {
                     buggy_gtr_ab = (GameObject)(bundle_gtr.LoadAsset(assetbuggyGtr));
-                    buggy_gtr_ab.GetComponentInChildren<Rigidbody>().isKinematic = true;
+                    buggy_gtr_ab.GetComponentInChildren<Rigidbody>().isKinematic = false;
                     buggy_gtr_ab.transform.position = new Vector3(0, 1.3f, 0);
                     buggy_gtr_ab.transform.eulerAngles = new Vector2(0, 0);
                     Instantiate(buggy_gtr_ab).transform.SetParent(_buggy_gtr_parent);
@@ -388,7 +401,7 @@ public class CathingLoadFiles : MonoBehaviour
         while (!Caching.ready)
             yield return null;
 
-
+        LoadingPanel.SetActive(true);
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
         using (WWW www = WWW.LoadFromCacheOrDownload(gt500_url + "", 5))
         {
@@ -396,7 +409,7 @@ public class CathingLoadFiles : MonoBehaviour
 
             //    WWW www = WWW.LoadFromCacheOrDownload(BundleURL + "", version);
 
-            LoadingPanel.SetActive(true);
+            
             yield return www;
 
 
@@ -421,8 +434,8 @@ public class CathingLoadFiles : MonoBehaviour
                 if (assetgt500 == "")
                 {
                     gt500_ab = (GameObject)(bundle_gt500.mainAsset);
-                    gt500_ab.GetComponentInChildren<Rigidbody>().isKinematic = true;
-                    gt500_ab.transform.position = new Vector3(0, 1.3f, 0);
+                    gt500_ab.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                    gt500_ab.transform.position = new Vector3(0, 1.1f, 0);
                     gt500_ab.transform.eulerAngles = new Vector2(0, 0);
                     Instantiate(gt500_ab).transform.SetParent(gt500_parent);
                     Amplitude.Instance.logEvent("GT500LoadedFirstTime");
@@ -430,6 +443,9 @@ public class CathingLoadFiles : MonoBehaviour
                 else
                 {
                     gt500_ab = (GameObject)(bundle_gt500.LoadAsset(assetgt500));
+                    gt500_ab.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                    gt500_ab.transform.position = new Vector3(0, 1.1f, 0);
+                    gt500_ab.transform.eulerAngles = new Vector2(0, 0);
                     Instantiate(gt500_ab).transform.SetParent(gt500_parent);
                     // Unload the AssetBundles compressed contents to conserve memory
                     bundle_gt500.Unload(false);
@@ -443,6 +459,7 @@ public class CathingLoadFiles : MonoBehaviour
     }
     IEnumerator hotRodd()
     {
+        
         // Wait for the Caching system to be ready
         while (!Caching.ready)
             yield return null;
@@ -454,7 +471,7 @@ public class CathingLoadFiles : MonoBehaviour
 
 
             //    WWW www = WWW.LoadFromCacheOrDownload(BundleURL + "", version);
-            LoadingPanel.SetActive(true);
+            
 
             yield return www;
 
@@ -479,7 +496,7 @@ public class CathingLoadFiles : MonoBehaviour
                 if (assetsHotRodd == "")
                 {
                     hot_rodd_ab = (GameObject)(bundle_hot_rodd.mainAsset);
-                    hot_rodd_ab.GetComponentInChildren<Rigidbody>().isKinematic = true;
+                    hot_rodd_ab.GetComponentInChildren<Rigidbody>().isKinematic = false;
                     hot_rodd_ab.transform.position = new Vector3(0, 1, 0);
                     hot_rodd_ab.transform.eulerAngles = new Vector2(0, 0);
                     Instantiate(hot_rodd_ab).transform.SetParent(hotrodd_parent);
@@ -487,8 +504,9 @@ public class CathingLoadFiles : MonoBehaviour
                 }
                 else
                 {
+                    LoadingPanel.SetActive(true);
                     hot_rodd_ab = (GameObject)(bundle_hot_rodd.LoadAsset(assetsHotRodd));
-                    hot_rodd_ab.GetComponentInChildren<Rigidbody>().isKinematic = true;
+                    hot_rodd_ab.GetComponentInChildren<Rigidbody>().isKinematic = false;
                     hot_rodd_ab.transform.position = new Vector3(0, 1, 0);
                     hot_rodd_ab.transform.eulerAngles = new Vector2(0, 0);
                     Instantiate(hot_rodd_ab).transform.SetParent(hotrodd_parent);
@@ -502,6 +520,136 @@ public class CathingLoadFiles : MonoBehaviour
 
         } // memory is freed from the web stream (www.Dispose() gets called implicitly)
     }
+    IEnumerator i8()
+    {
+
+        // Wait for the Caching system to be ready
+        while (!Caching.ready)
+            yield return null;
+
+
+        // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
+        using (WWW www = WWW.LoadFromCacheOrDownload(i8_url + "", 34))
+        {
+
+
+            //    WWW www = WWW.LoadFromCacheOrDownload(BundleURL + "", version);
+
+
+            yield return www;
+
+
+            AssetBundle bundle_i8;
+            if (!string.IsNullOrEmpty(www.error))
+            {
+
+                throw new Exception("WWW download had an error:" + www.error);
+
+            }
+
+            else
+            {
+                bundle_i8 = www.assetBundle;
+
+
+                for (int i = 0; i < bundle_i8.GetAllAssetNames().Length; i++)
+                {
+                }
+
+                if (assetsi8 == "")
+                {
+                    i8_ab = (GameObject)(bundle_i8.mainAsset);
+                    i8_ab.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                    i8_ab.transform.position = new Vector3(0, 1, 0);
+                    i8_ab.transform.eulerAngles = new Vector2(0, 0);
+                    Instantiate(i8_ab).transform.SetParent(i8_parent);
+                    Amplitude.Instance.logEvent("LamboLoaded");
+                }
+                else
+                {
+                    LoadingPanel.SetActive(true);
+                    i8_ab = (GameObject)(bundle_i8.LoadAsset(assetsi8));
+                    i8_ab.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                    i8_ab.transform.position = new Vector3(0, 1, 0);
+                    i8_ab.transform.eulerAngles = new Vector2(0, 0);
+                    Instantiate(i8_ab).transform.SetParent(i8_parent);
+                    
+                    // Unload the AssetBundles compressed contents to conserve memory
+                    bundle_i8.Unload(false);
+                    Amplitude.Instance.logEvent("LamboCashed");
+                    LoadingPanel.SetActive(false);
+                    car_i8 = true;
+                }
+            }
+
+        } // memory is freed from the web stream (www.Dispose() gets called implicitly)
+    }
+    IEnumerator lambo()
+    {
+
+        // Wait for the Caching system to be ready
+        while (!Caching.ready)
+            yield return null;
+
+
+        // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
+        using (WWW www = WWW.LoadFromCacheOrDownload(lambo_url + "", 36))
+        {
+
+
+            //    WWW www = WWW.LoadFromCacheOrDownload(BundleURL + "", version);
+
+
+            yield return www;
+
+
+            AssetBundle bundle_lambo;
+            if (!string.IsNullOrEmpty(www.error))
+            {
+
+                throw new Exception("WWW download had an error:" + www.error);
+
+            }
+
+            else
+            {
+                bundle_lambo = www.assetBundle;
+
+
+                for (int i = 0; i < bundle_lambo.GetAllAssetNames().Length; i++)
+                {
+                }
+
+                if (assetsLambo == "")
+                {
+                    lambo_ab = (GameObject)(bundle_lambo.mainAsset);
+                    lambo_ab.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                    lambo_ab.transform.position = new Vector3(0, 1.1f, 0);
+                    lambo_ab.transform.eulerAngles = new Vector2(0, 0);
+                    Instantiate(lambo_ab).transform.SetParent(lambo_parent);
+                    Amplitude.Instance.logEvent("LamboLoaded");
+                }
+                else
+                {
+                    LoadingPanel.SetActive(true);
+                    lambo_ab = (GameObject)(bundle_lambo.LoadAsset(assetsLambo));
+                    lambo_ab.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                    
+                    lambo_ab.transform.position = new Vector3(0, 1.1f, 0);
+                    lambo_ab.transform.eulerAngles = new Vector2(0, 0);
+                    Instantiate(lambo_ab).transform.SetParent(lambo_parent);
+                    // Unload the AssetBundles compressed contents to conserve memory
+                    bundle_lambo.Unload(false);
+                    Amplitude.Instance.logEvent("LamboCashed");
+                    LoadingPanel.SetActive(false);
+                    car_lambo = true;
+                }
+            }
+
+        } // memory is freed from the web stream (www.Dispose() gets called implicitly)
+    }
+
+
 
     //Scenes
     IEnumerator CityOnlineMap()
@@ -1052,7 +1200,7 @@ public class CathingLoadFiles : MonoBehaviour
 
     private void Update()
     {
-        print(PlayerPrefs.GetInt("AppActive"));
+        /*
         if (PlayerPrefs.GetInt("AppActive") > 1)
         {
             if (track11_isloaded || track12_isloaded || track13_isloaded
@@ -1091,6 +1239,7 @@ public class CathingLoadFiles : MonoBehaviour
             }
 
         }
+        */
     }
 
     #endregion

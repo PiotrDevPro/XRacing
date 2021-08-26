@@ -76,6 +76,7 @@ public class LoadAstBundleLevelLap : MonoBehaviour
 
     private void Update()
     {
+        /*
         if (track11_isloaded || track12_isloaded ||
             track13_isloaded || track14_isloaded ||
             track15_isloaded || track16_isloaded ||
@@ -109,6 +110,7 @@ public class LoadAstBundleLevelLap : MonoBehaviour
                 count = 2;
             }
         }
+        */
     }
 
     private void Start()
@@ -119,14 +121,14 @@ public class LoadAstBundleLevelLap : MonoBehaviour
     public void loadFilesFromAB()
     {
         //Soundtrack
-        StartCoroutine(track11());
-        StartCoroutine(track12());
-        StartCoroutine(track13());
-        StartCoroutine(track14());
-        StartCoroutine(track15());
-        StartCoroutine(track16());
-        StartCoroutine(track17());
-        StartCoroutine(track18());
+       // StartCoroutine(track11());
+       // StartCoroutine(track12());
+       // StartCoroutine(track13());
+       // StartCoroutine(track14());
+       // StartCoroutine(track15());
+       // StartCoroutine(track16());
+       // StartCoroutine(track17());
+       // StartCoroutine(track18());
 
         if (MainMenuManager.manage.isAllvsYou)
         {

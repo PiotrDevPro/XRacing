@@ -51,6 +51,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+
         count += 1;
         if (count == 1)
         {
@@ -58,9 +59,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             loadingToCityMap.SetActive(false);
             loadingPanel.SetActive(false);
             PhotonNetwork.NickName = PlayerPrefs.GetString("Player");
-            //PlayerPrefs.SetString("PlayerNetwork",PhotonNetwork.NickName);
-            //print(PlayerPrefs.GetString("PlayerNetwork"));
-            //Log("Player's name is set to " + PhotonNetwork.NickName);
             PhotonNetwork.AutomaticallySyncScene = true;
             PhotonNetwork.GameVersion = "1";
             PhotonNetwork.ConnectUsingSettings();
@@ -103,11 +101,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
          if (PlayerPrefs.GetInt("AppActivate") ==1)
         {
+                print("ifAppActive ==1");
                 LoadAssetsBundle.manage.LoadAssetBundleSceneCity();
                 Amplitude.Instance.logEvent("LoadAssetBundleSceneCity");
         }
         else
         {
+            print("elseAppActive !=1");
             CreateRoomCity();
             Amplitude.Instance.logEvent("LoadingCityOnlineMap");
         }

@@ -49,22 +49,23 @@ public class Pause : MonoBehaviour
         _blur = FindObjectOfType<CameraMotionBlur>();
         if (PlayerPrefs.GetInt("Soundtrack") == 0)
         {
-            //tracks[Random.Range(0, 6)].Play();
-            LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.782f;
-            LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponent<AudioSource>().volume = 0.7f;
-            LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.25f;
-            AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], tracks[6], LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponent<AudioSource>(),
-            LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponent<AudioSource>(),
-            LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponent<AudioSource>(),LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponent<AudioSource>(),
-            LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponent<AudioSource>()};
-            _tracks[Random.Range(0, _tracks.Length)].Play();
-            print(Random.Range(0, _tracks.Length));
+            tracks[Random.Range(0, 14)].Play();
+           // LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.782f;
+           // LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponent<AudioSource>().volume = 0.7f;
+          //  LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.25f;
+           // AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], tracks[6], LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponent<AudioSource>(),
+           // LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponent<AudioSource>(),
+           // LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponent<AudioSource>(),LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponent<AudioSource>(),
+            //LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponent<AudioSource>()};
+          //  _tracks[Random.Range(0, _tracks.Length)].Play();
+          //  print(Random.Range(0, _tracks.Length));
         }
 
         if (SceneManager.GetActiveScene().name == "city_online")
         {
             if (PlayerPrefs.GetInt("Soundtrack") == 1)
             {
+                print("trackON");
                 tracks[7].Play();
             }
         }
@@ -75,15 +76,16 @@ public class Pause : MonoBehaviour
 
     public void StartSoundtrack()
     {
-        LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.782f;
-        LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>().volume = 0.247f;
-        LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponent<AudioSource>().volume = 0.7f;
-        AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], tracks[6], LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponent<AudioSource>(),
-        LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>(),
-        LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponent<AudioSource>(),LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponent<AudioSource>(),
-        LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponent<AudioSource>(),
-        LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponent<AudioSource>()};
-        _tracks[Random.Range(0, _tracks.Length)].Play();
+        tracks[Random.Range(0, 14)].Play();
+        // LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.782f;
+        // LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>().volume = 0.247f;
+        // LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponent<AudioSource>().volume = 0.7f;
+        // AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], tracks[6], LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponent<AudioSource>(),
+        // LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>(),
+        // LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponent<AudioSource>(),LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponent<AudioSource>(),
+        // LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponent<AudioSource>(),
+        // LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponent<AudioSource>()};
+        // _tracks[Random.Range(0, _tracks.Length)].Play();
     }
 
     private void Update()
@@ -121,21 +123,31 @@ public class Pause : MonoBehaviour
             tracks[4].Stop();
             tracks[5].Stop();
             tracks[6].Stop();
-            LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            tracks[7].Stop();
+            tracks[8].Stop();
+            tracks[9].Stop();
+            tracks[10].Stop();
+            tracks[11].Stop();
+            tracks[12].Stop();
+            tracks[13].Stop();
+            tracks[14].Stop();
+            // LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            // LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            // LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            // LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            // LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            // LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            //  LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            //  LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponentInChildren<AudioSource>().Stop();
         }
     }
 
     public void MainMenu()
     {
-        
-        PhotonNetwork.Destroy(_player.gameObject);
+        if (SceneManager.GetActiveScene().name == "city_online" || SceneManager.GetActiveScene().name == "battle_online")
+        {
+            PhotonNetwork.Destroy(_player.gameObject);
+        }
         Amplitude.Instance.logEvent("MainMenu");
         MainMenuManager.manage.isFreerideActive = false;
         SceneManager.LoadScene("garage");
@@ -239,16 +251,16 @@ public class Pause : MonoBehaviour
         if (toggle.isOn)
         {
             PlayerPrefs.SetInt("Soundtrack", 0);
-            LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.782f;
-            LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>().volume = 0.25f;
-            AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], tracks[6], LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponent<AudioSource>(),
-            LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>(),LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponent<AudioSource>(),
-            LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponent<AudioSource>(),LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponent<AudioSource>(),
-            LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponent<AudioSource>()};
+           // LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.782f;
+           // LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>().volume = 0.25f;
+           // AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], tracks[6], LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponent<AudioSource>(),
+           // LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponent<AudioSource>(),LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponent<AudioSource>(),
+           // LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponent<AudioSource>(),LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponent<AudioSource>(),
+           // LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponent<AudioSource>(), LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponent<AudioSource>()};
 
-            _tracks[Random.Range(0, _tracks.Length)].Play();
-            print(Random.Range(0, _tracks.Length));
-            //tracks[Random.Range(0, 7)].GetComponent<AudioSource>().Play();
+            //_tracks[Random.Range(0, _tracks.Length)].Play();
+            //print(Random.Range(0, _tracks.Length));
+            tracks[Random.Range(0, 14)].GetComponent<AudioSource>().Play();
             Amplitude.Instance.logEvent("SoundeEnable");
             if (SceneManager.GetActiveScene().name == "city_online")
             {
@@ -258,6 +270,10 @@ public class Pause : MonoBehaviour
         else
         {
             PlayerPrefs.SetInt("Soundtrack", 1);
+            if (SceneManager.GetActiveScene().name == "city_online")
+            {
+                tracks[7].GetComponent<AudioSource>().Play();
+            }
             tracks[0].GetComponent<AudioSource>().Stop();
             tracks[1].GetComponent<AudioSource>().Stop();
             tracks[2].GetComponent<AudioSource>().Stop();
@@ -265,19 +281,24 @@ public class Pause : MonoBehaviour
             tracks[4].GetComponent<AudioSource>().Stop();
             tracks[5].GetComponent<AudioSource>().Stop();
             tracks[6].GetComponent<AudioSource>().Stop();
-            LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            tracks[7].GetComponent<AudioSource>().Stop();
+            tracks[8].GetComponent<AudioSource>().Stop();
+            tracks[9].GetComponent<AudioSource>().Stop();
+            tracks[10].GetComponent<AudioSource>().Stop();
+            tracks[11].GetComponent<AudioSource>().Stop();
+            tracks[12].GetComponent<AudioSource>().Stop();
+            tracks[13].GetComponent<AudioSource>().Stop();
+            tracks[14].GetComponent<AudioSource>().Stop();
+            //  LoadAstBundleLevelLap.manage.track11_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            //  LoadAstBundleLevelLap.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            // LoadAstBundleLevelLap.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            //  LoadAstBundleLevelLap.manage.track14_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            //  LoadAstBundleLevelLap.manage.track15_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            //  LoadAstBundleLevelLap.manage.track16_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            //  LoadAstBundleLevelLap.manage.track17_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            //   LoadAstBundleLevelLap.manage.track18_isLoaded.GetComponentInChildren<AudioSource>().Stop();
             Amplitude.Instance.logEvent("SoundeDisable");
-            if (SceneManager.GetActiveScene().name == "city_online")
-            {
-                tracks[7].GetComponent<AudioSource>().Play();
-            }
+            
             
         }
     }

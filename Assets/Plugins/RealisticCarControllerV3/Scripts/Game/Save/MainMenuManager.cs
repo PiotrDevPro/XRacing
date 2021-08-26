@@ -29,8 +29,12 @@ public class MainMenuManager : MonoBehaviour
     public bool isCheckpointLevel = false;
     public bool isAllvsYou = false;
     public bool isTopSpeedActive = false;
+    public bool isQuickRace = false;
     [Header("Pool Prefab Manager")]
     public GameObject PoolPrefActive;
+    [Header("Other obj")]
+    [SerializeField] GameObject RatingForCarPanel;
+    [SerializeField] Text ratingforCar;
     //public bool isCityNetworkRoom;
     //public GameObject maxSpeedActive;
 
@@ -70,6 +74,7 @@ public class MainMenuManager : MonoBehaviour
         public int[] TractionPrice;
         public int[] WheelDrivePrice;
         public int energy;
+        public int CarRating;
 
 
         public GameObject car;
@@ -320,7 +325,7 @@ public class MainMenuManager : MonoBehaviour
 
         public GameObject loading;
         public GameObject customizeVehicle;
-        public GameObject buyNewVehicle;
+        public Button buyNewVehicle;
         public GameObject levelChooser;
         public GameObject RUSure;
         public GameObject NoAdsBtn;
@@ -382,6 +387,7 @@ public class MainMenuManager : MonoBehaviour
                     VSetting.car.SetActive(true);
                     print(currentCarNumber);
                     currentCar = VSetting;
+                    
                 }
                 else
                 {
@@ -420,7 +426,7 @@ public class MainMenuManager : MonoBehaviour
                 menuPanels._NetworkRoom.SetActive(false);
                 menuGUI._playerName.text = PlayerPrefs.GetString("Player");
                 Amplitude.Instance.logEvent("SelectLevel");
-                if (PlayerPrefs.GetInt("Rating") >= 60)
+                if (PlayerPrefs.GetInt("Rating") >= 30)
                 {
                     menuPanels.FreeridePanel.SetActive(false);
                     menuPanels.FreerideBtn.interactable = true;
@@ -490,16 +496,21 @@ public class MainMenuManager : MonoBehaviour
     {
         if (toggle.isOn)
         {
-            CathingLoadFiles.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.732f;
-            CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.23f;
-            CathingLoadFiles.manage.track15_isLoaded.GetComponent<AudioSource>().volume = 0.7f;
+            tracks[Random.Range(0, 12)].GetComponentInChildren<AudioSource>().Play();
 
-            AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], 
-                CathingLoadFiles.manage.track12_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track11_isLoaded.GetComponentInChildren<AudioSource>(),
-                    CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>(),CathingLoadFiles.manage.track14_isLoaded.GetComponentInChildren<AudioSource>(),
-                        CathingLoadFiles.manage.track15_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track16_isLoaded.GetComponentInChildren<AudioSource>(),
-                            CathingLoadFiles.manage.track17_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track18_isLoaded.GetComponentInChildren<AudioSource>()};
-            _tracks[Random.Range(0, _tracks.Length)].Play();
+            #region MusicFromAssetBundle
+            // CathingLoadFiles.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.732f;
+            // CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.23f;
+            // CathingLoadFiles.manage.track15_isLoaded.GetComponent<AudioSource>().volume = 0.7f;
+
+            // AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], 
+            //   CathingLoadFiles.manage.track12_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track11_isLoaded.GetComponentInChildren<AudioSource>(),
+            //       CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>(),CathingLoadFiles.manage.track14_isLoaded.GetComponentInChildren<AudioSource>(),
+            //           CathingLoadFiles.manage.track15_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track16_isLoaded.GetComponentInChildren<AudioSource>(),
+            //               CathingLoadFiles.manage.track17_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track18_isLoaded.GetComponentInChildren<AudioSource>()};
+            //_tracks[Random.Range(0, _tracks.Length)].Play();
+            #endregion
+
             PlayerPrefs.SetInt("MusicActive", 0);
             Amplitude.Instance.logEvent("MainMenu->MusicON");
         }
@@ -511,14 +522,21 @@ public class MainMenuManager : MonoBehaviour
             tracks[3].Stop();
             tracks[4].Stop();
             tracks[5].Stop();
-            CathingLoadFiles.manage.track11_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            CathingLoadFiles.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            CathingLoadFiles.manage.track14_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            CathingLoadFiles.manage.track15_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            CathingLoadFiles.manage.track16_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            CathingLoadFiles.manage.track17_isLoaded.GetComponentInChildren<AudioSource>().Stop();
-            CathingLoadFiles.manage.track18_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            tracks[6].Stop();
+            tracks[7].Stop();
+            tracks[8].Stop();
+            tracks[9].Stop();
+            tracks[10].Stop();
+            tracks[11].Stop();
+            tracks[12].Stop();
+            //  CathingLoadFiles.manage.track11_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            // CathingLoadFiles.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            // CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            // CathingLoadFiles.manage.track14_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            // CathingLoadFiles.manage.track15_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            // CathingLoadFiles.manage.track16_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            // CathingLoadFiles.manage.track17_isLoaded.GetComponentInChildren<AudioSource>().Stop();
+            // CathingLoadFiles.manage.track18_isLoaded.GetComponentInChildren<AudioSource>().Stop();
             PlayerPrefs.SetInt("MusicActive", 1);
             Amplitude.Instance.logEvent("MainMenu->MusicOFF");
         }
@@ -588,21 +606,24 @@ public class MainMenuManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("MusicActive") != 1)
         {
-            tracks[Random.Range(0,5)].GetComponent<AudioSource>().Play();
+            tracks[Random.Range(0,12)].GetComponent<AudioSource>().Play();
         }
     }
 
     public void StartSoundtrack()
     {
-            CathingLoadFiles.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.732f;
-            CathingLoadFiles.manage.track15_isLoaded.GetComponent<AudioSource>().volume = 0.7f;
-            CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.23f;
+        #region MusicFromAssetBundle
+        // CathingLoadFiles.manage.track12_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.732f;
+        // CathingLoadFiles.manage.track15_isLoaded.GetComponent<AudioSource>().volume = 0.7f;
+        // CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>().volume = 0.23f;
 
-            AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], CathingLoadFiles.manage.track12_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track11_isLoaded.GetComponentInChildren<AudioSource>(), 
-                CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>(),CathingLoadFiles.manage.track14_isLoaded.GetComponentInChildren<AudioSource>(),
-                    CathingLoadFiles.manage.track15_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track16_isLoaded.GetComponentInChildren<AudioSource>(),
-                        CathingLoadFiles.manage.track17_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track18_isLoaded.GetComponentInChildren<AudioSource>()};
-            _tracks[Random.Range(0, _tracks.Length)].Play();
+        // AudioSource[] _tracks = new AudioSource[] { tracks[1], tracks[2], tracks[3], tracks[4], tracks[5], CathingLoadFiles.manage.track12_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track11_isLoaded.GetComponentInChildren<AudioSource>(), 
+        //     CathingLoadFiles.manage.track13_isLoaded.GetComponentInChildren<AudioSource>(),CathingLoadFiles.manage.track14_isLoaded.GetComponentInChildren<AudioSource>(),
+        //         CathingLoadFiles.manage.track15_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track16_isLoaded.GetComponentInChildren<AudioSource>(),
+        //             CathingLoadFiles.manage.track17_isLoaded.GetComponentInChildren<AudioSource>(), CathingLoadFiles.manage.track18_isLoaded.GetComponentInChildren<AudioSource>()};
+        // _tracks[Random.Range(0, _tracks.Length)].Play();
+        #endregion
+
     }
 
     public void RWDMode(Toggle value)
@@ -2802,15 +2823,6 @@ public class MainMenuManager : MonoBehaviour
                 {
                     Amplitude.Instance.logEvent("Cuda Killer");
                 }
-
-                if (PlayerPrefs.GetInt("CurrentCar") == 6)
-                {
-                    Amplitude.Instance.logEvent("BMW i8");
-                }
-                if (PlayerPrefs.GetInt("CurrentCar") == 7)
-                {
-                    Amplitude.Instance.logEvent("Lambo LP-750");
-                }
                 if (PlayerPrefs.GetInt("CurrentCar") == 8)
                 {
                     Amplitude.Instance.logEvent("The Bison Monster");
@@ -2832,7 +2844,23 @@ public class MainMenuManager : MonoBehaviour
                 {
                     Amplitude.Instance.logEvent("GT 350");
                     carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
-                    carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().StartEngine();
+                   // carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().StartEngine();
+                }
+
+                if (PlayerPrefs.GetInt("CurrentCar") == 6)
+                {
+                    Amplitude.Instance.logEvent("BMW i8");
+                    carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                    //CathingLoadFiles.manage.i8_ab.GetComponentInChildren<RCC_CarControllerV3>().StartEngineNow();
+                    //CathingLoadFiles.manage.i8_ab.GetComponentInChildren<RCC_CarControllerV3>().enabled = false;
+                }
+
+                if (PlayerPrefs.GetInt("CurrentCar") == 7)
+                {
+                    Amplitude.Instance.logEvent("Lambo LP-750");
+                    carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                  //  CathingLoadFiles.manage.lambo_ab.GetComponentInChildren<RCC_CarControllerV3>().StartEngineNow();
+                  //  CathingLoadFiles.manage.lambo_ab.GetComponentInChildren<RCC_CarControllerV3>().enabled = false;
                 }
                 if (PlayerPrefs.GetInt("CurrentCar") == 9)
                 {
@@ -2894,15 +2922,6 @@ public class MainMenuManager : MonoBehaviour
                 {
                     Amplitude.Instance.logEvent("Cuda Killer");
                 }
-
-                if (PlayerPrefs.GetInt("CurrentCar") == 6)
-                {
-                    Amplitude.Instance.logEvent("BMW i8");
-                }
-                if (PlayerPrefs.GetInt("CurrentCar") == 7)
-                {
-                    Amplitude.Instance.logEvent("Lambo LP-750");
-                }
                 if (PlayerPrefs.GetInt("CurrentCar") == 8)
                 {
                     Amplitude.Instance.logEvent("The Bison Monster");
@@ -2925,6 +2944,20 @@ public class MainMenuManager : MonoBehaviour
                 {
                     Amplitude.Instance.logEvent("GT 350");
                     carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                }
+
+                if (PlayerPrefs.GetInt("CurrentCar") == 6)
+                {
+                    Amplitude.Instance.logEvent("BMW i8");
+                    carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                   // CathingLoadFiles.manage.i8_ab.GetComponentInChildren<RCC_CarControllerV3>().StartEngineNow();
+                }
+
+                if (PlayerPrefs.GetInt("CurrentCar") == 7)
+                {
+                    Amplitude.Instance.logEvent("Lambo LP-750");
+                    carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                   // CathingLoadFiles.manage.lambo_ab.GetComponentInChildren<RCC_CarControllerV3>().StartEngineNow();
                 }
                 if (PlayerPrefs.GetInt("CurrentCar") == 9)
                 {
@@ -3892,14 +3925,14 @@ public class MainMenuManager : MonoBehaviour
         LoadBrakeOnSelectedCar();
     }
 
-    public void loadlevelVsYou()
-    {
-        Amplitude.Instance.logEvent("Battle");
+   public void loadlevelVsYou()
+  {
+        Amplitude.Instance.logEvent("BattleLevel");
         isAllvsYou = true;
         SceneManager.LoadScene("level_lap6");
         LoadEngineUpgradeOnSelectedCar();
         LoadHandlingOnSelectedCar();
-        LoadBrakeOnSelectedCar();
+       LoadBrakeOnSelectedCar();
     }
 
     public void levelTopSpeed()
@@ -3907,6 +3940,16 @@ public class MainMenuManager : MonoBehaviour
         Amplitude.Instance.logEvent("TopSpeedLevel");
         SceneManager.LoadScene("level_top_speed_test");
         isTopSpeedActive = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+    }
+
+    public void levelQuickRace()
+    {
+        Amplitude.Instance.logEvent("QuickRaceLevel");
+        SceneManager.LoadScene("level_top_speed_test");
+        isQuickRace = true;
         LoadEngineUpgradeOnSelectedCar();
         LoadHandlingOnSelectedCar();
         LoadBrakeOnSelectedCar();
@@ -4008,8 +4051,11 @@ public class MainMenuManager : MonoBehaviour
         
         manage = this;
         Application.targetFrameRate = 300;
+        ///SystemObj
         PoolPrefActive.SetActive(false);
-
+        RatingForCarPanel.SetActive(false);
+        Soundtracks();
+        ///CarConfig
         ResolutionOnAwake();
         LoadEngineUprgadeOnAwake();
         LoadHandlingOnAwake();
@@ -4052,6 +4098,7 @@ public class MainMenuManager : MonoBehaviour
         menuGUI.RUSure.SetActive(false);
         network_manager_active.SetActive(false);
         menuGUI._playerName.text = PlayerPrefs.GetString("Player");
+
         if (PlayerPrefs.GetInt("Energy") == 25)
         {
             menuGUI.adsEnergyBtn.interactable = false;
@@ -4061,10 +4108,7 @@ public class MainMenuManager : MonoBehaviour
     }
 
 
-    public void GetMoney()
-    {
-        PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 100000f);
-    }
+
 
     #region Trash
 
@@ -4094,6 +4138,16 @@ public class MainMenuManager : MonoBehaviour
     {
         Amplitude.Instance.logEvent("RU");
     }
+
+    public void GetMoney()
+    {
+        PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 100000f);
+    }
+
+    public void ratingBtn()
+    {
+        PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") +100);
+    }
     #endregion
 
 
@@ -4122,6 +4176,7 @@ public class MainMenuManager : MonoBehaviour
         /////Coin Display
         cashAmount.text = ((int)PlayerPrefs.GetFloat("DriftCoin")).ToString() + "$";
         Rating.text = PlayerPrefs.GetInt("Rating").ToString();
+        ratingforCar.text = carSetting[currentCarNumber].CarRating.ToString();
         //menuGUI.CarMaxSpeed.text = carSetting[currentCarNumber].carPower.speed.ToString() + "KMH";
         menuGUI.CarName.text = carSetting[currentCarNumber].name.ToString();
         //speedfill = (carSetting[currentCarNumber].car.GetComponent<RCC_CarControllerV3>().maxspeed) / 550f;
@@ -4152,26 +4207,29 @@ public class MainMenuManager : MonoBehaviour
         if (carSetting[currentCarNumber].Bought)
         {
             menuGUI.customizeVehicle.SetActive(true);
-            menuGUI.buyNewVehicle.SetActive(false);
+            menuGUI.buyNewVehicle.gameObject.SetActive(false);
             menuGUI.levelChooser.SetActive(true);
             menuGUI.CarName.text = carSetting[currentCarNumber].name;
             menuGUI.CarPrice.text = "";
+            PlayerPrefs.SetInt("myCar", 1);
             PlayerPrefs.SetInt("CurrentVehicle", currentCarNumber);
         }
         else
         {
             menuGUI.customizeVehicle.SetActive(false);
-            menuGUI.buyNewVehicle.SetActive(true);
+            menuGUI.buyNewVehicle.gameObject.SetActive(true);
 
             menuGUI.CarName.text = carSetting[currentCarNumber].name;
             menuGUI.CarPrice.text = "COST: " + carSetting[currentCarNumber].price.ToString();
             menuGUI.levelChooser.SetActive(false);
+            PlayerPrefs.SetInt("myCar", 0);
         }
         if (carSetting[currentCarNumber].price == 0)
         {
             menuGUI.customizeVehicle.SetActive(true);
-            menuGUI.buyNewVehicle.SetActive(false);
+            menuGUI.buyNewVehicle.gameObject.SetActive(false);
             carSetting[currentCarNumber].Bought = true;
+            PlayerPrefs.SetInt("myCar", 1);
             menuGUI.CarName.text = carSetting[currentCarNumber].name;
             menuGUI.CarPrice.text = "";
             PlayerPrefs.SetInt("CurrentVehicle", currentCarNumber);
@@ -4180,16 +4238,28 @@ public class MainMenuManager : MonoBehaviour
         if (PlayerPrefs.GetInt("BoughtCar"+currentCarNumber)==1)
         {
             menuGUI.customizeVehicle.SetActive(true);
-            menuGUI.buyNewVehicle.SetActive(false);
+            menuGUI.buyNewVehicle.gameObject.SetActive(false);
             menuGUI.levelChooser.SetActive(true);
             menuGUI.CarName.text = carSetting[currentCarNumber].name;
             menuGUI.CarPrice.text = "";
             PlayerPrefs.SetInt("CurrentVehicle", currentCarNumber);
+            PlayerPrefs.SetInt("myCar", 1);
+        }
+
+        /// player rating for buy car
+        if (carSetting[currentCarNumber].CarRating <= PlayerPrefs.GetInt("Rating"))
+        {
+            RatingForCarPanel.SetActive(false);
+            menuGUI.buyNewVehicle.interactable = true;
+        } else
+        {
+            RatingForCarPanel.SetActive(true);
+            menuGUI.buyNewVehicle.interactable = false;
         }
 
         if (CathingLoadFiles.manage.car_gt500 && CathingLoadFiles.manage.car_hotrodd
             && CathingLoadFiles.manage.car_buggy && CathingLoadFiles.manage.car_modelt
-            && CathingLoadFiles.manage.car_bus && CathingLoadFiles.manage.car_bullet)
+            && CathingLoadFiles.manage.car_bus && CathingLoadFiles.manage.car_bullet && CathingLoadFiles.manage.car_i8 && CathingLoadFiles.manage.car_lambo)
         {
             PoolPrefActive.SetActive(true);
         }

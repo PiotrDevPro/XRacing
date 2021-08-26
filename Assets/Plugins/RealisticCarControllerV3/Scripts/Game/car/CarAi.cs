@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
 
@@ -19,7 +20,14 @@ using UnityEngine;
 
         private void Start()
         {
+        if (SceneManager.GetActiveScene().name != "level_top_speed_test")
+        {
             energy = Random.Range(100, 130);
+        } else
+        {
+            energy = Random.Range(140, 200);
+        }
+              
         }
         private void OnTriggerEnter(Collider other)
         {

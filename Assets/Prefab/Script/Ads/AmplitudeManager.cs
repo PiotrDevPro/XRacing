@@ -15,16 +15,22 @@ public class AmplitudeManager : MonoBehaviour
         amplitude.logging = true;
         amplitude.init("8578eac3466937dd610b84480ff56bd8");
         PlayerPrefs.SetInt("AppActive", PlayerPrefs.GetInt("AppActive") + 1);
+
         if (PlayerPrefs.GetInt("FirstActive") == 0)
         {
             Amplitude.Instance.logEvent("AppOpen", FirstTime);
             Amplitude.Instance.logEvent("FirstTime");
-            MainMenuManager.manage.Soundtracks();
+           // MainMenuManager.manage.Soundtracks();
             PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 10000f);
             PlayerPrefs.SetString("Player", "Player" + Random.Range(0,9999));
             PlayerPrefs.SetInt("FirstActive", PlayerPrefs.GetInt("FirstActive") + 1);
             isFirstActivate = true;
 
+        }
+
+        if (LobbyManager.manage.isCityLoadingBtnClicked)
+        {
+            PlayerPrefs.SetInt("AppActivate", PlayerPrefs.GetInt("AppActivate") + 1);
         }
     }
 

@@ -25,6 +25,45 @@ public class DamagePartsHood : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
+        if (col.CompareTag("Obstacle"))
+        {
+            point -= 1;
+            print(point);
+
+            if (point <= 30)
+            {
+                if (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 1 || PlayerPrefs.GetInt("CurrentCar") == 2 || PlayerPrefs.GetInt("CurrentCar") == 7
+                    || PlayerPrefs.GetInt("CurrentCar") == 11)
+                {
+                    carPart.gameObject.SetActive(false);
+                }
+
+            }
+
+            if (point <= 27)
+            {
+                if (PlayerPrefs.GetInt("CurrentCar") == 11)
+                {
+                    carPart2.gameObject.SetActive(false);
+                    carPart3.gameObject.SetActive(false);
+                    Amplitude.Instance.logEvent("WindowDoorsIkarusDamaged");
+                }
+            }
+            if (point <= 20)
+            {
+                wheels1.gameObject.SetActive(false);
+                wheels1col.gameObject.SetActive(false);
+                blow.SetActive(true);
+                Amplitude.Instance.logEvent("wheel1damaged");
+            }
+
+            if (point <= 5)
+            {
+                wheels2.gameObject.SetActive(false);
+                wheels2col.gameObject.SetActive(false);
+                Amplitude.Instance.logEvent("wheel1damaged + wheel1damaged");
+            }
+        }
         if (col.CompareTag("CarAI") || col.CompareTag("Car"))
         {
             
@@ -39,9 +78,14 @@ public class DamagePartsHood : MonoBehaviour
                   
              }
              if (carController.speed > 150)
-              {
+             {
                  point -= 8;
              }
+
+            if (carController.speed > 300)
+            {
+                point -= 50;
+            }
 
             if (point <= 30)
             {
@@ -78,6 +122,15 @@ public class DamagePartsHood : MonoBehaviour
                 Amplitude.Instance.logEvent("wheel1damaged + wheel1damaged");
             }
 
+            print(point);
+        }
+    }
+
+    private void OnCollisionEnter(Collision col)
+    {
+        print(point);
+        if (col.gameObject.CompareTag("Obstacle"))
+        {
             print(point);
         }
     }

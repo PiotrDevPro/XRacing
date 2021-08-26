@@ -57,7 +57,7 @@ public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
             RenderSettings.fogDensity = 0.003f;
 
             if (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 4
-                || PlayerPrefs.GetInt("CurrentCar") == 5 || PlayerPrefs.GetInt("CurrentCar") == 6 || PlayerPrefs.GetInt("CurrentCar") == 7 || PlayerPrefs.GetInt("CurrentCar") == 8 || PlayerPrefs.GetInt("CurrentCar") == 12)
+                || PlayerPrefs.GetInt("CurrentCar") == 5 ||  PlayerPrefs.GetInt("CurrentCar") == 8 || PlayerPrefs.GetInt("CurrentCar") == 12)
             {
                 Amplitude.Instance.logEvent("HighwayLevelNetwork");
                 newVehicle = PhotonNetwork.Instantiate("Cars/" + CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")].name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
@@ -84,6 +84,23 @@ public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
             {
                 Amplitude.Instance.logEvent("HighwayLevelNetwork");
                 newVehicle = PhotonNetwork.Instantiate("gt500", new Vector3(Random.Range(0f, -100.19f), Random.Range(3.5f, 5f)), spawnPoint.rotation,0).GetComponent<RCC_CarControllerV3>();
+                newVehicle.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                isHighwayNetworkActive = true;
+            }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 6)
+            {
+                Amplitude.Instance.logEvent("HighwayLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate("ig8", new Vector3(Random.Range(0f, -100.19f), Random.Range(3.5f, 5f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                isHighwayNetworkActive = true;
+            }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 7)
+            {
+                Amplitude.Instance.logEvent("HighwayLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate("lambo", new Vector3(Random.Range(0f, -100.19f), Random.Range(3.5f, 5f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle.GetComponentInChildren<Rigidbody>().isKinematic = false;
                 isHighwayNetworkActive = true;
             }
 
@@ -99,7 +116,7 @@ public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
             {
                 Amplitude.Instance.logEvent("HighwayLevelNetwork");
                 newVehicle = PhotonNetwork.Instantiate("towncar", new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
-
+                newVehicle.GetComponentInChildren<Rigidbody>().isKinematic = false;
                 isHighwayNetworkActive = true;
             }
 
@@ -120,19 +137,36 @@ public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
             if (PlayerPrefs.GetInt("CurrentCar") == 1)
             {
                 Amplitude.Instance.logEvent("CityLevelNetwork");
-                newVehicle = PhotonNetwork.Instantiate("hotrodd", new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle = PhotonNetwork.Instantiate("hotrodd", new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle.GetComponentInChildren<Rigidbody>().isKinematic = false;
             }
 
             if (PlayerPrefs.GetInt("CurrentCar") == 2)
             {
                 Amplitude.Instance.logEvent("CityLevelNetwork");
-                newVehicle = PhotonNetwork.Instantiate("buggy", new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle = PhotonNetwork.Instantiate("buggy", new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle.GetComponentInChildren<Rigidbody>().isKinematic = false;
             }
 
             if (PlayerPrefs.GetInt("CurrentCar") == 3)
             {
                 Amplitude.Instance.logEvent("CityLevelNetwork");
-                newVehicle = PhotonNetwork.Instantiate("gt500", new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle = PhotonNetwork.Instantiate("gt500", new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle.GetComponentInChildren<Rigidbody>().isKinematic = false;
+            }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 6)
+            {
+                Amplitude.Instance.logEvent("CityLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate("ig8", new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle.GetComponentInChildren<Rigidbody>().isKinematic = false;
+            }
+
+            if (PlayerPrefs.GetInt("CurrentCar") == 7)
+            {
+                Amplitude.Instance.logEvent("CityLevelNetwork");
+                newVehicle = PhotonNetwork.Instantiate("lambo", new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle.GetComponentInChildren<Rigidbody>().isKinematic = false;
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 9)
             {
@@ -143,6 +177,7 @@ public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
             {
                 Amplitude.Instance.logEvent("CityLevelNetwork");
                 newVehicle = PhotonNetwork.Instantiate("towncar", new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                newVehicle.GetComponentInChildren<Rigidbody>().isKinematic = false;
             }
 
             if (PlayerPrefs.GetInt("CurrentCar") == 11)
@@ -169,6 +204,12 @@ public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
             GameObject light = GameObject.Find("Ilum");
             light.SetActive(false);
         }
+
+        if (PlayerPrefs.GetInt("CurrentCar") == 12)
+        {
+            GameObject light = GameObject.Find("rearGroundFlares");
+            light.SetActive(false);
+        }
         #endregion
 
         #region Load Wheel Susspens
@@ -183,11 +224,11 @@ public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
             newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = PlayerPrefs.GetFloat("WheelSusspRear" + PlayerPrefs.GetInt("CurrentCar"));
 
             
-                newVehicle.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
-                newVehicle.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+            //newVehicle.GetComponentInChildren<RCC_CarControllerV3>().FrontLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+            //newVehicle.GetComponentInChildren<RCC_CarControllerV3>().FrontRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
 
-                newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
-                newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+           //newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearLeftWheelCollider.wheelCollider.suspensionDistance = 0.2f;
+           //newVehicle.GetComponentInChildren<RCC_CarControllerV3>().RearRightWheelCollider.wheelCollider.suspensionDistance = 0.2f;
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 8)
             {

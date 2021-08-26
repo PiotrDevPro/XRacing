@@ -74,6 +74,7 @@ public class CountDown : MonoBehaviour
         _CountDown.SetActive(false);
         Go.Play();
         //levelMusic.Play();
+        RCC_EnterExitCar.manage.isPlayerIn = true;
         LapTimer.SetActive(true);
         LapTimerAI.SetActive(true);
         CarControls.SetActive(true);
@@ -107,10 +108,12 @@ public class CountDown : MonoBehaviour
         Invoke("Latency",1f);
         _CountDown.SetActive(false);
         Go.Play();
+        RCC_EnterExitCar.manage.isPlayerIn = true;
         //levelMusic.Play();
         LapTimer.SetActive(true);
         LapTimerAI.SetActive(true);
         CarControls.SetActive(true);
+        
         isStartTime = true;
 
     }

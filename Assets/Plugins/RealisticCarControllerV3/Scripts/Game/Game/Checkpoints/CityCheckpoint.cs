@@ -69,6 +69,7 @@ public class CityCheckpoint : MonoBehaviour
                 MainPoint.transform.position = point1.transform.position;
                 MainPoint.transform.rotation = point1.transform.rotation;
                 MainPoint.transform.localScale = point1.transform.localScale;
+                PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 5);
                 isMissionStart = true;
                 Amplitude.Instance.logEvent("Task#1");
                 sound.GetComponent<AudioSource>().Play();
@@ -81,6 +82,7 @@ public class CityCheckpoint : MonoBehaviour
                 PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 250);
                 infoPanel.SetActive(true);
                 infoPanel.GetComponentInChildren<Text>().text = "+250";
+                PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 3);
                 soundCheckpoint.GetComponent<AudioSource>().Play();
                 cashSnd.GetComponent<AudioSource>().Play();
                 RCC_DashboardInputs.manage.infoPanelAboutPeople.SetActive(true);
@@ -99,6 +101,7 @@ public class CityCheckpoint : MonoBehaviour
             {
                 
                 PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 250);
+                PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 5);
                 infoPanel.SetActive(true);
                 infoPanel.GetComponentInChildren<Text>().text = "+250";
                 soundCheckpoint.GetComponent<AudioSource>().Play();
@@ -118,6 +121,7 @@ public class CityCheckpoint : MonoBehaviour
                 
                 PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 250);
                 infoPanel.SetActive(true);
+                PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 7);
                 infoPanel.GetComponentInChildren<Text>().text = "+250";
                 soundCheckpoint.GetComponent<AudioSource>().Play();
                 cashSnd.GetComponent<AudioSource>().Play();
@@ -135,6 +139,7 @@ public class CityCheckpoint : MonoBehaviour
             {
                 
                 PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 250);
+                PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 3);
                 infoPanel.SetActive(true);
                 infoPanel.GetComponentInChildren<Text>().text = "+250";
                 soundCheckpoint.GetComponent<AudioSource>().Play();
@@ -157,7 +162,7 @@ public class CityCheckpoint : MonoBehaviour
                 soundCheckpointFinish.GetComponent<AudioSource>().Play();
                 cashSnd.GetComponent<AudioSource>().Play();
                 Amplitude.Instance.logEvent("Task#1_point_finish");
-                PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 55);
+                PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 40);
                 ReminderAnim.manage.ManualDial_task1_finish();
                 Invoke("latency", 5.7f);
                 Invoke("Win",0.7f);
