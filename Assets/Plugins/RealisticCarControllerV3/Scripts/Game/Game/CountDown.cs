@@ -31,7 +31,9 @@ public class CountDown : MonoBehaviour
         if (count == 1)
         {
             CarControlActive = GameObject.FindGameObjectWithTag("Player");
+            
         }
+
     }
 
     void Start()
@@ -54,7 +56,7 @@ public class CountDown : MonoBehaviour
     {
         LapTimer.SetActive(false);
         LapTimerAI.SetActive(false);
-       
+        InsideOutsideCar.manage.OutFromCarButton.GetComponentInChildren<Button>().interactable = false;
         yield return new WaitForSeconds(0.2f);
         _CountDown.GetComponent<Text>().text = "3";
         GetReady.Play();
@@ -78,6 +80,7 @@ public class CountDown : MonoBehaviour
         LapTimer.SetActive(true);
         LapTimerAI.SetActive(true);
         CarControls.SetActive(true);
+        InsideOutsideCar.manage.OutFromCarButton.GetComponentInChildren<Button>().interactable = true;
         isStartTime = true;
        
     }
@@ -86,7 +89,7 @@ public class CountDown : MonoBehaviour
     {
         LapTimer.SetActive(false);
         LapTimerAI.SetActive(false);
-
+        InsideOutsideCar.manage.OutFromCarButton.GetComponentInChildren<Button>().interactable = false;
         yield return new WaitForSeconds(0.2f);
         _CountDown.GetComponent<Text>().text = "3";
         GetReady.Play();
@@ -113,7 +116,7 @@ public class CountDown : MonoBehaviour
         LapTimer.SetActive(true);
         LapTimerAI.SetActive(true);
         CarControls.SetActive(true);
-        
+        InsideOutsideCar.manage.OutFromCarButton.GetComponentInChildren<Button>().interactable = true;
         isStartTime = true;
 
     }

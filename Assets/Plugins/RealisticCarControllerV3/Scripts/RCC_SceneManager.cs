@@ -83,32 +83,31 @@ public class RCC_SceneManager : MonoBehaviour {
 	void Awake(){
 
 		//RCC_Camera.OnBCGCameraSpawned += RCC_Camera_OnBCGCameraSpawned;
+			RCC_CarControllerV3.OnRCCPlayerSpawned += RCC_CarControllerV3_OnRCCSpawned;
+			//RCC_AICarController.OnRCCAISpawned += RCC_AICarController_OnRCCAISpawned;
+			RCC_CarControllerV3.OnRCCPlayerDestroyed += RCC_CarControllerV3_OnRCCPlayerDestroyed;
+			//RCC_AICarController.OnRCCAIDestroyed += RCC_AICarController_OnRCCAIDestroyed;
+			activePlayerCanvas = GameObject.FindObjectOfType<RCC_UIDashboardDisplay>();
 
-		RCC_CarControllerV3.OnRCCPlayerSpawned += RCC_CarControllerV3_OnRCCSpawned;
-		//RCC_AICarController.OnRCCAISpawned += RCC_AICarController_OnRCCAISpawned;
-		RCC_CarControllerV3.OnRCCPlayerDestroyed += RCC_CarControllerV3_OnRCCPlayerDestroyed;
-		//RCC_AICarController.OnRCCAIDestroyed += RCC_AICarController_OnRCCAIDestroyed;
-		activePlayerCanvas = GameObject.FindObjectOfType<RCC_UIDashboardDisplay> ();
-
-		#if BCG_ENTEREXIT
+#if BCG_ENTEREXIT
 		BCG_EnterExitPlayer.OnBCGPlayerSpawned += BCG_EnterExitPlayer_OnBCGPlayerSpawned;
 		BCG_EnterExitPlayer.OnBCGPlayerDestroyed += BCG_EnterExitPlayer_OnBCGPlayerDestroyed;
-		#endif
+#endif
 
-		// Getting default time scale of the game.
-		orgTimeScale = Time.timeScale;
-		recorder = gameObject.GetComponent<RCC_Recorder> ();
+			// Getting default time scale of the game.
+			orgTimeScale = Time.timeScale;
+			recorder = gameObject.GetComponent<RCC_Recorder>();
 
-		//if (!recorder)
-		//	recorder = gameObject.AddComponent<RCC_Recorder> ();
+			//if (!recorder)
+			//	recorder = gameObject.AddComponent<RCC_Recorder> ();
 
-		//if(RCC_Settings.Instance.lockAndUnlockCursor)
-		//	Cursor.lockState = CursorLockMode.Locked;
+			//if(RCC_Settings.Instance.lockAndUnlockCursor)
+			//	Cursor.lockState = CursorLockMode.Locked;
 
-		#if ENABLE_VR
-		//UnityEngine.XR.XRSettings.enabled = RCC_Settings.Instance.useVR;
-		#endif
-		
+#if ENABLE_VR
+			//UnityEngine.XR.XRSettings.enabled = RCC_Settings.Instance.useVR;
+#endif
+
 	}
 
 	#region ONSPAWNED
@@ -176,6 +175,7 @@ public class RCC_SceneManager : MonoBehaviour {
 	#endregion
 
 	void Update(){
+
 
 		if (activePlayerVehicle) {
 

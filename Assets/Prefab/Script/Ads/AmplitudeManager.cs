@@ -15,13 +15,13 @@ public class AmplitudeManager : MonoBehaviour
         amplitude.logging = true;
         amplitude.init("8578eac3466937dd610b84480ff56bd8");
         PlayerPrefs.SetInt("AppActive", PlayerPrefs.GetInt("AppActive") + 1);
-
         if (PlayerPrefs.GetInt("FirstActive") == 0)
         {
             Amplitude.Instance.logEvent("AppOpen", FirstTime);
             Amplitude.Instance.logEvent("FirstTime");
            // MainMenuManager.manage.Soundtracks();
             PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 10000f);
+            PlayerPrefs.SetInt("citysingle", 1);
             PlayerPrefs.SetString("Player", "Player" + Random.Range(0,9999));
             PlayerPrefs.SetInt("FirstActive", PlayerPrefs.GetInt("FirstActive") + 1);
             isFirstActivate = true;
@@ -61,6 +61,7 @@ public class AmplitudeManager : MonoBehaviour
                 Amplitude.Instance.logEvent("AppOpen", SecondTime);
                 print("OnApplicationFocusTrue");
                 PlayerPrefs.SetInt("AppActivate", 1);
+                PlayerPrefs.SetInt("citysingle",1);
                 count += 1;
             }
         }
@@ -68,7 +69,7 @@ public class AmplitudeManager : MonoBehaviour
         {
             count = 1;
             //PlayerPrefs.SetInt("AppActive", 0);
-            print("OnApplicationFocusFalse");
+           // print("OnApplicationFocusFalse");
         }
     }
 }

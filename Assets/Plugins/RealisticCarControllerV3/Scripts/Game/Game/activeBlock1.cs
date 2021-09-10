@@ -14,6 +14,10 @@ public class activeBlock1 : MonoBehaviour
     public GameObject _block3_1;
     public GameObject _block3_2;
     public GameObject _block3_3;
+    [Header("Optimizationz")]
+    [SerializeField] GameObject main_city_block_1;
+    [SerializeField] GameObject main_city_block_2;
+    [SerializeField] GameObject main_city_block_3;
 
 
     private void OnTriggerEnter(Collider other)
@@ -29,6 +33,9 @@ public class activeBlock1 : MonoBehaviour
             _block3_2.SetActive(false);
             _block3_3.SetActive(false);
             Amplitude.Instance.logEvent("fromStreets");
+            main_city_block_1.SetActive(false);
+            main_city_block_2.SetActive(false);
+            main_city_block_3.SetActive(false);
         }
     }
 
@@ -44,6 +51,9 @@ public class activeBlock1 : MonoBehaviour
             _block3_1.SetActive(false);
             _block3_2.SetActive(false);
             _block3_3.SetActive(false);
+            main_city_block_1.SetActive(false);
+            main_city_block_2.SetActive(false);
+            main_city_block_3.SetActive(false);
         }
     }
 
@@ -59,6 +69,9 @@ public class activeBlock1 : MonoBehaviour
             _block3_1.SetActive(false);
             _block3_2.SetActive(false);
             _block3_3.SetActive(false);
+            main_city_block_1.SetActive(false);
+            main_city_block_2.SetActive(true);
+            main_city_block_3.SetActive(true);
         }
     }
 }

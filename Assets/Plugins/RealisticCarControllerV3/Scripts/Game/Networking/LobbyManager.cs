@@ -25,6 +25,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     [SerializeField] Transform roomListContent;
     [SerializeField] GameObject roomListPrefab;
+
+    public bool isHighwayOnline;
+    public bool isCityOnline;
     public Player Player { get; private set; }
     private void Awake()
     {
@@ -105,7 +108,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
                 LoadAssetsBundle.manage.LoadAssetBundleSceneCity();
                 Amplitude.Instance.logEvent("LoadAssetBundleSceneCity");
         }
-        else
+        else //if (PlayerPrefs.GetInt("AppActivate") != 1 && PlayerPrefs.GetInt("CityisLoaded")==1)
         {
             print("elseAppActive !=1");
             CreateRoomCity();
@@ -118,6 +121,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.JoinOrCreateRoom("City", new RoomOptions { MaxPlayers = 10 }, TypedLobby.Default);
         Amplitude.Instance.logEvent("CreateRoomCity");
+        isCityOnline = true;
         loadingToCityMap.SetActive(true);
     }
 
@@ -125,12 +129,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.JoinRoom("Highway");
         Amplitude.Instance.logEvent("JoinRoomHighway");
+        isHighwayOnline = true;
         //PhotonNetwork.JoinRandomRoom();
     }
 
     public void JoinRoomCity()
     {
         PhotonNetwork.JoinRoom("City");
+        isCityOnline = true;
         createRoomCity.interactable = false;
         Amplitude.Instance.logEvent("JoinRoomCity");
     }
@@ -169,6 +175,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             createRoomCity.interactable = false;
             loadingPanel.SetActive(true);
+            isCityOnline = true;
             print(PhotonNetwork.CurrentRoom);
             PhotonNetwork.LoadLevel("city_online");
             LoadAssetsBundle.manage.loadingPanel.SetActive(false);

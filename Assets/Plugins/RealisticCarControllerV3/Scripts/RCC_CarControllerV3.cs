@@ -472,16 +472,12 @@ public class RCC_CarControllerV3 : MonoBehaviour
 
 	private void Start()
 	{
-		_car_mirrorActive = GameObject.FindGameObjectWithTag("CarMirror");
 		photonView = GetComponent<PhotonView>();
-		_car_mirrorActive.SetActive(false);
-		if (SceneManager.GetActiveScene().name != "garage")
-		{
-			_car_mirrorActive.SetActive(true);
+		if (SceneManager.GetActiveScene().name == "garage")
+        {
+			_car_mirrorActive = GameObject.FindGameObjectWithTag("CarMirror");
+			_car_mirrorActive.SetActive(false);
 		}
-
-
-
 	}
 
 	void OnEnable()
@@ -509,7 +505,7 @@ public class RCC_CarControllerV3 : MonoBehaviour
 		// Firing an event when each RCC car spawned / enabled. This event has been listening by RCC_MobileButtons.cs, RCC_DashboardInputs.cs.
 		if (!AIController)
 		{
-
+			
 			if (OnRCCPlayerSpawned != null)
 				OnRCCPlayerSpawned(this);
 
@@ -833,7 +829,7 @@ public class RCC_CarControllerV3 : MonoBehaviour
 	void Update()
 	{
 
-		if (canControl) //&& SceneManager.GetActiveScene().name != "battle_online")
+		if (canControl) 
 		{
 			if (!AIController)
 				Inputs();
@@ -1814,24 +1810,23 @@ public class RCC_CarControllerV3 : MonoBehaviour
 		resetTime = 0f;
 	}
 
+	public void ResetCarForCoinCity()
+    {
+		UniAdManager.manage.ShowAdDefault();
+		CarSpawnNew.manage.InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().speed = 0;
+		transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
+		transform.position = CarSpawnNew.manage.spawnPoint.position;
+		resetTime = 0f;
+		print("ResetCarForAdCitySingle");
+	}
+
 	public void ResetCarForCoin()
     {
-		if (SceneManager.GetActiveScene().name != "battle_online" && SceneManager.GetActiveScene().name != "city_online" && SceneManager.GetActiveScene().name != "level_lap6")
+		if (SceneManager.GetActiveScene().name != "battle_online" && SceneManager.GetActiveScene().name != "level_lap6")
 		{
-			//if (PlayerPrefs.GetFloat("DriftCoin") >= 499)
-			//{
-			//	CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
-				//transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
-				//transform.position = CarSpawnNew.manage.spawnPoint.position;
-			//	resetTime = 0f;
-			//	PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") - 500);
-			//}
-			///else
-			//{
-				UniAdManager.manage.ShowAdShop();
+				UniAdManager.manage.ShowInterstatial();
 				CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
 				resetTime = 0f;
-			//}
 		}
 
 		if (SceneManager.GetActiveScene().name == "level_lap6")
@@ -1846,7 +1841,7 @@ public class RCC_CarControllerV3 : MonoBehaviour
 			//}
 			//else
 			//{
-				UniAdManager.manage.ShowAdShop();
+				UniAdManager.manage.ShowInterstatial();
 				CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
 				transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
 				transform.position = CarSpawnNew.manage.spawnPoint.position;
@@ -1863,6 +1858,7 @@ public class RCC_CarControllerV3 : MonoBehaviour
 				transform.position = netManager.manage.spawnPoint.position;
 				resetTime = 0f;
 				print("ResetCarForAdOnline");
+				
 		}
 	}
 

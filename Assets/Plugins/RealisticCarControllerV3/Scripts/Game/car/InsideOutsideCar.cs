@@ -1,15 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 using UnityEngine;
 
-public class InsideOutsideCar : MonoBehaviour
+public class InsideOutsideCar : MonoBehaviourPunCallbacks
 {
     public static InsideOutsideCar manage;
-    [SerializeField] GameObject FPScontroller;
-    [SerializeField] GameObject OutFromCarActive;
+    private RCC_CarControllerV3 carController;
+    public GameObject FPScontroller;
+    public GameObject OutFromCarButton;
     private RCC_EnterExitCar rcc_ent;
     private Transform playerCar;
+    private GameObject OutPos;
     public int count = 0;
 
     [Header("Control")]
@@ -34,8 +37,9 @@ public class InsideOutsideCar : MonoBehaviour
     {
         if (MainMenuManager.manage.isAllvsYou)
         {
-            OutFromCarActive.SetActive(false);
+            OutFromCarButton.SetActive(true);
         }
+
         FPScontroller.SetActive(false);
         characterInput.SetActive(false);
         carInput.SetActive(true);
@@ -47,15 +51,21 @@ public class InsideOutsideCar : MonoBehaviour
     {
         if (RCC_EnterExitCar.manage.isPlayerIn)
         {
-            FPScontroller.SetActive(true);
-            FPScontroller.transform.position = playerCar.position;
-            carInput.SetActive(false);
-            characterInput.SetActive(true);
-            _UI.SetActive(false);
-            Rcc_canvas.SetActive(false);
-            Amplitude.Instance.logEvent("ExitFromCar");
-            playerCar.GetComponentInChildren<BoxCollider>().tag = "Untagged"; 
-            RCC_EnterExitCar.manage.GetOut();
+            if (SceneManager.GetActiveScene().name != "city_online" || SceneManager.GetActiveScene().name != "battle_online")
+            {
+                SickscoreGames.HUDNavigationSystem.HUDNavigationSystem.Instance.count = 0;
+                playerCar.GetComponentInChildren<BoxCollider>().tag = "PlayerCar";
+                SickscoreGames.HUDNavigationSystem.HUDNavigationSystem.Instance.PlayerCamera = mainCam.GetComponentInChildren<Camera>();
+            }
+                FPScontroller.transform.position = OutPos.transform.position;
+                FPScontroller.SetActive(true);
+                carInput.SetActive(false);
+                characterInput.SetActive(true);
+                _UI.SetActive(false);
+                Rcc_canvas.SetActive(false);
+                RCC_EnterExitCar.manage.GetOut();
+                Amplitude.Instance.logEvent("ExitFromCar");
+              
         }
     }
 
@@ -69,11 +79,12 @@ public class InsideOutsideCar : MonoBehaviour
 
     private void Update()
     {
-        print(RCC_EnterExitCar.manage.isPlayerIn);
+
         count += 1;
         if (count == 1)
         {
             playerCar = GameObject.FindGameObjectWithTag("Player").transform;
+            OutPos = GameObject.FindGameObjectWithTag("inOut");
         }
     }
 }

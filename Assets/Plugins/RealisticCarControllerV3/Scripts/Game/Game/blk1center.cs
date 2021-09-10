@@ -6,6 +6,8 @@ public class blk1center : MonoBehaviour
 {
     public GameObject people1;
     public GameObject people2;
+    [Header("Optim")]
+    [SerializeField] GameObject from_main_block;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -14,6 +16,7 @@ public class blk1center : MonoBehaviour
             people1.SetActive(true);
             people2.SetActive(true);
             Amplitude.Instance.logEvent("center1");
+            from_main_block.SetActive(false);
         }
     }
 
@@ -23,6 +26,7 @@ public class blk1center : MonoBehaviour
         {
             people1.SetActive(true);
             people2.SetActive(true);
+            from_main_block.SetActive(false);
         }
     }
 
@@ -32,6 +36,7 @@ public class blk1center : MonoBehaviour
         {
             people1.SetActive(false);
             people2.SetActive(false);
+            from_main_block.SetActive(true);
         }
     }
 }

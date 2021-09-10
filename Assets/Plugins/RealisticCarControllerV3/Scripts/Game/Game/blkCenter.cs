@@ -13,6 +13,10 @@ public class blkCenter : MonoBehaviour
     public GameObject bl_2_2;
     public GameObject people1;
     public GameObject people2;
+    [Header("Optimizations")]
+    [SerializeField] GameObject Small_city1;
+    [SerializeField] GameObject Small_city2;
+    [SerializeField] GameObject Small_city3;
 
 
     private void OnTriggerEnter(Collider other)
@@ -29,6 +33,9 @@ public class blkCenter : MonoBehaviour
             _crossroad2.SetActive(false);
             _crossroad3.SetActive(false);
             Amplitude.Instance.logEvent("block2_right");
+            Small_city1.SetActive(false);
+            Small_city2.SetActive(false);
+            Small_city3.SetActive(false);
         }
     }
 
@@ -45,7 +52,9 @@ public class blkCenter : MonoBehaviour
             _crossroad1.SetActive(false);
             _crossroad2.SetActive(false);
             _crossroad3.SetActive(false);
-           // print("OnTriggerStay");
+            Small_city1.SetActive(false);
+            Small_city2.SetActive(false);
+            Small_city3.SetActive(false);
         }
     }
 
@@ -62,7 +71,9 @@ public class blkCenter : MonoBehaviour
             _crossroad1.SetActive(false);
             _crossroad2.SetActive(false);
             _crossroad3.SetActive(true);
-          //  print("OnTriggerExit");
+            Small_city1.SetActive(true);
+            Small_city2.SetActive(true);
+            Small_city3.SetActive(true);
         }
     }
 }

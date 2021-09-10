@@ -11,6 +11,8 @@ public class blk2 : MonoBehaviour
     public GameObject _block3_2;
     public GameObject people1;
     public GameObject people2;
+    [Header("Optim")]
+    [SerializeField] GameObject from_main_block;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -24,6 +26,7 @@ public class blk2 : MonoBehaviour
             _crossroad2.SetActive(false);
             _crossroad3.SetActive(true);
             Amplitude.Instance.logEvent("center2");
+            from_main_block.SetActive(false);
         }
     }
 
@@ -38,7 +41,8 @@ public class blk2 : MonoBehaviour
             _crossroad1.SetActive(false);
             _crossroad2.SetActive(false);
             _crossroad3.SetActive(true);
-         //   print("OnTriggerStay");
+            from_main_block.SetActive(false);
+            //   print("OnTriggerStay");
         }
     }
 
@@ -53,7 +57,8 @@ public class blk2 : MonoBehaviour
             _crossroad1.SetActive(false);
             _crossroad2.SetActive(false);
             _crossroad3.SetActive(false);
-          //  print("OnTriggerExit");
+            from_main_block.SetActive(false);
+            //  print("OnTriggerExit");
         }
     }
 }

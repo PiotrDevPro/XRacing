@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class actvBlock2 : MonoBehaviour
+public class ActiveBlCenter : MonoBehaviour
 {
     public GameObject _main;
+    public GameObject _crossroad;
     public GameObject _crossroad1;
     public GameObject _crossroad2;
     public GameObject _crossroad3;
@@ -60,17 +61,17 @@ public class actvBlock2 : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            _crossroad1.SetActive(false);
-            _crossroad2.SetActive(false);
+            _crossroad1.SetActive(true);
+            _crossroad2.SetActive(true);
             _crossroad3.SetActive(false);
             _crossroad4.SetActive(false);
             _crossroad5.SetActive(false);
             _block3_1.SetActive(false);
             _block3_2.SetActive(false);
             _block3_3.SetActive(false);
-            main_city_block_1.SetActive(true);
-            main_city_block_2.SetActive(true);
-            main_city_block_3.SetActive(true);
+            main_city_block_1.SetActive(false);
+            main_city_block_2.SetActive(false);
+            main_city_block_3.SetActive(false);
         }
     }
 }

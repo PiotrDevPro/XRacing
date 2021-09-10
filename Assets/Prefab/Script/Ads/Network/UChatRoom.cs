@@ -36,21 +36,24 @@ public class UChatRoom : MonoBehaviour, IChatClientListener
 
 	private void Start()
 	{
+		if (!MainMenuManager.manage.isCity)
+        {
+			this.UserName = PlayerPrefs.GetString("Player");
+			chatClient = new ChatClient(this);
+			chatClient.Connect(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat, PhotonNetwork.AppVersion, new AuthenticationValues(UserName));
 
-		this.UserName = PlayerPrefs.GetString("Player");
-		chatClient = new ChatClient(this);
-		chatClient.Connect(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat, PhotonNetwork.AppVersion, new AuthenticationValues(UserName));
+			if (string.IsNullOrEmpty(this.UserName))
+			{
+				this.UserName = "user" + PhotonNetwork.NickName; //made-up username
+			}
 
-		if (string.IsNullOrEmpty(this.UserName))
-		{
-			this.UserName = "user" + PhotonNetwork.NickName; //made-up username
+			bool appIdPresent = !string.IsNullOrEmpty(this.chatAppSettings.AppId);
+			if (!appIdPresent)
+			{
+				Debug.LogError("You need to set the chat app ID in the PhotonServerSettings file in order to continue.");
+			}
 		}
-
-		bool appIdPresent = !string.IsNullOrEmpty(this.chatAppSettings.AppId);
-		if (!appIdPresent)
-		{
-			Debug.LogError("You need to set the chat app ID in the PhotonServerSettings file in order to continue.");
-		}
+		
 	}
 
 	public void Connect()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.Advertisements;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class UniAdManager : MonoBehaviour
@@ -16,7 +17,39 @@ public class UniAdManager : MonoBehaviour
     private void Awake()
     {
         manage = this;
-        Advertisement.Initialize("4107005", true);
+        Advertisement.Initialize("4107005", false);
+    }
+
+    private void Update()
+    {
+        
+    }
+
+    private void Start()
+    {
+        if (PlayerPrefs.GetInt("NoAds") != 1)
+        {
+            ShowBanner();
+        }
+    }
+
+    public void ShowBanner()
+    {
+
+                StartCoroutine(ShowBannerMainMenu());
+                print("showBanner");
+                Amplitude.Instance.logEvent("showBanner");
+    }
+
+    IEnumerator ShowBannerMainMenu()
+    {
+    
+        while (!Advertisement.IsReady())
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+        Advertisement.Banner.SetPosition(BannerPosition.TOP_LEFT);
+        Advertisement.Banner.Show("Banner");
     }
 
     public void ShowAdShop()
@@ -71,7 +104,7 @@ public class UniAdManager : MonoBehaviour
             if (Advertisement.IsReady() && Advertisement.isInitialized)
             {
                 Amplitude.Instance.logEvent("InterstatialShow");
-                Advertisement.Show("video", new ShowOptions() { resultCallback = HandleAdResultSkipable });
+                Advertisement.Show("Interstatial", new ShowOptions() { resultCallback = HandleAdResultSkipable });
             }
         }
     }
@@ -85,6 +118,22 @@ public class UniAdManager : MonoBehaviour
                 Amplitude.Instance.logEvent("TopSpeedInterstatialShow");
                 Advertisement.Show("Interstatial", new ShowOptions() { resultCallback = HandleAdResultSkipable });
             }
+        }
+    }
+
+    private void ShowBannerCallback(ShowResult result)
+    {
+        switch (result)
+        {
+            case ShowResult.Finished:
+                Amplitude.Instance.logEvent("BannerCompleted");
+                break;
+            case ShowResult.Skipped:
+                Amplitude.Instance.logEvent("BannerSkipped");
+                break;
+            case ShowResult.Failed:
+                Amplitude.Instance.logEvent("BannerFailed");
+                break;
         }
     }
 

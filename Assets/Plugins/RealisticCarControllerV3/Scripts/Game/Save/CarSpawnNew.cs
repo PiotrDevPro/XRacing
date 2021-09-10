@@ -7,94 +7,106 @@ using UnityEngine;
 public class CarSpawnNew : MonoBehaviour
 {
     public static CarSpawnNew manage;
+    private RCC_PhotonNetwork photonNetwork;
     public Transform PlayerCarPoint;
     public Transform spawnPoint;
     public GameObject[] CarsPrefabs;
     public Text maxspd;
     int count = 0;
+    int cnt = 0;
 
     public GameObject nosButton;
     public Slider noslevel;
     public GameObject InstantiatedCar;
 
+    private GameObject carMirror;
+
+
     void Awake()
     {
         manage = this;
+        
 
     }
 
     void Start()
     {
-
         print(PlayerPrefs.GetInt("CurrentCar"));
 
         Application.targetFrameRate = 300;
-
+        
         if (SceneManager.GetActiveScene().name == "level_lap6" && MainMenuManager.manage.isAllvsYou)
         {
             PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 2);
-            if (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 1 || PlayerPrefs.GetInt("CurrentCar") == 4
+            //InsideOutsideCar.manage.OutFromCarButton.SetActive(false);
+            
+            if (PlayerPrefs.GetInt("CurrentCar") == 0 ||  PlayerPrefs.GetInt("CurrentCar") == 4
                 || PlayerPrefs.GetInt("CurrentCar") == 5 ||  PlayerPrefs.GetInt("CurrentCar") == 8
                 || PlayerPrefs.GetInt("CurrentCar") == 12)
             {
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
-                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")], spawnPoint.position, spawnPoint.rotation);
+                InstantiatedCar = Instantiate(CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")], spawnPoint.position, spawnPoint.rotation);
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 1)
             {
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
-                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.hot_rodd_ab, spawnPoint.position, spawnPoint.rotation);
+                InstantiatedCar = Instantiate(CathingLoadFiles.manage.hot_rodd_ab, spawnPoint.position, spawnPoint.rotation);
                 InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
 
             if (PlayerPrefs.GetInt("CurrentCar") == 2)
             {
 
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
-                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.buggy_gtr_ab, spawnPoint.position, spawnPoint.rotation);
+                InstantiatedCar = Instantiate(CathingLoadFiles.manage.buggy_gtr_ab, spawnPoint.position, spawnPoint.rotation);
                 InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 3)
             {
 
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
-                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.gt500_ab, spawnPoint.position, spawnPoint.rotation);
+                InstantiatedCar = Instantiate(CathingLoadFiles.manage.gt500_ab, spawnPoint.position, spawnPoint.rotation);
                 InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 6)
             {
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
-                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.i8_ab, spawnPoint.position, spawnPoint.rotation);
+                InstantiatedCar = Instantiate(CathingLoadFiles.manage.i8_ab, spawnPoint.position, spawnPoint.rotation);
                 InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 7)
             {
 
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
-                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.lambo_ab, spawnPoint.position, spawnPoint.rotation);
-
+                InstantiatedCar = Instantiate(CathingLoadFiles.manage.lambo_ab, spawnPoint.position, spawnPoint.rotation);
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 9)
             {
 
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
-                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.modelT_ab, spawnPoint.position, spawnPoint.rotation);
-
+                InstantiatedCar = Instantiate(CathingLoadFiles.manage.modelT_ab, spawnPoint.position, spawnPoint.rotation);
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 10)
             {
 
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
-                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.townCar_ab, spawnPoint.position, spawnPoint.rotation);
+                InstantiatedCar = Instantiate(CathingLoadFiles.manage.townCar_ab, spawnPoint.position, spawnPoint.rotation);
                 InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
-
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
 
             if (PlayerPrefs.GetInt("CurrentCar") == 11)
             {
                 spawnPoint.position = new Vector3(53, 5.10f, 205f);
-                InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.ikarus, spawnPoint.position, spawnPoint.rotation);
-
+                InstantiatedCar = Instantiate(CathingLoadFiles.manage.ikarus, spawnPoint.position, spawnPoint.rotation);
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
         }
 
@@ -106,24 +118,28 @@ public class CarSpawnNew : MonoBehaviour
             {
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
                 InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")], spawnPoint.position, spawnPoint.rotation);
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 1)
             {
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
                 InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.hot_rodd_ab, spawnPoint.position, spawnPoint.rotation);
                 InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 2)
             {
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
                 InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.buggy_gtr_ab, spawnPoint.position, spawnPoint.rotation);
                 InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 3)
             {
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
                 InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.gt500_ab, spawnPoint.position, spawnPoint.rotation);
                 InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
 
             if (PlayerPrefs.GetInt("CurrentCar") == 6)
@@ -131,13 +147,14 @@ public class CarSpawnNew : MonoBehaviour
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
                 InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.i8_ab, spawnPoint.position, spawnPoint.rotation);
                 InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 7)
             {
 
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
                 InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.lambo_ab, spawnPoint.position, spawnPoint.rotation);
-
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
 
 
@@ -146,7 +163,7 @@ public class CarSpawnNew : MonoBehaviour
 
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
                 InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.modelT_ab, spawnPoint.position, spawnPoint.rotation);
-
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
 
             if (PlayerPrefs.GetInt("CurrentCar") == 10)
@@ -155,13 +172,14 @@ public class CarSpawnNew : MonoBehaviour
                 spawnPoint.position = new Vector3(53, 3.95f, 205f);
                 InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.townCar_ab, spawnPoint.position, spawnPoint.rotation);
                 InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
-
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
 
             if (PlayerPrefs.GetInt("CurrentCar") == 11)
             {
                 spawnPoint.position = new Vector3(53, 5.10f, 205f);
                 InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.ikarus, spawnPoint.position, spawnPoint.rotation);
+                InstantiatedCar.AddComponent<RCC_EnterExitCar>();
             }
         }
 
@@ -177,39 +195,46 @@ public class CarSpawnNew : MonoBehaviour
                         spawnPoint.position = new Vector3(-97.56f, 0, 2171.69f);
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.hot_rodd_ab, spawnPoint.position, spawnPoint.rotation);
                         InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     }
                     else
                     {
                         spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     }
                 } else
                 {
                     spawnPoint.position = new Vector3(-97.56f, 0, 2171.69f);
                     InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.hot_rodd_ab, spawnPoint.position, spawnPoint.rotation);
                     InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                 }
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 2)
             {
                 if (MainMenuManager.manage.isQuickRace)
                 {
+
                     if (PlayerPrefs.GetInt("myCar") == 1)
                     {
                         spawnPoint.position = new Vector3(-97.39f, 2f, 2171.69f);
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.buggy_gtr_ab, spawnPoint.position, spawnPoint.rotation);
                         InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     }
                     else
                     {
                         spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     }
                 } else
                 {
                     spawnPoint.position = new Vector3(-97.39f, 2f, 2171.69f);
                     InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.buggy_gtr_ab, spawnPoint.position, spawnPoint.rotation);
                     InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                 }
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 3)
@@ -221,10 +246,12 @@ public class CarSpawnNew : MonoBehaviour
                         spawnPoint.position = new Vector3(-97.39f, 2f, 2171.69f);
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.gt500_ab, spawnPoint.position, spawnPoint.rotation);
                         InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     } else
                     {
                         spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     } 
 
                 } else
@@ -232,6 +259,7 @@ public class CarSpawnNew : MonoBehaviour
                     spawnPoint.position = new Vector3(-97.39f, 2f, 2171.69f);
                     InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.gt500_ab, spawnPoint.position, spawnPoint.rotation);
                     InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                 } 
             }
 
@@ -243,18 +271,21 @@ public class CarSpawnNew : MonoBehaviour
                     {
                         spawnPoint.position = new Vector3(-97.39f, 2.80f, 2171.69f);
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.i8_ab, spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     }
 
                     else
                     {
                         spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     }
                 }
                 else
                 {
                     spawnPoint.position = new Vector3(-97.39f, 2.80f, 2171.69f);
                     InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.i8_ab, spawnPoint.position, spawnPoint.rotation);
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                 }
             }
 
@@ -266,18 +297,21 @@ public class CarSpawnNew : MonoBehaviour
                     {
                         spawnPoint.position = new Vector3(-97.39f, 2.80f, 2171.69f);
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.lambo_ab, spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     }
 
                     else
                     {
                         spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     }
                 }
                 else
                 {
                     spawnPoint.position = new Vector3(-97.39f, 2.80f, 2171.69f);
                     InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.lambo_ab, spawnPoint.position, spawnPoint.rotation);
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                 }
             }
 
@@ -289,17 +323,20 @@ public class CarSpawnNew : MonoBehaviour
                     {
                         spawnPoint.position = new Vector3(-97.39f, 2.80f, 2171.69f);
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.modelT_ab, spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     }
 
                     else
                     {
                         spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     }
                 } else
                 {
                     spawnPoint.position = new Vector3(-97.39f, 2.80f, 2171.69f);
                     InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.modelT_ab, spawnPoint.position, spawnPoint.rotation);
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                 }
             }
 
@@ -311,15 +348,18 @@ public class CarSpawnNew : MonoBehaviour
                     {
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.townCar_ab, spawnPoint.position, spawnPoint.rotation);
                         InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     } else
                     {
                         spawnPoint.position = new Vector3(-97.39f, 2.80f, 2171.69f);
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     }
                 } else
                 {
                     InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.townCar_ab, spawnPoint.position, spawnPoint.rotation);
                     InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                 }
             }
             if (PlayerPrefs.GetInt("CurrentCar") == 11)
@@ -329,13 +369,16 @@ public class CarSpawnNew : MonoBehaviour
                     if (PlayerPrefs.GetInt("myCar") == 1)
                     {
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.ikarus, spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     } else
                     {
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     }
                 } else
                 {
                     InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.ikarus, spawnPoint.position, spawnPoint.rotation);
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                 }
             }
 
@@ -349,22 +392,101 @@ public class CarSpawnNew : MonoBehaviour
                     {
                         spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")], spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     } else
                     {
                         spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
                         InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[0], spawnPoint.position, spawnPoint.rotation);
+                        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                     }
                 } else
                 {
                     spawnPoint.position = new Vector3(-97.39f, 0.5f, 2171.69f);
                     InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")], spawnPoint.position, spawnPoint.rotation);
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
                 }
             }
         }
 
+        if (SceneManager.GetActiveScene().name == "city_single")
+        {
+            PlayerPrefs.SetInt("Rating", PlayerPrefs.GetInt("Rating") + 2);
+                if (PlayerPrefs.GetInt("CurrentCar") == 0 
+                     || PlayerPrefs.GetInt("CurrentCar") == 5 || PlayerPrefs.GetInt("CurrentCar") == 8 || PlayerPrefs.GetInt("CurrentCar") == 12)
+                {
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")], new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation);
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 1)
+                {
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.hot_rodd_ab, new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation);
+                    InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 2)
+                {
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.buggy_gtr_ab, new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation);
+                    InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 3)
+                {
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.gt500_ab, new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation);
+                    InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
+                }
 
-        #region Car Lights
-        if (PlayerPrefs.GetInt("CurrentCar") == 4 || PlayerPrefs.GetInt("CurrentCar") == 6)
+                if (PlayerPrefs.GetInt("CurrentCar") == 4)
+                {
+                    
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")], new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation);
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
+                    //RCC_SceneManager.Instance.activePlayerVehicle = InstantiatedCar.GetComponent<RCC_CarControllerV3>();
+                    //Invoke("Latency",1f);
+
+            }
+
+                    if (PlayerPrefs.GetInt("CurrentCar") == 6)
+                {
+
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.i8_ab, new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation);
+                    InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
+                }
+                if (PlayerPrefs.GetInt("CurrentCar") == 7)
+                {
+
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.lambo_ab, new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation);
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
+                }
+
+
+                if (PlayerPrefs.GetInt("CurrentCar") == 9)
+                {
+
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.modelT_ab, new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation);
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
+                }
+
+                if (PlayerPrefs.GetInt("CurrentCar") == 10)
+                {
+
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.townCar_ab, new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation);
+                    InstantiatedCar.GetComponent<Rigidbody>().isKinematic = false;
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
+                }
+
+                if (PlayerPrefs.GetInt("CurrentCar") == 11)
+                {
+
+                    InstantiatedCar = Lean.Pool.LeanPool.Spawn(CathingLoadFiles.manage.ikarus, new Vector3(Random.Range(-755f, -757f), Random.Range(2f, 4f), Random.Range(-165f, -184f)), spawnPoint.rotation);
+                    InstantiatedCar.AddComponent<RCC_EnterExitCar>();
+                }
+        }
+           
+
+            #region Car Lights
+            if (PlayerPrefs.GetInt("CurrentCar") == 4 || PlayerPrefs.GetInt("CurrentCar") == 6)
         {
             if (PlayerPrefs.GetInt("myCar") == 1)
             {
@@ -430,7 +552,7 @@ public class CarSpawnNew : MonoBehaviour
 
             #endregion
 
-            #region TCS 
+        #region TCS 
         if (PlayerPrefs.GetInt("TCS" + PlayerPrefs.GetInt("CurrentCar")) == 1 && PlayerPrefs.GetInt("selectTCS" + PlayerPrefs.GetInt("CurrentCar")) == 1)
             {
                 InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().TCSThreshold = PlayerPrefs.GetFloat("TCSsetup" + PlayerPrefs.GetInt("CurrentCar"));
@@ -442,7 +564,7 @@ public class CarSpawnNew : MonoBehaviour
 
             #endregion
 
-            #region Traction 
+        #region Traction 
             if (PlayerPrefs.GetInt("Traction" + PlayerPrefs.GetInt("CurrentCar")) == 1 && PlayerPrefs.GetInt("selectTraction" + PlayerPrefs.GetInt("CurrentCar")) == 1)
             {
                 InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().tractionHelperStrength = PlayerPrefs.GetFloat("TractionSetup" + PlayerPrefs.GetInt("CurrentCar"));
@@ -455,7 +577,7 @@ public class CarSpawnNew : MonoBehaviour
 
             #endregion
 
-            #region ESP
+        #region ESP
             if (PlayerPrefs.GetInt("ESP" + PlayerPrefs.GetInt("CurrentCar")) == 1 && PlayerPrefs.GetInt("selectESP" + PlayerPrefs.GetInt("CurrentCar")) == 1)
             {
                 InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().ESPThreshold = PlayerPrefs.GetFloat("ESPsetup" + PlayerPrefs.GetInt("CurrentCar"));
@@ -466,7 +588,7 @@ public class CarSpawnNew : MonoBehaviour
             }
             #endregion
 
-            #region load Car Config
+        #region load Car Config
             if (!MainMenuManager.NOSisChecked)
             {
                 InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().useNOS = false;
@@ -506,7 +628,7 @@ public class CarSpawnNew : MonoBehaviour
 
             #endregion
 
-            #region Load EngineUpdate
+        #region Load EngineUpdate
             if (MainMenuManager.manage.svChecked.engine0)
             {
                 InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().maxspeed = InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().defMaxSpeed;
@@ -597,7 +719,7 @@ public class CarSpawnNew : MonoBehaviour
             }
             #endregion
 
-            #region Load HandlingUpdate
+        #region Load HandlingUpdate
             if (MainMenuManager.manage.svChecked.handling0)
             {
                 //InstantiatedCar.GetComponent<RCC_CarControllerV3>().steerHelperLinearVelStrength += 0.05f;
@@ -665,7 +787,7 @@ public class CarSpawnNew : MonoBehaviour
             }
             #endregion
 
-            #region BrakeUpdate
+        #region BrakeUpdate
             if (MainMenuManager.manage.svChecked.brake0)
             {
                 InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().ABSThreshold = 0.1f;
@@ -724,7 +846,7 @@ public class CarSpawnNew : MonoBehaviour
 
                 #endregion
 
-            #region Wheel Drive Mode
+        #region Wheel Drive Mode
                 if (MainMenuManager.WheelDriveisChecked)
                 {
                     switch (PlayerPrefs.GetString("DriveMode"))
@@ -751,8 +873,21 @@ public class CarSpawnNew : MonoBehaviour
 
             }
         }
-        void Update()
+
+    void Latency()
+    {
+        InstantiatedCar.AddComponent<RCC_EnterExitCar>();
+    }
+    void Update()
         {
+        
+        cnt += 1;
+        if (cnt == 1)
+        {
+            carMirror = GameObject.FindGameObjectWithTag("CarMirror");
+            carMirror.SetActive(false);
+        }
+            
             maxspd.text = "MAX:" + InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().maxspeed.ToString() + "KM/H";
             if (InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed > 30f)
             {

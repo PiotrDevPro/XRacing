@@ -39,7 +39,8 @@ public class RCC_EnterExitPlayer : MonoBehaviour {
 
 		if(Physics.Raycast(new Vector3(transform.position.x, transform.position.y + (playerType == PlayerType.TPS ? rayHeight : 0f), transform.position.z), direction, out hit, maxRayDistance)){
 
-			if(hit.transform.GetComponentInParent<RCC_CarControllerV3>()){
+			if(hit.transform.GetComponentInParent<RCC_CarControllerV3>() && !hit.transform.GetComponentInParent<RCC_AICarController>())
+			{
 
 				showGui = true;
 
@@ -69,11 +70,11 @@ public class RCC_EnterExitPlayer : MonoBehaviour {
 			if (RCC_Settings.Instance.controllerType == RCC_Settings.ControllerType.Keyboard)
 				if (Application.systemLanguage != SystemLanguage.Russian)
 				{
-					GUI.Label(new Rect(Screen.width - (Screen.width / 1.7f), Screen.height - (Screen.height / 1.2f), 800, 100), "Press button to Get In");
+					GUI.Label(new Rect(Screen.width - (Screen.width / 1.7f), Screen.height - (Screen.height / 1.2f), 800, 100),"");
 					InsideOutsideCar.manage.enter_panel.SetActive(true);
 				} else
                 {
-					GUI.Label(new Rect(Screen.width - (Screen.width / 1.7f), Screen.height - (Screen.height / 1.2f), 800, 100), "Нажмите кнопку чтобы войти");
+					GUI.Label(new Rect(Screen.width - (Screen.width / 1.7f), Screen.height - (Screen.height / 1.2f), 800, 100),"");
 					InsideOutsideCar.manage.enter_panel.SetActive(true);
 				}
 			

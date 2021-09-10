@@ -3,24 +3,22 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-public class DestroyObj : MonoBehaviour
+public class TrafLight : MonoBehaviour
 {
+    [SerializeField] GameObject obj;
     private void OnCollisionEnter(Collision col)
     {
-    
         if (col.gameObject.CompareTag("Player"))
         {
             if (SceneManager.GetActiveScene().name != "city_online" && RCC_EnterExitCar.manage.isPlayerIn)
             {
-                GetComponentInChildren<Rigidbody>().isKinematic = false;
-                print("isPlayerCarDetectedTrue");
-                Destroy(gameObject, 60f);
-            } else if (SceneManager.GetActiveScene().name == "city_online") 
-            {
-                print("isPlayerCarDetectedTrue");
-                Destroy(gameObject, 60f);
+                Destroy(obj);
             }
-                
+            else if (SceneManager.GetActiveScene().name == "city_online")
+            {
+                Destroy(obj);
+            }
+
         }
 
         if (col.gameObject.CompareTag("Player") && !RCC_EnterExitCar.manage.isPlayerIn)
@@ -28,13 +26,13 @@ public class DestroyObj : MonoBehaviour
             if (SceneManager.GetActiveScene().name != "city_online" && !RCC_EnterExitCar.manage.isPlayerIn)
             {
                 GetComponentInChildren<Rigidbody>().isKinematic = true;
-                print("isPlayerFPSDetectedTrue");
-            } else if (SceneManager.GetActiveScene().name == "city_online")
+                print("isPlayerFPSTraffLightDetectedTrue");
+            }
+            else if (SceneManager.GetActiveScene().name == "city_online")
             {
-                print("isPlayerCarDetectedTrue");
-                Destroy(gameObject, 60f);
+                print("isPlayerCarTraffLightDetectedTrue");
+                Destroy(obj);
             }
         }
     }
-
 }

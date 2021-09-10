@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 /// </summary>
 [RequireComponent(typeof(PhotonView))]
 [AddComponentMenu("BoneCracker Games/Realistic Car Controller/Network/Photon/RCC Photon Network")]
-public class RCC_PhotonNetwork : Photon.Pun.MonoBehaviourPunCallbacks, IPunObservable {
+public class RCC_PhotonNetwork : MonoBehaviourPunCallbacks, IPunObservable {
 
 	public static RCC_PhotonNetwork photonNetwork;
 	public bool isMine = false;
@@ -98,55 +98,64 @@ public class RCC_PhotonNetwork : Photon.Pun.MonoBehaviourPunCallbacks, IPunObser
 	private float RearleftwheelSusp;
 	private float RearRightwheelSusp;
 
-    private void Awake()
-    {
+	private void Awake()
+	{
 		photonNetwork = this;
-
+		if (SceneManager.GetActiveScene().name == "battle_online")
+        {
+			photonNetwork.enabled = true;
+		}
+		if (SceneManager.GetActiveScene().name == "city_online" && LobbyManager.manage.isCityOnline)
+        {
+			print("city_online_true");
+			photonNetwork.enabled = true;
+		}
 	}
 
-    void Start()
+	void Start()
 	{
-		if (SceneManager.GetActiveScene().name != "city_online" & SceneManager.GetActiveScene().name != "battle_online")
-			return;
+		
+		//if (SceneManager.GetActiveScene().name != "city_online" & SceneManager.GetActiveScene().name != "battle_online")
+		//	return;
 		// Getting RCC, Rigidbody. 
-			carController = GetComponent<RCC_CarControllerV3>();
-			wheelColliders = GetComponentsInChildren<RCC_WheelCollider>();
-			cambers = new float[wheelColliders.Length];
-			rigid = GetComponent<Rigidbody>();
+		carController = GetComponent<RCC_CarControllerV3>();
+		wheelColliders = GetComponentsInChildren<RCC_WheelCollider>();
+		cambers = new float[wheelColliders.Length];
+		rigid = GetComponent<Rigidbody>();
 
-			if (!gameObject.GetComponent<PhotonView>().ObservedComponents.Contains(this))
-				gameObject.GetComponent<PhotonView>().ObservedComponents.Add(this);
+		if (!gameObject.GetComponent<PhotonView>().ObservedComponents.Contains(this))
+			gameObject.GetComponent<PhotonView>().ObservedComponents.Add(this);
 
-			gameObject.GetComponent<PhotonView>().Synchronization = ViewSynchronization.Unreliable;
+		gameObject.GetComponent<PhotonView>().Synchronization = ViewSynchronization.Unreliable;
 
-			GetValues();
+		GetValues();
 
-			// If we are the owner of this vehicle, disable external controller and enable controller of the vehicle. Do opposite if we don't own this.
-			if (photonView.IsMine)
-			{
+		// If we are the owner of this vehicle, disable external controller and enable controller of the vehicle. Do opposite if we don't own this.
+		if (photonView.IsMine)
+		{
 
-				carController.AIController = false;
-				carController.canControl = true;
+			carController.AIController = false;
+			carController.canControl = true;
 
-			}
-			else
-			{
+		}
+		else
+		{
 
-				carController.AIController = true;
-				carController.canControl = false;
+			carController.AIController = true;
+			carController.canControl = false;
 
-			}
+		}
 
-			// Setting name of the gameobject with Photon View ID.
-			gameObject.name = gameObject.name + photonView.ViewID;
+		// Setting name of the gameobject with Photon View ID.
+		gameObject.name = gameObject.name + photonView.ViewID;
 
-			//		PhotonNetwork.SendRate = 60;
-			//		PhotonNetwork.SerializationRate = 60;
+		//		PhotonNetwork.SendRate = 60;
+		//		PhotonNetwork.SerializationRate = 60;
+
+
+
 
 		
-		
-		
-
 	}
 
 	void GetValues()
@@ -231,112 +240,113 @@ public class RCC_PhotonNetwork : Photon.Pun.MonoBehaviourPunCallbacks, IPunObser
 
 	void FixedUpdate()
 	{
+		//if (RCC_EnterExitCar.manage.isPlayerIn)
+		//{
+			if (!carController)
+				return;
 
-		if (!carController)
-			return;
+			isMine = photonView.IsMine;
 
-		isMine = photonView.IsMine;
+			// If we are the owner of this vehicle, disable external controller and enable controller of the vehicle. Do opposite if we don't own this.
+			carController.AIController = !isMine;
+			carController.canControl = isMine;
 
-		// If we are the owner of this vehicle, disable external controller and enable controller of the vehicle. Do opposite if we don't own this.
-		carController.AIController = !isMine;
-		carController.canControl = isMine;
-
-		// If we are not owner of this vehicle, receive all inputs from server.
-		if (!isMine)
-		{
-
-			Vector3 projectedPosition = this.correctPlayerPos + currentVelocity * (Time.time - updateTime);
-
-			if (Vector3.Distance(transform.position, correctPlayerPos) < 15f)
+			// If we are not owner of this vehicle, receive all inputs from server.
+			if (!isMine)
 			{
 
-				transform.position = Vector3.Lerp(transform.position, projectedPosition, Time.deltaTime * 5f);
-				transform.rotation = Quaternion.Lerp(transform.rotation, this.correctPlayerRot, Time.deltaTime * 5f);
+				Vector3 projectedPosition = this.correctPlayerPos + currentVelocity * (Time.time - updateTime);
 
-			}
-			else
-			{
+				if (Vector3.Distance(transform.position, correctPlayerPos) < 15f)
+				{
 
-				transform.position = correctPlayerPos;
-				transform.rotation = correctPlayerRot;
+					transform.position = Vector3.Lerp(transform.position, projectedPosition, Time.deltaTime * 5f);
+					transform.rotation = Quaternion.Lerp(transform.rotation, this.correctPlayerRot, Time.deltaTime * 5f);
 
-			}
+				}
+				else
+				{
 
-			carController.gasInput = gasInput;
-			carController.brakeInput = brakeInput;
-			carController.steerInput = steerInput;
-			carController.handbrakeInput = handbrakeInput;
-			carController.boostInput = boostInput;
-			carController.clutchInput = clutchInput;
-			carController.idleInput = idleInput;
-			carController.currentGear = gear;
-			carController.direction = direction;
-			carController.changingGear = changingGear;
-			carController.semiAutomaticGear = semiAutomaticGear;
-			carController.engineRunning = engineRunning;
-			carController.lowBeamHeadLightsOn = lowBeamHeadLightsOn;
-			carController.highBeamHeadLightsOn = highBeamHeadLightsOn;
-			carController.indicatorsOn = indicatorsOn;
-			// Customizations
-			carController.FrontLeftWheelCollider.wheelCollider.suspensionDistance = frontleftwheelSusp;
-			carController.FrontRightWheelCollider.wheelCollider.suspensionDistance = frontRighttwheelSusp;
-			carController.RearLeftWheelCollider.wheelCollider.suspensionDistance = RearleftwheelSusp;
-			carController.RearRightWheelCollider.wheelCollider.suspensionDistance = RearRightwheelSusp;
+					transform.position = correctPlayerPos;
+					transform.rotation = correctPlayerRot;
 
-			for (int i = 0; i < wheelColliders.Length; i++)
-			{
+				}
 
-				wheelColliders[i].camber = cambers[i];
+				carController.gasInput = gasInput;
+				carController.brakeInput = brakeInput;
+				carController.steerInput = steerInput;
+				carController.handbrakeInput = handbrakeInput;
+				carController.boostInput = boostInput;
+				carController.clutchInput = clutchInput;
+				carController.idleInput = idleInput;
+				carController.currentGear = gear;
+				carController.direction = direction;
+				carController.changingGear = changingGear;
+				carController.semiAutomaticGear = semiAutomaticGear;
+				carController.engineRunning = engineRunning;
+				carController.lowBeamHeadLightsOn = lowBeamHeadLightsOn;
+				carController.highBeamHeadLightsOn = highBeamHeadLightsOn;
+				carController.indicatorsOn = indicatorsOn;
+				// Customizations
+				carController.FrontLeftWheelCollider.wheelCollider.suspensionDistance = frontleftwheelSusp;
+				carController.FrontRightWheelCollider.wheelCollider.suspensionDistance = frontRighttwheelSusp;
+				carController.RearLeftWheelCollider.wheelCollider.suspensionDistance = RearleftwheelSusp;
+				carController.RearRightWheelCollider.wheelCollider.suspensionDistance = RearRightwheelSusp;
 
-			}
+				for (int i = 0; i < wheelColliders.Length; i++)
+				{
 
-			carController.applyEngineTorqueToExtraRearWheelColliders = applyEngineTorqueToExtraRearWheelColliders;
-			carController._wheelTypeChoise = _wheelTypeChoise;
-			carController.biasedWheelTorque = biasedWheelTorque;
-			carController.canGoReverseNow = canGoReverseNow;
-			carController.engineTorque = engineTorque;
-			carController.brakeTorque = brakeTorque;
-			carController.minEngineRPM = minEngineRPM;
-			carController.maxEngineRPM = maxEngineRPM;
-			carController.engineInertia = engineInertia;
-			carController.useRevLimiter = useRevLimiter;
-			carController.useExhaustFlame = useExhaustFlame;
-			carController.highspeedsteerAngle = highspeedsteerAngle;
-			carController.highspeedsteerAngleAtspeed = highspeedsteerAngleAtspeed;
-			carController.antiRollFrontHorizontal = antiRollFrontHorizontal;
-			carController.antiRollRearHorizontal = antiRollRearHorizontal;
-			carController.antiRollVertical = antiRollVertical;
-			carController.maxspeed = maxspeed;
-			carController.totalGears = totalGears;
-			carController.gearShiftingDelay = gearShiftingDelay;
-			carController.launched = launched;
-			carController.ABS = ABS;
-			carController.ABSThreshold = ABSThreshold;
-			carController.TCS = TCS;
-			carController.TCSThreshold = TCSThreshold;
-			carController.ESP = ESP;
-			carController.ESPThreshold = ESPThreshold;
-			carController.steeringHelper = steeringHelper;
-			carController.steerHelperLinearVelStrength = steerHelperLinearVelStrength;
-			carController.steerHelperAngularVelStrength = steerHelperAngularVelStrength;
-			carController.tractionHelper = tractionHelper;
-			carController.tractionHelperStrength = tractionHelperStrength;
-			carController.applyCounterSteering = applyCounterSteering;
-			carController.useNOS = useNOS;
-			carController.useTurbo = useTurbo;
+					wheelColliders[i].camber = cambers[i];
+
+				}
+
+				carController.applyEngineTorqueToExtraRearWheelColliders = applyEngineTorqueToExtraRearWheelColliders;
+				carController._wheelTypeChoise = _wheelTypeChoise;
+				carController.biasedWheelTorque = biasedWheelTorque;
+				carController.canGoReverseNow = canGoReverseNow;
+				carController.engineTorque = engineTorque;
+				carController.brakeTorque = brakeTorque;
+				carController.minEngineRPM = minEngineRPM;
+				carController.maxEngineRPM = maxEngineRPM;
+				carController.engineInertia = engineInertia;
+				carController.useRevLimiter = useRevLimiter;
+				carController.useExhaustFlame = useExhaustFlame;
+				carController.highspeedsteerAngle = highspeedsteerAngle;
+				carController.highspeedsteerAngleAtspeed = highspeedsteerAngleAtspeed;
+				carController.antiRollFrontHorizontal = antiRollFrontHorizontal;
+				carController.antiRollRearHorizontal = antiRollRearHorizontal;
+				carController.antiRollVertical = antiRollVertical;
+				carController.maxspeed = maxspeed;
+				carController.totalGears = totalGears;
+				carController.gearShiftingDelay = gearShiftingDelay;
+				carController.launched = launched;
+				carController.ABS = ABS;
+				carController.ABSThreshold = ABSThreshold;
+				carController.TCS = TCS;
+				carController.TCSThreshold = TCSThreshold;
+				carController.ESP = ESP;
+				carController.ESPThreshold = ESPThreshold;
+				carController.steeringHelper = steeringHelper;
+				carController.steerHelperLinearVelStrength = steerHelperLinearVelStrength;
+				carController.steerHelperAngularVelStrength = steerHelperAngularVelStrength;
+				carController.tractionHelper = tractionHelper;
+				carController.tractionHelperStrength = tractionHelperStrength;
+				carController.applyCounterSteering = applyCounterSteering;
+				carController.useNOS = useNOS;
+				carController.useTurbo = useTurbo;
 
 
 
-			//carController.fuelInput = fuelInput;
-			//carController.gearShiftingThreshold = gearShiftingThreshold;
-			//carController.clutchInertia = clutchInertia;
-			//carController.NGear = NGear;
-			//carController.engineHeat = engineHeat;
-			//carController.engineHeatRate = engineHeatMultiplier;
-			//carController.useClutchMarginAtFirstGear = useClutchMarginAtFirstGear;
+				//carController.fuelInput = fuelInput;
+				//carController.gearShiftingThreshold = gearShiftingThreshold;
+				//carController.clutchInertia = clutchInertia;
+				//carController.NGear = NGear;
+				//carController.engineHeat = engineHeat;
+				//carController.engineHeatRate = engineHeatMultiplier;
+				//carController.useClutchMarginAtFirstGear = useClutchMarginAtFirstGear;
 
+			//}
 		}
-
 	}
 
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -508,7 +518,6 @@ public class RCC_PhotonNetwork : Photon.Pun.MonoBehaviourPunCallbacks, IPunObser
 			updateTime = Time.time;
 
 		}
-
 	}
 
 }

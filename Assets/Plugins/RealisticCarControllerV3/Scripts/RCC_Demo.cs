@@ -22,8 +22,7 @@ public class RCC_Demo : MonoBehaviour {
 		selectedCarIndex = index;
 	
 	}
-
-	public void Spawn () {
+    public void Spawn () {
 
 		RCC_CarControllerV3[] activeVehicles = GameObject.FindObjectsOfType<RCC_CarControllerV3>();
 		Vector3 lastKnownPos = new Vector3();

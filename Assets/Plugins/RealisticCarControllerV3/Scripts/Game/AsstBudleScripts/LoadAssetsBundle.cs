@@ -14,9 +14,10 @@ public class LoadAssetsBundle : MonoBehaviour
     bool loadingStart = false;
     [SerializeField] Transform parentForAB;
     [SerializeField] string url = "https://drive.google.com/uc?export=download&id=1xVWP64yAxmdg_SDxTDn_Qa9IV9A5Koxr";
-    [SerializeField] string url_city_online = "https://drive.google.com/uc?export=download&id=1JPvF5A9Ipel98rKU0_ZOfeKAzpL6bCNh";
+    [SerializeField] string url_city_online = "";
     [Header("Loaded Obj")]
-
+    [SerializeField] string url_city_single = "";
+    [SerializeField] string sceneNameCitySingle;
     [Header("Other")]
     public GameObject loadingPanel;
     public Image bg_fill;
@@ -35,8 +36,8 @@ public class LoadAssetsBundle : MonoBehaviour
 
     private void Update()
     {
-        //print("CityisLoaded: " + PlayerPrefs.GetInt("CityisLoaded"));
         //print("AppActivate: " + PlayerPrefs.GetInt("AppActivate"));
+        //print("citysingle: " + PlayerPrefs.GetInt("citysingle"));
         if (loadingStart)
         {
             double v = www.progress;
@@ -53,7 +54,7 @@ public class LoadAssetsBundle : MonoBehaviour
         while (!Caching.ready)
             yield return null;
 
-        using (www = WWW.LoadFromCacheOrDownload(url_city_online + "", 33))
+        using (www = WWW.LoadFromCacheOrDownload(url_city_online + "", 53))
         {
             print("Using Now");
             loadingPanel.SetActive(true);
@@ -88,45 +89,61 @@ public class LoadAssetsBundle : MonoBehaviour
         }
     }
 
-            /*
-                IEnumerator DownloadFiles()
+    IEnumerator City_single()
+    {
+        while (!Caching.ready)
+            yield return null;
+
+        using (www = WWW.LoadFromCacheOrDownload(url_city_single + "", 54))
+        {
+            if (PlayerPrefs.GetInt("citysingle") == 1)
+            {
+                loadingPanel.SetActive(true);
+            } else
+            {
+                MainMenuManager.manage.loadingPanel.SetActive(true);
+            }
+
+            loadingStart = true;
+            yield return www;
+            AssetBundle city_single;
+            if (!string.IsNullOrEmpty(www.error))
+            {
+                Debug.LogError(www.error);
+                yield break;
+            }
+            else
+            {
+                city_single = www.assetBundle;
+                print(city_single.name);
+
+                for (int i = 0; i < city_single.GetAllAssetNames().Length; i++)
                 {
-                    if (!assetBundle)
-                    {
-                       // using (www =  WWW.LoadFromCacheOrDownload(url_city_online + "",0))
-                       using (www = new WWW(url_city_online))
-                        {
-                            print("Using Now");
-                            loadingPanel.SetActive(true);
-                            loadingStart = true;
-                            yield return www;
-                            if (!string.IsNullOrEmpty(www.error))
-                            {
-                                Debug.LogError(www.error);
-                                yield break;
-                            }
-                            assetBundle = www.assetBundle;
-                        }
-                    }
-                    loadingStart = false;
-
-                    string[] scenes = assetBundle.GetAllScenePaths();
-                    print("scenes.Lengths " + scenes.Length);
-                    foreach (string scenename in scenes)
-                    {
-                        SceneNameToLoadAB = Path.GetFileNameWithoutExtension(scenename).ToString();
-                        print("Scene: " + Path.GetFileNameWithoutExtension(scenename));
-                        LobbyManager.manage.CreateRoomCity();
-                        PlayerPrefs.SetInt("isLoaded",1);
-                    }
+                    Debug.Log(city_single.GetAllAssetNames()[i]);
                 }
-            */
-
-            public void LoadAssetBundleSceneCity()
+                loadingStart = false;
+                string[] scenes = city_single.GetAllScenePaths();
+                print("scenes.Lengths " + scenes.Length);
+                foreach (string scenename in scenes)
+                {
+                    sceneNameCitySingle = Path.GetFileNameWithoutExtension(scenename).ToString();
+                    print("Scene: " + Path.GetFileNameWithoutExtension(scenename));
+                    PlayerPrefs.SetInt("citysingle", PlayerPrefs.GetInt("citysingle")+1);
+                    MainMenuManager.manage.level_city();
+                }
+            }
+        }
+    }
+    public void LoadAssetBundleSceneCity()
             {
                 StartCoroutine(DownloadFiles());
                 //SceneManager.LoadScene(SceneNameToLoadAB);
-            }
+      }
 
-        }
+    public void LoadCitySingle()
+    {
+        StartCoroutine(City_single());
+    }
+
+    }
 

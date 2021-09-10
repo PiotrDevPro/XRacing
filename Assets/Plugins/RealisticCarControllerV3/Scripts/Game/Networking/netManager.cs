@@ -10,6 +10,8 @@ using UnityEngine.UI;
 public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
 {
     public static netManager manage;
+    private RCC_PhotonNetwork photonNetwork;
+    private GameObject carMirror;
     public ChatClient chatClient;
     public GameObject[] CarsPrefabs;
     public Transform spawnPoint;
@@ -20,6 +22,7 @@ public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
     public bool DangerSpeed;
     public bool isHighwayNetworkActive = false;
     int count = 0;
+    int cnt = 0;
     private float starttime = 5f;
     private float curr = 0;
 
@@ -36,6 +39,7 @@ public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
 
     private void Start()
     {
+        
         Application.targetFrameRate = 300;
         if (SceneManager.GetActiveScene().name == "battle_online")
         {
@@ -49,7 +53,7 @@ public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
 
         if (PhotonNetwork.CurrentRoom.Name == "Highway") 
         {
-            
+           InsideOutsideCar.manage.OutFromCarButton.SetActive(false);
             /// fog
             RenderSettings.fog = true;
             RenderSettings.fogColor = new Color(0.9622642f, 0.7006145f, 0.4130474f);
@@ -59,9 +63,14 @@ public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
             if (PlayerPrefs.GetInt("CurrentCar") == 0 || PlayerPrefs.GetInt("CurrentCar") == 4
                 || PlayerPrefs.GetInt("CurrentCar") == 5 ||  PlayerPrefs.GetInt("CurrentCar") == 8 || PlayerPrefs.GetInt("CurrentCar") == 12)
             {
+                
+                
                 Amplitude.Instance.logEvent("HighwayLevelNetwork");
                 newVehicle = PhotonNetwork.Instantiate("Cars/" + CarsPrefabs[PlayerPrefs.GetInt("CurrentCar")].name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
+                //newVehicle.gameObject.AddComponent<RCC_EnterExitCar>();
                 isHighwayNetworkActive = true;
+
+
             }
 
             if (PlayerPrefs.GetInt("CurrentCar") == 1)
@@ -70,6 +79,7 @@ public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
                 newVehicle = PhotonNetwork.Instantiate("hotrodd", new Vector3(Random.Range(0f, -100.19f), Random.Range(3.5f, 5f)), spawnPoint.rotation, 0).GetComponent<RCC_CarControllerV3>();
                 newVehicle.GetComponent<Rigidbody>().isKinematic = false;
                 isHighwayNetworkActive = true;
+                
             }
 
             if (PlayerPrefs.GetInt("CurrentCar") == 2)
@@ -134,6 +144,7 @@ public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
         } 
         else if (PhotonNetwork.CurrentRoom.Name == "City")
         {
+            InsideOutsideCar.manage.OutFromCarButton.SetActive(false);
             if (PlayerPrefs.GetInt("CurrentCar") == 1)
             {
                 Amplitude.Instance.logEvent("CityLevelNetwork");
@@ -583,6 +594,12 @@ public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
 
     private void Update()
     {
+        cnt += 1;
+        if (cnt == 1)
+        {
+            carMirror = GameObject.FindGameObjectWithTag("CarMirror");
+            carMirror.SetActive(false);
+        }
         maxspd.text = "MAX:" + newVehicle.GetComponent<RCC_CarControllerV3>().maxspeed.ToString() + "KM/H";
         if (newVehicle.GetComponent<RCC_CarControllerV3>().speed > 5f)
         {
@@ -656,7 +673,6 @@ public class netManager : MonoBehaviourPunCallbacks, IPunPrefabPool
     
    public GameObject Instantiate(string prefabId, Vector3 position, Quaternion rotation)
     {
-   //     newVehicle = Instantiate(CathingLoadFiles.manage.townCar_ab.name, new Vector3(Random.Range(0f, -100.19f), Random.Range(4f, 6f)), spawnPoint.rotation).GetComponent<RCC_CarControllerV3>();
         return null;
     }
 

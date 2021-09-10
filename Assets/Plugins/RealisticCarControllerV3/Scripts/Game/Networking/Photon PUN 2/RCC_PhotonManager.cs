@@ -14,8 +14,11 @@ public class RCC_PhotonManager : MonoBehaviourPunCallbacks {
 
 	public Player player;
 	void Start () {
-
-		ConnectToServer();
+		if (!MainMenuManager.manage.isCity)
+        {
+			ConnectToServer();
+		}
+		
 	}
 
 	void ConnectToServer () {
