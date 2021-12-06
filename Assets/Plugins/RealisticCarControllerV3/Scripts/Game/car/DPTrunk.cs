@@ -21,7 +21,7 @@ public class DPTrunk : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
-        if (col.CompareTag("CarAI") || col.CompareTag("Car"))
+        if (col.CompareTag("CarAI") || col.CompareTag("Car") || col.CompareTag("Obstacle") || col.CompareTag("baseball_bat"))
         {
             
             if (carController.speed <= 50)
@@ -69,7 +69,8 @@ public class DPTrunk : MonoBehaviour
 
             }
 
-            print(point);
         }
+
+        
     }
 }

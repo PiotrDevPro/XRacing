@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class blk2_left : MonoBehaviour
 {
@@ -22,19 +23,24 @@ public class blk2_left : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            _main.SetActive(false);
-            _block3_2.SetActive(false);
-            bl_2_1.SetActive(true);
+            
             people1.SetActive(true);
-            bl_2_2.SetActive(false);
+            
             _crossroad1.SetActive(false);
             _crossroad2.SetActive(false);
             _crossroad3.SetActive(false);
             Amplitude.Instance.logEvent("block2_left");
-            Small_city.SetActive(false);
-            Small_city1.SetActive(false);
-            Small_city2.SetActive(false);
-            Small_city3.SetActive(false);
+            if (SceneManager.GetActiveScene().name == "city_single")
+            {
+                _main.SetActive(false);
+                _block3_2.SetActive(false);
+                bl_2_1.SetActive(true);
+                bl_2_2.SetActive(false);
+                Small_city.SetActive(false);
+                Small_city1.SetActive(false);
+                Small_city2.SetActive(false);
+                Small_city3.SetActive(false);
+            }
         }
     }
 
@@ -42,18 +48,24 @@ public class blk2_left : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            _main.SetActive(false);
-            _block3_2.SetActive(false);
-            bl_2_1.SetActive(true);
+
+            
             people1.SetActive(true);
-            bl_2_2.SetActive(false);
+            
             _crossroad1.SetActive(false);
             _crossroad2.SetActive(false);
             _crossroad3.SetActive(false);
-            Small_city.SetActive(false);
-            Small_city1.SetActive(false);
-            Small_city2.SetActive(false);
-            Small_city3.SetActive(false);
+            if (SceneManager.GetActiveScene().name == "city_single")
+            {
+                _main.SetActive(false);
+                _block3_2.SetActive(false);
+                bl_2_1.SetActive(true);
+                bl_2_2.SetActive(false);
+                Small_city.SetActive(false);
+                Small_city1.SetActive(false);
+                Small_city2.SetActive(false);
+                Small_city3.SetActive(false);
+            }
         }
     }
 
@@ -61,18 +73,23 @@ public class blk2_left : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            _main.SetActive(true);
-            _block3_2.SetActive(false);
+            
             people1.SetActive(false);
-            bl_2_1.SetActive(false);
-            bl_2_2.SetActive(false);
+            
             _crossroad1.SetActive(false);
             _crossroad2.SetActive(false);
             _crossroad3.SetActive(true);
-            Small_city.SetActive(false);
-            Small_city1.SetActive(true);
-            Small_city2.SetActive(true);
-            Small_city3.SetActive(true);
+            if (SceneManager.GetActiveScene().name == "city_single")
+            {
+                Small_city.SetActive(false);
+                Small_city1.SetActive(true);
+                Small_city2.SetActive(true);
+                Small_city3.SetActive(true);
+                bl_2_1.SetActive(false);
+                bl_2_2.SetActive(false);
+                _main.SetActive(true);
+                _block3_2.SetActive(false);
+            }
         }
     }
 }

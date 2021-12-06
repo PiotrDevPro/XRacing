@@ -22,6 +22,9 @@ public class CathingLoadFiles : MonoBehaviour
     [SerializeField] string hotrodd_url;
     [SerializeField] string lambo_url;
     [SerializeField] string i8_url;
+    [SerializeField] string rr_url;
+    [SerializeField] string vetty_url;
+    [SerializeField] string rasta_url;
     [Header("URL Soundtracks")]
     [SerializeField] string track11_url;
     [SerializeField] string track12_url;
@@ -40,6 +43,9 @@ public class CathingLoadFiles : MonoBehaviour
     [SerializeField] Transform hotrodd_parent;
     [SerializeField] Transform lambo_parent;
     [SerializeField] Transform i8_parent;
+    [SerializeField] Transform rr_parent;
+    [SerializeField] Transform vetty_parent;
+    [SerializeField] Transform rasta_parent;
     //Cars
     public GameObject ikarus;
     public GameObject modelT_ab;
@@ -49,6 +55,9 @@ public class CathingLoadFiles : MonoBehaviour
     public GameObject hot_rodd_ab;
     public GameObject i8_ab;
     public GameObject lambo_ab;
+    public GameObject rr_ab;
+    public GameObject vetty_ab;
+    public GameObject rasta_ab;
     //Soundtracks
     public GameObject track11_ab;
     public GameObject track12_ab;
@@ -69,6 +78,10 @@ public class CathingLoadFiles : MonoBehaviour
     [SerializeField] string assetsHotRodd;
     [SerializeField] string assetsLambo;
     [SerializeField] string assetsi8;
+    [SerializeField] string assetsRR;
+    [SerializeField] string assetsVetty;
+    [SerializeField] string assetsRasta;
+    [Header("Assets Name Music")]
     [SerializeField] string assets_track11;
     [SerializeField] string assets_track12;
     [SerializeField] string assets_track13;
@@ -102,7 +115,9 @@ public class CathingLoadFiles : MonoBehaviour
     public bool car_modelt = false;
     public bool car_lambo = false;
     public bool car_i8 = false;
-
+    public bool car_rr = false;
+    public bool car_vetty = false;
+    public bool car_rasta = false;
     int count = 0;
     int count_ = 0;
 
@@ -132,6 +147,9 @@ public class CathingLoadFiles : MonoBehaviour
         StartCoroutine(hotRodd());
         StartCoroutine(lambo());
         StartCoroutine(i8());
+        StartCoroutine(RR());
+       // StartCoroutine(Vetty());
+       // StartCoroutine(Rasta());
     }
 
     public void SoundTrackPlay()
@@ -161,7 +179,7 @@ public class CathingLoadFiles : MonoBehaviour
 
         LoadingPanel.SetActive(true);
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
-        using (WWW www = WWW.LoadFromCacheOrDownload(towncar_url + "", 50))
+        using (WWW www = WWW.LoadFromCacheOrDownload(towncar_url + "", 70))
         {
 
 
@@ -282,7 +300,7 @@ public class CathingLoadFiles : MonoBehaviour
 
         LoadingPanel.SetActive(true);
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
-        using (WWW www = WWW.LoadFromCacheOrDownload(modelT + "", 47))
+        using (WWW www = WWW.LoadFromCacheOrDownload(modelT + "", 69))
         {
 
 
@@ -341,7 +359,7 @@ public class CathingLoadFiles : MonoBehaviour
             yield return null;
         LoadingPanel.SetActive(true);
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
-        using (WWW www = WWW.LoadFromCacheOrDownload(buggy_gtr + "", 40))
+        using (WWW www = WWW.LoadFromCacheOrDownload(buggy_gtr + "", 65))
         {
 
 
@@ -403,7 +421,7 @@ public class CathingLoadFiles : MonoBehaviour
 
         LoadingPanel.SetActive(true);
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
-        using (WWW www = WWW.LoadFromCacheOrDownload(gt500_url + "", 39))
+        using (WWW www = WWW.LoadFromCacheOrDownload(gt500_url + "", 66))
         {
 
 
@@ -466,7 +484,7 @@ public class CathingLoadFiles : MonoBehaviour
 
 
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
-        using (WWW www = WWW.LoadFromCacheOrDownload(hotrodd_url + "", 38))
+        using (WWW www = WWW.LoadFromCacheOrDownload(hotrodd_url + "", 64))
         {
 
 
@@ -529,7 +547,7 @@ public class CathingLoadFiles : MonoBehaviour
 
 
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
-        using (WWW www = WWW.LoadFromCacheOrDownload(i8_url + "", 44))
+        using (WWW www = WWW.LoadFromCacheOrDownload(i8_url + "", 68))
         {
 
 
@@ -593,7 +611,7 @@ public class CathingLoadFiles : MonoBehaviour
 
 
         // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
-        using (WWW www = WWW.LoadFromCacheOrDownload(lambo_url + "", 45))
+        using (WWW www = WWW.LoadFromCacheOrDownload(lambo_url + "", 67))
         {
 
 
@@ -649,7 +667,200 @@ public class CathingLoadFiles : MonoBehaviour
         } // memory is freed from the web stream (www.Dispose() gets called implicitly)
     }
 
+    IEnumerator RR()
+    {
 
+        // Wait for the Caching system to be ready
+        while (!Caching.ready)
+            yield return null;
+
+
+        // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
+        using (WWW www = WWW.LoadFromCacheOrDownload(rr_url + "", 63))
+        {
+
+
+            //    WWW www = WWW.LoadFromCacheOrDownload(BundleURL + "", version);
+
+
+            yield return www;
+
+
+            AssetBundle bundle_rr;
+            if (!string.IsNullOrEmpty(www.error))
+            {
+
+                throw new Exception("WWW download had an error:" + www.error);
+
+            }
+
+            else
+            {
+                bundle_rr = www.assetBundle;
+
+
+                for (int i = 0; i < bundle_rr.GetAllAssetNames().Length; i++)
+                {
+                }
+
+                if (assetsRR == "")
+                {
+                    rr_ab = (GameObject)(bundle_rr.mainAsset);
+                    rr_ab.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                    rr_ab.transform.position = new Vector3(0, 1.1f, 0);
+                    rr_ab.transform.eulerAngles = new Vector2(0, 0);
+                    Instantiate(rr_ab).transform.SetParent(rr_parent);
+                    Amplitude.Instance.logEvent("LamboLoaded");
+                }
+                else
+                {
+                    LoadingPanel.SetActive(true);
+                    rr_ab = (GameObject)(bundle_rr.LoadAsset(assetsRR));
+                    rr_ab.GetComponentInChildren<Rigidbody>().isKinematic = false;
+
+                    rr_ab.transform.position = new Vector3(0, 1.1f, 0);
+                    rr_ab.transform.eulerAngles = new Vector2(0, 0);
+                    Instantiate(rr_ab).transform.SetParent(rr_parent);
+                    // Unload the AssetBundles compressed contents to conserve memory
+                    bundle_rr.Unload(false);
+                    Amplitude.Instance.logEvent("RRCashed");
+                    LoadingPanel.SetActive(false);
+                    car_rr = true;
+                }
+            }
+
+        } // memory is freed from the web stream (www.Dispose() gets called implicitly)
+    }
+
+    IEnumerator Vetty()
+    {
+
+        // Wait for the Caching system to be ready
+        while (!Caching.ready)
+            yield return null;
+
+
+        // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
+        using (WWW www = WWW.LoadFromCacheOrDownload(vetty_url + "", 73))
+        {
+
+
+            //    WWW www = WWW.LoadFromCacheOrDownload(BundleURL + "", version);
+
+
+            yield return www;
+
+
+            AssetBundle bundle_vetty;
+            if (!string.IsNullOrEmpty(www.error))
+            {
+
+                throw new Exception("WWW download had an error:" + www.error);
+
+            }
+
+            else
+            {
+                bundle_vetty = www.assetBundle;
+
+
+                for (int i = 0; i < bundle_vetty.GetAllAssetNames().Length; i++)
+                {
+                }
+
+                if (assetsVetty == "")
+                {
+                    vetty_ab = (GameObject)(bundle_vetty.mainAsset);
+                    vetty_ab.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                    vetty_ab.transform.position = new Vector3(0, 1.1f, 0);
+                    vetty_ab.transform.eulerAngles = new Vector2(0, 0);
+                    Instantiate(vetty_ab).transform.SetParent(vetty_parent);
+                    Amplitude.Instance.logEvent("VettyLoaded");
+                }
+                else
+                {
+                    LoadingPanel.SetActive(true);
+                    vetty_ab = (GameObject)(bundle_vetty.LoadAsset(assetsVetty));
+                    vetty_ab.GetComponentInChildren<Rigidbody>().isKinematic = false;
+
+                    vetty_ab.transform.position = new Vector3(0, 1.1f, 0);
+                    vetty_ab.transform.eulerAngles = new Vector2(0, 0);
+                    Instantiate(vetty_ab).transform.SetParent(vetty_parent);
+                    // Unload the AssetBundles compressed contents to conserve memory
+                    bundle_vetty.Unload(false);
+                    Amplitude.Instance.logEvent("VettyCashed");
+                    LoadingPanel.SetActive(false);
+                    car_vetty = true;
+                }
+            }
+
+        } // memory is freed from the web stream (www.Dispose() gets called implicitly)
+    }
+
+    IEnumerator Rasta()
+    {
+
+        // Wait for the Caching system to be ready
+        while (!Caching.ready)
+            yield return null;
+
+
+        // Load the AssetBundle file from Cache if it exists with the same version or download and store it in the cache
+        using (WWW www = WWW.LoadFromCacheOrDownload(rasta_url + "", 76))
+        {
+
+
+            //    WWW www = WWW.LoadFromCacheOrDownload(BundleURL + "", version);
+
+
+            yield return www;
+
+
+            AssetBundle bundle_rasta;
+            if (!string.IsNullOrEmpty(www.error))
+            {
+
+                throw new Exception("WWW download had an error:" + www.error);
+
+            }
+
+            else
+            {
+                bundle_rasta = www.assetBundle;
+
+
+                for (int i = 0; i < bundle_rasta.GetAllAssetNames().Length; i++)
+                {
+                }
+
+                if (assetsRasta == "")
+                {
+                    rasta_ab = (GameObject)(bundle_rasta.mainAsset);
+                    rasta_ab.GetComponentInChildren<Rigidbody>().isKinematic = false;
+                    rasta_ab.transform.position = new Vector3(0, 1.1f, 0);
+                    rasta_ab.transform.eulerAngles = new Vector2(0, 0);
+                    Instantiate(rasta_ab).transform.SetParent(rasta_parent);
+                    Amplitude.Instance.logEvent("RastaLoaded");
+                }
+                else
+                {
+                    LoadingPanel.SetActive(true);
+                    rasta_ab = (GameObject)(bundle_rasta.LoadAsset(assetsRasta));
+                    rasta_ab.GetComponentInChildren<Rigidbody>().isKinematic = false;
+
+                    rasta_ab.transform.position = new Vector3(0, 1.1f, 0);
+                    rasta_ab.transform.eulerAngles = new Vector2(0, 0);
+                    Instantiate(rasta_ab).transform.SetParent(rasta_parent);
+                    // Unload the AssetBundles compressed contents to conserve memory
+                    bundle_rasta.Unload(false);
+                    Amplitude.Instance.logEvent("RastaCashed");
+                    LoadingPanel.SetActive(false);
+                    car_rasta = true;
+                }
+            }
+
+        } // memory is freed from the web stream (www.Dispose() gets called implicitly)
+    }
 
     //Scenes
     IEnumerator CityOnlineMap()

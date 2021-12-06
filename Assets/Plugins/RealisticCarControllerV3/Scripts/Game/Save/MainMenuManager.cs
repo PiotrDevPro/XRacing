@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public enum PanelsUI { MainMenu = 0, SelectCar = 1, SelectLevel = 2, Settings = 3, _NetworkRoom = 4, Auth = 5}
+public enum PanelsUI { MainMenu = 0, SelectCar = 1, SelectLevel = 2, Settings = 3, _NetworkRoom = 4, Auth = 5, ArenaLevel =6}
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -18,6 +18,7 @@ public class MainMenuManager : MonoBehaviour
     public Transform CarManager;
     public Transform qualityPanel;
     public MenuPanels menuPanels;
+    public LevelSetting levelSettingz;
     public SvCheck svChecked;
     public MenuGUI menuGUI;
     public AudioUI audioUi;
@@ -25,6 +26,7 @@ public class MainMenuManager : MonoBehaviour
     public Text cashAmount;
     private GameObject _car_mirrorActive;
     [SerializeField] Text Rating;
+    
     public Text energyTx;
     [SerializeField] private GameObject versionApp;
     public GameObject network_manager_active;
@@ -34,21 +36,52 @@ public class MainMenuManager : MonoBehaviour
     [HideInInspector] public bool isTopSpeedActive = false;
     [HideInInspector] public bool isQuickRace = false;
     [HideInInspector] public bool isCity = false;
+    //Arena Mode
+    [HideInInspector] public bool isArena = false;
+    [HideInInspector] public bool isArena1 = false;
+    [HideInInspector] public bool isArena2 = false;
+    [HideInInspector] public bool isArena3 = false;
+    [HideInInspector] public bool isArena4 = false;
+    [HideInInspector] public bool isArena5 = false;
+    [HideInInspector] public bool isArena6 = false;
+    [HideInInspector] public bool isArena7 = false;
+    [HideInInspector] public bool isArena8 = false;
+    [HideInInspector] public bool isArena9 = false;
+    [HideInInspector] public bool isArena10 = false;
+    [HideInInspector] public bool isArena11 = false;
+    [HideInInspector] public bool isArena12 = false;
+    [HideInInspector] public bool isArena13 = false;
+    [HideInInspector] public bool isArena14 = false;
+    [HideInInspector] public bool isArena15 = false;
+
+    // Checkpoint Mode
+    [HideInInspector] public bool isCheckpoint = false;
+    [HideInInspector] public bool isCheckpoint1 = false;
     // Menu Settings
-    [HideInInspector]public bool isMainMenu = false;
+    [HideInInspector] public bool isMainMenu = false;
     [HideInInspector] public bool isSelectLevel = false;
     [HideInInspector] public bool isSelectCar = false;
     [HideInInspector] public bool isNetMenu = false;
     [HideInInspector] public bool isSettings = false;
     [HideInInspector] public bool isAuthMenu = false;
+    [HideInInspector] public bool isArenaMenu = false;
     [Header("Pool Prefab Manager")]
     public GameObject PoolPrefActive;
     [Header("Other obj")]
     [SerializeField] GameObject RatingForCarPanel;
-    public GameObject inAppCarsPanel;
     [SerializeField] Text inAppCarPrice;
     [SerializeField] Text ratingforCar;
     public GameObject loadingPanel;
+    [Header("InAppCars")]
+    public GameObject inAppLamboPanel;
+    public GameObject inAppRRPanel;
+    public GameObject inAppVettyPanel;
+    [SerializeField] Text inAppCarPriceLambo;
+    [SerializeField] Text inAppCarPriceRR;
+    [SerializeField] Text inAppCarPriceVetty;
+    [Header("Achiv")]
+    [SerializeField] Text AchivText;
+    [SerializeField] Text CrownText;
     //public bool isCityNetworkRoom;
     //public GameObject maxSpeedActive;
 
@@ -147,7 +180,13 @@ public class MainMenuManager : MonoBehaviour
         public GameObject SelectLevel;
         public GameObject _NetworkRoom;
         public GameObject EnoughMoney;
-        public GameObject FreeridePanel;
+        //public GameObject FreeridePanel;
+        public GameObject ArenaPanel;
+        public GameObject TopSpeedPanel;
+        public GameObject CheckpointPanel;
+        public GameObject AchivmentPanel;
+        public GameObject FreerideMainPanel;
+        public GameObject CityPanel;
         public GameObject Settings;
         public GameObject Auth;
         public GameObject Leaderboard;
@@ -164,7 +203,43 @@ public class MainMenuManager : MonoBehaviour
         public Text bestTime;
         public Image lockImage;
         public StarClass stars;
-        
+        [Header("LockImageArena")]
+        public GameObject lock1;
+        public GameObject lock2;
+        public GameObject lock3;
+        public GameObject lock4;
+        public GameObject lock5;
+        public GameObject lock6;
+        public GameObject lock7;
+        public GameObject lock8;
+        public GameObject lock9;
+        public GameObject lock10;
+        public GameObject lock11;
+        public GameObject lock12;
+        public GameObject lock13;
+        public GameObject lock14;
+
+
+        [Header("ArenaLevels")]
+        public Button ArenaLv2;
+        public Button ArenaLv3;
+        public Button ArenaLv4;
+        public Button ArenaLv5;
+        public Button ArenaLv6;
+        public Button ArenaLv7;
+        public Button ArenaLv8;
+        public Button ArenaLv9;
+        public Button ArenaLv10;
+        public Button ArenaLv11;
+        public Button ArenaLv12;
+        public Button ArenaLv13;
+        public Button ArenaLv14;
+
+        [Header("CheckpointLevels")]
+        public Button CheckpointLv2;
+
+        [Header("LockImageCheckpoint")]
+        public GameObject lockCHK1;
 
         [System.Serializable]
         public class StarClass
@@ -463,16 +538,6 @@ public class MainMenuManager : MonoBehaviour
                 isAuthMenu = false;
                 isNetMenu = false;
                 isSettings = false;
-                if (PlayerPrefs.GetInt("Rating") >= 30)
-                {
-                    menuPanels.FreeridePanel.SetActive(false);
-                    menuPanels.FreerideBtn.interactable = true;
-                }
-                else
-                {
-                    menuPanels.FreeridePanel.SetActive(true);
-                    menuPanels.FreerideBtn.interactable = false;
-                }
 
                 break;
             case PanelsUI.Auth:
@@ -513,6 +578,20 @@ public class MainMenuManager : MonoBehaviour
                 isAuthMenu = false;
                 isNetMenu = false;
                 isSettings = true;
+                break;
+            case PanelsUI.ArenaLevel:
+                menuPanels.MainMenu.SetActive(false);
+                menuPanels.SelectCar.SetActive(false);
+                menuPanels.SelectLevel.SetActive(false);
+                menuPanels.ArenaPanel.SetActive(true);
+                Amplitude.Instance.logEvent("ArenaPanels");
+                isMainMenu = false;
+                isSelectLevel = false;
+                isSelectCar = false;
+                isAuthMenu = false;
+                isNetMenu = false;
+                isSettings = false;
+                isArenaMenu = false;
                 break;
         }
 
@@ -820,14 +899,30 @@ public class MainMenuManager : MonoBehaviour
 
     public void ResolutionOnAwake()
     {
-        Screen.SetResolution(menuGUI.xResolution, menuGUI.yResolution, true);
+       // Screen.SetResolution(menuGUI.xResolution, menuGUI.yResolution, true);
 
-        Camera.main.aspect = 18f / 9f;
+     //   Camera.main.aspect = 18f / 9f;
     }
 
     public void ClickExitButton()
     {
         Application.Quit();
+    }
+
+    public void EnoughMoneyButtonOk()
+    {
+        menuPanels.EnoughMoney.SetActive(false);
+        GameObject snd = GameObject.Find("Close");
+        snd.GetComponent<AudioSource>().Play();
+    }
+
+    public void Shop()
+    {
+        menuPanels.EnoughMoney.SetActive(true);
+        Amplitude.Instance.logEvent("Shop");
+        GameObject snd = GameObject.Find("Open");
+        snd.GetComponent<AudioSource>().Play();
+
     }
 
     #region Load Car Upgrade
@@ -2871,6 +2966,8 @@ public class MainMenuManager : MonoBehaviour
                 if (PlayerPrefs.GetInt("CurrentCar") == 0)
                 {
                     Amplitude.Instance.logEvent("Hevy666");
+                //    _car_mirrorActive = GameObject.FindGameObjectWithTag("CarMirror");
+               //     _car_mirrorActive.SetActive(false);
                 }
 
                 if (PlayerPrefs.GetInt("CurrentCar") == 4)
@@ -2909,16 +3006,20 @@ public class MainMenuManager : MonoBehaviour
                 {
                     Amplitude.Instance.logEvent("BMW i8");
                     carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
+
                 }
 
                 if (PlayerPrefs.GetInt("CurrentCar") == 7)
                 {
                     Amplitude.Instance.logEvent("Lambo LP-750");
                     carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
+
+
                 }
                 if (PlayerPrefs.GetInt("CurrentCar") == 9)
                 {
                     Amplitude.Instance.logEvent("Tesla T");
+
 
                 }
 
@@ -2926,6 +3027,7 @@ public class MainMenuManager : MonoBehaviour
                 {
                     Amplitude.Instance.logEvent("TownCar");
                     carSetting[currentCarNumber].car.GetComponentInChildren<Rigidbody>().isKinematic = false;
+
 
                 }
 
@@ -2938,7 +3040,18 @@ public class MainMenuManager : MonoBehaviour
                 if (PlayerPrefs.GetInt("CurrentCar") == 12)
                 {
                     Amplitude.Instance.logEvent("ChevyGodlenWings");
+
                 }
+
+                if (PlayerPrefs.GetInt("CurrentCar") == 13)
+                {
+                    Amplitude.Instance.logEvent("RollsRoyce");
+                }
+
+                // if (PlayerPrefs.GetInt("CurrentCar") == 14)
+                // {
+                //     Amplitude.Instance.logEvent("Vetty");
+                // }
             }
             else
             {
@@ -2965,6 +3078,8 @@ public class MainMenuManager : MonoBehaviour
                 if (PlayerPrefs.GetInt("CurrentCar")==0)
                 {
                     Amplitude.Instance.logEvent("Hevy666");
+                   // _car_mirrorActive = GameObject.FindGameObjectWithTag("CarMirror");
+                   // _car_mirrorActive.SetActive(false);
                 }
                 
                 if (PlayerPrefs.GetInt("CurrentCar") == 4)
@@ -3027,12 +3142,23 @@ public class MainMenuManager : MonoBehaviour
                 if (PlayerPrefs.GetInt("CurrentCar") == 11)
                 {
                     Amplitude.Instance.logEvent("Ikarus280");
+
                 }
 
                 if (PlayerPrefs.GetInt("CurrentCar") == 12)
                 {
                     Amplitude.Instance.logEvent("ChevyGodlenWings");
                 }
+
+                if (PlayerPrefs.GetInt("CurrentCar") == 13)
+                {
+                    Amplitude.Instance.logEvent("RollsRoyce");
+                }
+
+               // if (PlayerPrefs.GetInt("CurrentCar") == 14)
+               // {
+               //     Amplitude.Instance.logEvent("Vetty");
+               // }
             }
             else
             {
@@ -3956,21 +4082,7 @@ public class MainMenuManager : MonoBehaviour
         carSetting[currentCarNumber].car.GetComponentInChildren<RCC_CarControllerV3>().KillOrStartEngine();
     }
 
-    public void EnoughMoneyButtonOk()
-    {
-        menuPanels.EnoughMoney.SetActive(false);
-        GameObject snd = GameObject.Find("Close");
-        snd.GetComponent<AudioSource>().Play();
-    }
 
-    public void Shop()
-    {
-        menuPanels.EnoughMoney.SetActive(true);
-        Amplitude.Instance.logEvent("Shop");
-        GameObject snd = GameObject.Find("Open");
-        snd.GetComponent<AudioSource>().Play();
-
-    }
 
     #endregion
 
@@ -4035,6 +4147,205 @@ public class MainMenuManager : MonoBehaviour
         SceneManager.LoadScene("city_single");
 
     }
+
+    #region Arena Levels
+
+    public void arena_1()
+    {
+        Amplitude.Instance.logEvent("arena#1");
+        isArena1 = true;
+        isArena = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+        SceneManager.LoadScene("_arena_1");
+
+    }
+
+    public void arena_2()
+    {
+        Amplitude.Instance.logEvent("arena#2");
+        isArena = true;
+        isArena2 = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+        SceneManager.LoadScene("_arena_1");
+
+    }
+
+    public void arena_3()
+    {
+        Amplitude.Instance.logEvent("arena#3");
+        isArena3 = true;
+        isArena = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+        SceneManager.LoadScene("_arena_1");
+
+    }
+
+    public void arena_4()
+    {
+        Amplitude.Instance.logEvent("arena#4");
+        isArena4 = true;
+        isArena = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+        SceneManager.LoadScene("_arena_1");
+
+    }
+
+    public void arena_5()
+    {
+        Amplitude.Instance.logEvent("arena#5");
+        isArena5 = true;
+        isArena = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+        SceneManager.LoadScene("_arena_2");
+
+    }
+
+    public void arena_6()
+    {
+        Amplitude.Instance.logEvent("arena#6");
+        isArena6 = true;
+        isArena = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+        SceneManager.LoadScene("_arena_2");
+
+    }
+
+    public void arena_7()
+    {
+        Amplitude.Instance.logEvent("arena#7");
+        isArena7 = true;
+        isArena = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+        SceneManager.LoadScene("_arena_2");
+
+    }
+
+    public void arena_8()
+    {
+        Amplitude.Instance.logEvent("arena#8");
+        isArena8 = true;
+        isArena = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+        SceneManager.LoadScene("_arena_2");
+
+    }
+
+    public void arena_9()
+    {
+        Amplitude.Instance.logEvent("arena#9");
+        isArena9 = true;
+        isArena = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+        SceneManager.LoadScene("_arena_2");
+
+    }
+
+    public void arena_10()
+    {
+        Amplitude.Instance.logEvent("arena#10");
+        isArena10 = true;
+        isArena = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+        SceneManager.LoadScene("_arena_2");
+
+    }
+
+    public void arena_11()
+    {
+        Amplitude.Instance.logEvent("arena#11");
+        isArena11 = true;
+        isArena = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+        SceneManager.LoadScene("_arena_3");
+
+    }
+
+    public void arena_12()
+    {
+        Amplitude.Instance.logEvent("arena#12");
+        isArena12 = true;
+        isArena = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+        SceneManager.LoadScene("_arena_3");
+
+    }
+
+    public void arena_13()
+    {
+        Amplitude.Instance.logEvent("arena#13");
+        isArena13 = true;
+        isArena = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+        SceneManager.LoadScene("_arena_3");
+
+    }
+
+    public void arena_14()
+    {
+        Amplitude.Instance.logEvent("arena#14");
+        isArena14 = true;
+        isArena = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+        SceneManager.LoadScene("_arena_3");
+
+    }
+
+    public void arena_15()
+    {
+        Amplitude.Instance.logEvent("arena#15");
+        isArena15 = true;
+        isArena = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+        SceneManager.LoadScene("_arena_3");
+
+    }
+
+
+    #endregion
+
+    #region Checkpoint Levels
+    public void checkpoint_2()
+    {
+        Amplitude.Instance.logEvent("checkpoint#2");
+        isCheckpoint1 = true;
+        isCheckpoint = true;
+        LoadEngineUpgradeOnSelectedCar();
+        LoadHandlingOnSelectedCar();
+        LoadBrakeOnSelectedCar();
+        SceneManager.LoadScene("_arena_4");
+
+    }
+    #endregion
 
     public void level_city_from_bundle()
     {
@@ -4124,6 +4435,162 @@ public class MainMenuManager : MonoBehaviour
         menuPanels.Ratingboard.SetActive(false);
         Amplitude.Instance.logEvent("RatingBoardClose");
     }
+
+    public void ArenaOpen()
+    {
+        menuPanels.ArenaPanel.SetActive(true);
+        Amplitude.Instance.logEvent("ArenaOpen");
+        if (PlayerPrefs.GetInt("ArenaWin1") == 1)
+        {
+            levelSettingz.ArenaLv2.interactable = true;
+            levelSettingz.lock1.SetActive(false);
+        }
+        if (PlayerPrefs.GetInt("ArenaWin2") == 1)
+        {
+            levelSettingz.ArenaLv3.interactable = true;
+            levelSettingz.lock2.SetActive(false);
+        }
+
+        if (PlayerPrefs.GetInt("ArenaWin3") == 1)
+        {
+            levelSettingz.ArenaLv4.interactable = true;
+            levelSettingz.lock3.SetActive(false);
+        }
+
+        if (PlayerPrefs.GetInt("ArenaWin4") == 1)
+        {
+            levelSettingz.ArenaLv5.interactable = true;
+            levelSettingz.lock4.SetActive(false);
+        }
+
+        if (PlayerPrefs.GetInt("ArenaWin5") == 1)
+        {
+            levelSettingz.ArenaLv6.interactable = true;
+            levelSettingz.lock5.SetActive(false);
+        }
+
+        if (PlayerPrefs.GetInt("ArenaWin6") == 1)
+        {
+            levelSettingz.ArenaLv7.interactable = true;
+            levelSettingz.lock6.SetActive(false);
+        }
+
+        if (PlayerPrefs.GetInt("ArenaWin7") == 1)
+        {
+            levelSettingz.ArenaLv8.interactable = true;
+            levelSettingz.lock7.SetActive(false);
+        }
+
+        if (PlayerPrefs.GetInt("ArenaWin8") == 1)
+        {
+            levelSettingz.ArenaLv9.interactable = true;
+            levelSettingz.lock8.SetActive(false);
+        }
+
+        if (PlayerPrefs.GetInt("ArenaWin9") == 1)
+        {
+            levelSettingz.ArenaLv10.interactable = true;
+            levelSettingz.lock9.SetActive(false);
+        }
+
+        if (PlayerPrefs.GetInt("ArenaWin10") == 1)
+        {
+            levelSettingz.ArenaLv11.interactable = true;
+            levelSettingz.lock10.SetActive(false);
+        }
+
+        if (PlayerPrefs.GetInt("ArenaWin11") == 1)
+        {
+            levelSettingz.ArenaLv12.interactable = true;
+            levelSettingz.lock11.SetActive(false);
+        }
+
+        if (PlayerPrefs.GetInt("ArenaWin12") == 1)
+        {
+            levelSettingz.ArenaLv13.interactable = true;
+            levelSettingz.lock12.SetActive(false);
+        }
+
+        if (PlayerPrefs.GetInt("ArenaWin13") == 1)
+        {
+            levelSettingz.ArenaLv14.interactable = true;
+            levelSettingz.lock13.SetActive(false);
+        }
+    }
+
+    public void ArenaClose()
+    {
+        menuPanels.ArenaPanel.SetActive(false);
+        Amplitude.Instance.logEvent("ArenaClose");
+    }
+
+    public void CheckpointOpen()
+    {
+        menuPanels.CheckpointPanel.SetActive(true);
+        Amplitude.Instance.logEvent("CheckpointOpen");
+        if (PlayerPrefs.GetInt("CheckpointWin1") == 1)
+        {
+            levelSettingz.CheckpointLv2.interactable = true;
+            levelSettingz.lockCHK1.SetActive(false);
+        }
+
+    }
+
+    public void CheckpointClose()
+    {
+        menuPanels.CheckpointPanel.SetActive(false);
+        Amplitude.Instance.logEvent("CheckpointClose");
+    }
+
+    public void TopSpeedOpen()
+    {
+        menuPanels.TopSpeedPanel.SetActive(true);
+        Amplitude.Instance.logEvent("TopSpeedOpen");
+    }
+
+    public void TopSpeedClose()
+    {
+        menuPanels.TopSpeedPanel.SetActive(false);
+        Amplitude.Instance.logEvent("TopSpeedClose");
+    }
+
+    public void AchivOpen()
+    {
+        menuPanels.AchivmentPanel.SetActive(true);
+        Amplitude.Instance.logEvent("AchivOpen");
+        AchivText.text = PlayerPrefs.GetInt("ArenaWinsLevel1").ToString();
+        CrownText.text = PlayerPrefs.GetInt("Crown").ToString();
+    }
+
+    public void AchivClose()
+    {
+        menuPanels.AchivmentPanel.SetActive(false);
+        Amplitude.Instance.logEvent("AchiClose");
+    }
+
+    public void FreerideOpen()
+    {
+        menuPanels.FreerideMainPanel.SetActive(true);
+        Amplitude.Instance.logEvent("FreerideOpen");
+    }
+
+    public void FreerideClose()
+    {
+        menuPanels.FreerideMainPanel.SetActive(false);
+        Amplitude.Instance.logEvent("FreerideClose");
+    }
+    public void CityOpen()
+    {
+        menuPanels.CityPanel.SetActive(true);
+        Amplitude.Instance.logEvent("CityOpen");
+    }
+
+    public void CityClose()
+    {
+        menuPanels.CityPanel.SetActive(false);
+        Amplitude.Instance.logEvent("CityClose");
+    }
+
     #endregion
 
     #region CoinFX
@@ -4157,7 +4624,7 @@ public class MainMenuManager : MonoBehaviour
     {
         
         manage = this;
-        Application.targetFrameRate = 300;
+        Application.targetFrameRate = 500;
         ///SystemObj
         PoolPrefActive.SetActive(false);
         RatingForCarPanel.SetActive(false);
@@ -4193,14 +4660,9 @@ public class MainMenuManager : MonoBehaviour
         menuGUI.SteeringWheelMode.isOn = (PlayerPrefs.GetInt("SteeringWheel") == 0) ? true : false;
         menuGUI.ButtonMode.isOn = (PlayerPrefs.GetInt("ButtonMode") == 0) ? true : false;
 
-        #region Detail Settings
-        //maxSpeedActive.SetActive(false);
-        #endregion
-
     }
     void Start()
     {
-       // PlayerPrefs.DeleteAll();
         //config
         menuGUI.RUSure.SetActive(false);
         network_manager_active.SetActive(false);
@@ -4210,8 +4672,6 @@ public class MainMenuManager : MonoBehaviour
             menuGUI.adsEnergyBtn.interactable = false;
         }
         CurrentPanel(0);
-
-        // Soundtracks();
     }
 
 
@@ -4236,16 +4696,39 @@ public class MainMenuManager : MonoBehaviour
         anim1.GetComponent<Animator>().SetBool("push", true);
     }
 
-    public void endEvent()
+    public void engEvent()
     {
         Amplitude.Instance.logEvent("ENG");
-        UniAdManager.manage.ShowInterstatial();
+    }
+
+    public void GermanyEvent()
+    {
+        Amplitude.Instance.logEvent("Germany");
+    }
+
+    public void JapanEvent()
+    {
+        Amplitude.Instance.logEvent("Japan");
     }
 
     public void ruEvent()
     {
         Amplitude.Instance.logEvent("RU");
-        UniAdManager.manage.ShowInterstatial();
+    }
+
+    public void PolandEvent()
+    {
+        Amplitude.Instance.logEvent("Polish");
+    }
+
+    public void KoreanEvent()
+    {
+        Amplitude.Instance.logEvent("Korean");
+    }
+
+    public void PortoguesEvent()
+    {
+        Amplitude.Instance.logEvent("Portugalias");
     }
 
     public void GetMoney()
@@ -4262,7 +4745,7 @@ public class MainMenuManager : MonoBehaviour
 
     void Update()
     {
-        print(PlayerPrefs.GetInt("CurrentCar"));
+
         LoadUpgradeOnAwake();
         LoadUpgrade();
         LoadUpgradeHandling();
@@ -4378,49 +4861,145 @@ public class MainMenuManager : MonoBehaviour
         }
 
         // players in-app cars
-
-        #region players in-app cars
-        if (carSetting[currentCarNumber].isInAppCar && PlayerPrefs.GetInt("boughtLP750") == 0)
-        {
-            inAppCarPrice.text = carSetting[currentCarNumber].priceUSD + "$";
-            inAppCarsPanel.SetActive(true);
-            menuGUI.customizeVehicle.SetActive(true);
-            menuGUI.buyNewVehicle.gameObject.SetActive(false);
-            menuGUI.levelChooser.SetActive(false);
-            
-            PlayerPrefs.SetInt("myCar", 0);
-        } else
-        {
-            inAppCarsPanel.SetActive(false);
-        }
-
-        if (carSetting[currentCarNumber].isInAppCar && PlayerPrefs.GetInt("boughtLP750") == 1)
-        {
-            menuGUI.customizeVehicle.SetActive(true);
-            menuGUI.buyNewVehicle.gameObject.SetActive(false);
-            menuGUI.levelChooser.SetActive(true);
-            menuGUI.CarName.text = carSetting[currentCarNumber].name;
-            menuGUI.CarPrice.text = "";
-            PlayerPrefs.SetInt("CurrentVehicle", currentCarNumber);
-            PlayerPrefs.SetInt("myCar", 1);
-            inAppCarsPanel.SetActive(false);
-            carSetting[currentCarNumber].achievements_[0].SetActive(true);
-        } else
+        //print("Car# " + PlayerPrefs.GetInt("CurrentVehicle: ", currentCarNumber));
+        #region King In-App cars
+        if (!carSetting[currentCarNumber].isInAppCar)
         {
             carSetting[currentCarNumber].achievements_[0].SetActive(false);
+            inAppLamboPanel.SetActive(false);
+            inAppRRPanel.SetActive(false);
+            inAppVettyPanel.SetActive(false);
+        }
+        /// Rolls Royce
+        
+        if (PlayerPrefs.GetInt("CurrentVehicle: ", currentCarNumber) == 13)
+        {
+            if (carSetting[currentCarNumber].isInAppCar && PlayerPrefs.GetInt("RRBigBoss") == 0)
+            {
+
+                inAppCarPriceRR.text = carSetting[currentCarNumber].priceUSD + "$";
+                inAppRRPanel.SetActive(true);
+                menuGUI.customizeVehicle.SetActive(true);
+                menuGUI.buyNewVehicle.gameObject.SetActive(false);
+                menuGUI.levelChooser.SetActive(false);
+
+                PlayerPrefs.SetInt("myCar", 0);
+            }
+            else
+            {
+                inAppRRPanel.SetActive(false);
+            }
+
+            if (carSetting[currentCarNumber].isInAppCar && PlayerPrefs.GetInt("RRBigBoss") == 1)
+            {
+
+                menuGUI.customizeVehicle.SetActive(true);
+                menuGUI.buyNewVehicle.gameObject.SetActive(false);
+                menuGUI.levelChooser.SetActive(true);
+                menuGUI.CarName.text = carSetting[currentCarNumber].name;
+                menuGUI.CarPrice.text = "";
+                PlayerPrefs.SetInt("CurrentVehicle", currentCarNumber);
+                PlayerPrefs.SetInt("myCar", 1);
+                inAppRRPanel.SetActive(false);
+                carSetting[currentCarNumber].achievements_[0].SetActive(true);
+
+            }
+            else
+            {
+                carSetting[currentCarNumber].achievements_[0].SetActive(false);
+            }
+
         }
 
-       // if (!carSetting[currentCarNumber].isInAppCar)
-       // {
-            
-       // }
+        /// Lambo LP-750
+
+        if (PlayerPrefs.GetInt("CurrentVehicle: ", currentCarNumber) == 7)
+        {
+            if (carSetting[currentCarNumber].isInAppCar && PlayerPrefs.GetInt("boughtLP750") == 1)
+            {
+
+                menuGUI.customizeVehicle.SetActive(true);
+                menuGUI.buyNewVehicle.gameObject.SetActive(false);
+                menuGUI.levelChooser.SetActive(true);
+                menuGUI.CarName.text = carSetting[currentCarNumber].name;
+                menuGUI.CarPrice.text = "";
+                PlayerPrefs.SetInt("CurrentVehicle", currentCarNumber);
+                PlayerPrefs.SetInt("myCar", 1);
+                inAppLamboPanel.SetActive(false);
+                carSetting[currentCarNumber].achievements_[0].SetActive(true);
+
+            }
+            else
+            {
+                carSetting[currentCarNumber].achievements_[0].SetActive(false);
+            }
+
+            if (carSetting[currentCarNumber].isInAppCar && PlayerPrefs.GetInt("boughtLP750") == 0)
+            {
+                inAppCarPriceLambo.text = carSetting[currentCarNumber].priceUSD + "$";
+                inAppLamboPanel.SetActive(true);
+                menuGUI.customizeVehicle.SetActive(true);
+                menuGUI.buyNewVehicle.gameObject.SetActive(false);
+                menuGUI.levelChooser.SetActive(false);
+
+                PlayerPrefs.SetInt("myCar", 0);
+            }
+            else
+            {
+                inAppLamboPanel.SetActive(false);
+            }
+        }
+
+        //// Vetty
+        if (PlayerPrefs.GetInt("CurrentVehicle: ", currentCarNumber) == 14)
+        {
+            if (carSetting[currentCarNumber].isInAppCar && PlayerPrefs.GetInt("Vetty") == 0)
+            {
+                inAppCarPriceVetty.text = carSetting[currentCarNumber].priceUSD + "$";
+                inAppVettyPanel.SetActive(true);
+                inAppLamboPanel.SetActive(false);
+                inAppRRPanel.SetActive(false);
+                menuGUI.customizeVehicle.SetActive(true);
+                menuGUI.buyNewVehicle.gameObject.SetActive(false);
+                menuGUI.levelChooser.SetActive(false);
+
+                PlayerPrefs.SetInt("myCar", 0);
+            }
+            else
+            {
+                inAppVettyPanel.SetActive(false);
+            }
+
+            if (carSetting[currentCarNumber].isInAppCar && PlayerPrefs.GetInt("Vetty") == 1)
+            {
+                menuGUI.customizeVehicle.SetActive(true);
+                menuGUI.buyNewVehicle.gameObject.SetActive(false);
+                menuGUI.levelChooser.SetActive(true);
+                menuGUI.CarName.text = carSetting[currentCarNumber].name;
+                menuGUI.CarPrice.text = "";
+                PlayerPrefs.SetInt("CurrentVehicle", currentCarNumber);
+                PlayerPrefs.SetInt("myCar", 1);
+                inAppVettyPanel.SetActive(false);
+                inAppLamboPanel.SetActive(false);
+                inAppRRPanel.SetActive(false);
+                carSetting[currentCarNumber].achievements_[0].SetActive(true);
+
+            }
+            else
+            {
+                carSetting[currentCarNumber].achievements_[0].SetActive(false);
+            }
+
+        }
+
 
         #endregion
 
         ///Recource cache
         if (CathingLoadFiles.manage.car_gt500 && CathingLoadFiles.manage.car_hotrodd
             && CathingLoadFiles.manage.car_buggy && CathingLoadFiles.manage.car_modelt
-            && CathingLoadFiles.manage.car_bus && CathingLoadFiles.manage.car_bullet && CathingLoadFiles.manage.car_i8 && CathingLoadFiles.manage.car_lambo)
+            && CathingLoadFiles.manage.car_bus && CathingLoadFiles.manage.car_bullet && CathingLoadFiles.manage.car_i8 && CathingLoadFiles.manage.car_lambo
+            && CathingLoadFiles.manage.car_rr) //&& CathingLoadFiles.manage.car_rasta && CathingLoadFiles.manage.car_vetty)
         {
             PoolPrefActive.SetActive(true);
         }

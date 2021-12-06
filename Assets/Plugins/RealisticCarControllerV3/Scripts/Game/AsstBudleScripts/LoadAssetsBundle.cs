@@ -45,7 +45,7 @@ public class LoadAssetsBundle : MonoBehaviour
             v = System.Math.Round(v, 2);
             v *= 100;
             percent.text = "" + v + "%";
-            print("loadingStart");
+           // print("loadingStart");
         }
     }
 
@@ -54,7 +54,7 @@ public class LoadAssetsBundle : MonoBehaviour
         while (!Caching.ready)
             yield return null;
 
-        using (www = WWW.LoadFromCacheOrDownload(url_city_online + "", 53))
+        using (www = WWW.LoadFromCacheOrDownload(url_city_online + "", 81))
         {
             print("Using Now");
             loadingPanel.SetActive(true);
@@ -94,7 +94,7 @@ public class LoadAssetsBundle : MonoBehaviour
         while (!Caching.ready)
             yield return null;
 
-        using (www = WWW.LoadFromCacheOrDownload(url_city_single + "", 54))
+        using (www = WWW.LoadFromCacheOrDownload(url_city_single + "", 82))
         {
             if (PlayerPrefs.GetInt("citysingle") == 1)
             {

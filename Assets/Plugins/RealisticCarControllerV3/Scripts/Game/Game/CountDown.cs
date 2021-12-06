@@ -31,7 +31,6 @@ public class CountDown : MonoBehaviour
         if (count == 1)
         {
             CarControlActive = GameObject.FindGameObjectWithTag("Player");
-            
         }
 
     }
@@ -48,6 +47,12 @@ public class CountDown : MonoBehaviour
         if (MainMenuManager.manage.isAllvsYou)
         {
             StartCoroutine(CountStartSurviveMode());
+        }
+
+        if (MainMenuManager.manage.isArena
+            )
+        {
+            StartCoroutine(CountStartArena());
         }
 
     }
@@ -118,6 +123,42 @@ public class CountDown : MonoBehaviour
         CarControls.SetActive(true);
         InsideOutsideCar.manage.OutFromCarButton.GetComponentInChildren<Button>().interactable = true;
         isStartTime = true;
+
+    }
+
+    IEnumerator CountStartArena()
+    {
+        LapTimer.SetActive(false);
+        LapTimerAI.SetActive(false);
+        InsideOutsideCar.manage.OutFromCarButton.GetComponentInChildren<Button>().interactable = false;
+        yield return new WaitForSeconds(0.2f);
+        _CountDown.GetComponent<Text>().text = "3";
+        GetReady.Play();
+        CarControlActive.GetComponentInChildren<RCC_CarControllerV3>().enabled = false;
+        _CountDown.SetActive(true);
+        yield return new WaitForSeconds(1);
+        _CountDown.GetComponent<Text>().text = "2";
+        _CountDown.SetActive(false);
+        GetReady.Play();
+        _CountDown.SetActive(true);
+        yield return new WaitForSeconds(1);
+        _CountDown.GetComponent<Text>().text = "1";
+        _CountDown.SetActive(false);
+        GetReady.Play();
+        _CountDown.SetActive(true);
+        yield return new WaitForSeconds(1);
+        Fight.SetActive(true);
+        Fight.GetComponent<Text>().text = "FIGHT";
+        Invoke("Latency", 1f);
+        _CountDown.SetActive(false);
+        Go.Play();
+        RCC_EnterExitCar.manage.isPlayerIn = true;
+        //levelMusic.Play();
+        LapTimer.SetActive(true);
+        LapTimerAI.SetActive(true);
+        CarControls.SetActive(true);
+        InsideOutsideCar.manage.OutFromCarButton.GetComponentInChildren<Button>().interactable = true;
+        isStartTime = false;
 
     }
 

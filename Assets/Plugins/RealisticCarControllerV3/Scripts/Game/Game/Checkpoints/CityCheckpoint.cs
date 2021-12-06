@@ -64,7 +64,7 @@ public class CityCheckpoint : MonoBehaviour
         {
             if (!RCC_EnterExitCar.manage.isPlayerIn)
             {
-                ReminderAnim.manage.ManualDial_task1_no_car();
+               ReminderAnim.manage.ManualDial_task1_no_car();
             }
             
         }

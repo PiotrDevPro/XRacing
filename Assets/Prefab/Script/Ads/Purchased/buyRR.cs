@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine.Purchasing;
 using UnityEngine;
 
-public class buyLambo : MonoBehaviour
+public class buyRR : MonoBehaviour
 {
     public void OnPurchaseComplete(Product product)
     {
-        if (product.definition.id == "com.gamedevcorp.xracing.lp750")
+        if (product.definition.id == "com.gamedevcorp.xracing.roadrider")
         {
-            PlayerPrefs.SetInt("boughtLP750",1);
+            PlayerPrefs.SetInt("RRBigBoss",1);
             PlayerPrefs.SetInt("Crown", PlayerPrefs.GetInt("Crown") + 1);
             GameObject snd = GameObject.Find("Purchased");
             snd.GetComponent<AudioSource>().Play();
-            Amplitude.Instance.logEvent("Lambo LP-750 Bought");
+            Amplitude.Instance.logEvent("RRBigBoss Bought");
             Invoke("Latency",0.1f);
         }
     }
@@ -21,11 +21,11 @@ public class buyLambo : MonoBehaviour
     public void OnPurchaseFailure(Product product, PurchaseFailureReason reason)
     {
         print("" + product.definition.id + "failed due to" + reason);
-        Amplitude.Instance.logEvent("Lambo LP-750 buy Failed");
+        Amplitude.Instance.logEvent("RRBigBoss buy Failed");
     }
 
     void Latency()
     {
-        MainMenuManager.manage.inAppLamboPanel.SetActive(false);
+        MainMenuManager.manage.inAppRRPanel.SetActive(false);
     }
 }

@@ -261,8 +261,8 @@ public class RCC_CarControllerV3 : MonoBehaviour
 	[HideInInspector] public bool repaired = true;      // Returns true if vehicle is repaired.
 
 	public float maximumDamage = .5f;       // Maximum Vert Distance For Limiting Damage. 0 Value Will Disable The Limit.
-	private float minimumCollisionForce = 5f;       // Minimum collision force.
-	public float damageMultiplier = 1f;     // Damage multiplier.
+	private float minimumCollisionForce = 0.1f;       // Minimum collision force.
+	public float damageMultiplier = 3f;     // Damage multiplier.
 
 	public GameObject contactSparkle { get { return RCCSettings.contactParticles; } }       // Contact Particles for collisions. It must be Particle System.
 	public int maximumContactSparkle = 5;       //	Contact Particles will be ready to use for collisions in pool. 
@@ -1075,6 +1075,16 @@ public class RCC_CarControllerV3 : MonoBehaviour
 			{
 				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
 			}
+			if (PlayerPrefs.GetInt("CurrentCar") == 13)
+			{
+				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
+			}
+
+			if (PlayerPrefs.GetInt("CurrentCar") == 14)
+			{
+				SteeringWheel.transform.rotation = transform.rotation * Quaternion.Euler(20, 0, (FrontLeftWheelCollider.steerAngle) * -6);
+			}
+
 
 
 		}
@@ -1805,8 +1815,8 @@ public class RCC_CarControllerV3 : MonoBehaviour
 
 	public void ResetCrashedCar()
     {
-		transform.rotation = Quaternion.identity;
-		transform.position = new Vector3(transform.position.x, transform.position.y + 5, transform.position.z);
+		transform.rotation = transform.rotation;
+		transform.position = new Vector3(transform.position.x, transform.position.y + 3, transform.position.z);
 		resetTime = 0f;
 	}
 
@@ -1814,20 +1824,31 @@ public class RCC_CarControllerV3 : MonoBehaviour
     {
 		UniAdManager.manage.ShowAdDefault();
 		CarSpawnNew.manage.InstantiatedCar.GetComponentInChildren<RCC_CarControllerV3>().speed = 0;
-		transform.rotation = CarSpawnNew.manage.spawnPoint.rotation;
-		transform.position = CarSpawnNew.manage.spawnPoint.position;
+		transform.rotation = transform.rotation;
+		transform.position = new Vector3(transform.position.x, transform.position.y + 3, transform.position.z); ;
 		resetTime = 0f;
 		print("ResetCarForAdCitySingle");
 	}
 
+	public void ResetCarArena()
+    {
+
+			CarDamage.manage.GetComponentInChildren<RCC_CarControllerV3>().transform.position = CarSpawnNew.manage.spawnPoint.position;
+			CarDamage.manage.GetComponentInChildren<RCC_CarControllerV3>().transform.rotation = CarDamage.manage.GetComponentInChildren<RCC_CarControllerV3>().transform.rotation;
+			resetTime = 0f;
+			UniAdManager.manage.ShowInterstatial();
+	}
+
 	public void ResetCarForCoin()
     {
-		if (SceneManager.GetActiveScene().name != "battle_online" && SceneManager.GetActiveScene().name != "level_lap6")
+		if (SceneManager.GetActiveScene().name != "battle_online" && SceneManager.GetActiveScene().name != "level_lap6" && SceneManager.GetActiveScene().name != "city_online" && SceneManager.GetActiveScene().name != "_arena_1")
 		{
 				UniAdManager.manage.ShowInterstatial();
 				CarSpawnNew.manage.InstantiatedCar.GetComponent<RCC_CarControllerV3>().speed = 0;
 				resetTime = 0f;
 		}
+
+		
 
 		if (SceneManager.GetActiveScene().name == "level_lap6")
         {
@@ -1904,7 +1925,6 @@ public class RCC_CarControllerV3 : MonoBehaviour
 
 			if (colRelVel.magnitude * cos >= minimumCollisionForce)
 			{
-
 				repaired = false;
 
 				localVector = transform.InverseTransformDirection(colRelVel) * (damageMultiplier / 50f);

@@ -12,6 +12,8 @@ public class baseball_b : MonoBehaviour
     [SerializeField] AudioClip whooh_hit;
     [SerializeField] AudioClip empty_hit;
     [SerializeField] AudioClip hit_woman;
+
+    public bool isAiCarDetect = false;
     
 
     private void Awake()
@@ -68,6 +70,9 @@ public class baseball_b : MonoBehaviour
         {
             empt_hit_bassball_b_();
             Amplitude.Instance.logEvent("hitOnCarAI");
+            isAiCarDetect = true;
+            //PlayerPrefs.SetInt("damageAi", 1);
+            //print(isAiCarDetect);
 
         }
 
@@ -94,7 +99,7 @@ public class baseball_b : MonoBehaviour
 
         if (col.gameObject.CompareTag("CarAI"))
         {
-
+            //isAiCarDetect = false;
 
         }
 

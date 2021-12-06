@@ -18,13 +18,10 @@ public class PoolPrefab : MonoBehaviour
                 pool.ResourceCache.Add(CathingLoadFiles.manage.ikarus.name, CathingLoadFiles.manage.ikarus);
                 pool.ResourceCache.Add(CathingLoadFiles.manage.lambo_ab.name, CathingLoadFiles.manage.lambo_ab);
                 pool.ResourceCache.Add(CathingLoadFiles.manage.i8_ab.name, CathingLoadFiles.manage.i8_ab);
-
+                pool.ResourceCache.Add(CathingLoadFiles.manage.rr_ab.name, CathingLoadFiles.manage.rr_ab);
+               // pool.ResourceCache.Add(CathingLoadFiles.manage.vetty_ab.name, CathingLoadFiles.manage.vetty_ab);
+               // pool.ResourceCache.Add(CathingLoadFiles.manage.rasta_ab.name, CathingLoadFiles.manage.rasta_ab);
         }
 
-    }
-
-    private void Update()
-    {
-        
     }
 }

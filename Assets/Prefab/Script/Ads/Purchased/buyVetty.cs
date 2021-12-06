@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using UnityEngine.Purchasing;
 using UnityEngine;
 
-public class buyLambo : MonoBehaviour
+public class buyVetty : MonoBehaviour
 {
+
     public void OnPurchaseComplete(Product product)
     {
-        if (product.definition.id == "com.gamedevcorp.xracing.lp750")
+        if (product.definition.id == "com.gamedevcorp.xracing.vetty")
         {
-            PlayerPrefs.SetInt("boughtLP750",1);
+            PlayerPrefs.SetInt("Vetty", 1);
             PlayerPrefs.SetInt("Crown", PlayerPrefs.GetInt("Crown") + 1);
             GameObject snd = GameObject.Find("Purchased");
             snd.GetComponent<AudioSource>().Play();
-            Amplitude.Instance.logEvent("Lambo LP-750 Bought");
+            Amplitude.Instance.logEvent("Vetty Bought");
             Invoke("Latency",0.1f);
         }
     }
@@ -21,11 +22,12 @@ public class buyLambo : MonoBehaviour
     public void OnPurchaseFailure(Product product, PurchaseFailureReason reason)
     {
         print("" + product.definition.id + "failed due to" + reason);
-        Amplitude.Instance.logEvent("Lambo LP-750 buy Failed");
+        Amplitude.Instance.logEvent("Vetty buy Failed");
     }
 
     void Latency()
     {
-        MainMenuManager.manage.inAppLamboPanel.SetActive(false);
+        MainMenuManager.manage.inAppVettyPanel.SetActive(false);
     }
+
 }

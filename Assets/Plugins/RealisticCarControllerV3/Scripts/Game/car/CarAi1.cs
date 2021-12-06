@@ -12,33 +12,61 @@ using UnityEngine;
         public int energy = 100;
         private GameObject HP2;
         private GameObject lbHP2;
-    private void Awake()
+
+    int c = 0;
+        private void Awake()
         {
             manage = this;
         }
         private void Start()
         {
-        if (SceneManager.GetActiveScene().name != "level_top_speed_test")
+            if (SceneManager.GetActiveScene().name != "level_top_speed_test")
         {
             energy = Random.Range(100, 130);
         }
-        else
+            else
         {
             energy = Random.Range(140, 200);
         }
     }
-        private void OnTriggerEnter(Collider other)
+
+    private void Update()
+    {
+        c += 1;
+        if (c == 1)
+        {
+            HP2 = GameObject.Find("LifeCar2");
+            lbHP2 = GameObject.Find("carLb2");
+            HP2.GetComponent<Text>().text = energy.ToString();
+        }
+    }
+    private void OnTriggerEnter(Collider other)
         {
         if (!CarDamage.manage.isDead)
         {
-            if (other.CompareTag("Car") || other.CompareTag("Player"))
+            if (other.CompareTag("Car") || other.CompareTag("Player") || other.CompareTag("baseball_bat"))
             {
                 if (MainMenuManager.manage.isAllvsYou || MainMenuManager.manage.isFreerideActive || MainMenuManager.manage.isTopSpeedActive)
                 {
-                    HP2 = GameObject.Find("LifeCar2");
-                    lbHP2 = GameObject.Find("carLb2");
-                    HP2.GetComponent<Text>().text = energy.ToString();
-                    if (GetComponent<RCC_CarControllerV3>().speed > 90)
+                    //if (baseball_b.manage.isAiCarDetect)
+                    //{
+                     //   energy -= PlayerPrefs.GetInt("damageAi");
+                     //   print("baseball_kick" + PlayerPrefs.GetInt("damageAi"));
+                      //  print(energy);
+                      //  if (energy <= 0 && !CarDamage.manage.AiIsDead)
+                      //  {
+                       //     energy = 0;
+                       //     GetComponent<RCC_CarControllerV3>().KillEngine();
+                       //     Blow.SetActive(true);
+                       //     PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
+                       //     coin += 500;
+                       //     Amplitude.Instance.logEvent("Bot1Crashed90KMH");
+                     //   }
+
+                    
+                //}
+
+                if (GetComponent<RCC_CarControllerV3>().speed > 90)
                     {
                         PlayerPrefs.SetInt("damage", 10);
                         energy -= 5;

@@ -13,6 +13,8 @@ using UnityEngine;
         private GameObject HP1;
         private GameObject lbHP1;
 
+        int c = 0;
+
     private void Awake()
         {
             manage = this;
@@ -20,26 +22,63 @@ using UnityEngine;
 
         private void Start()
         {
-        if (SceneManager.GetActiveScene().name != "level_top_speed_test")
+
+        if (SceneManager.GetActiveScene().name == "level_lap6")
         {
             energy = Random.Range(100, 130);
-        } else
+        } 
+
+
+        if (SceneManager.GetActiveScene().name == "level_top_speed_test")
         {
             energy = Random.Range(140, 200);
         }
-              
+
+        if (SceneManager.GetActiveScene().name == "_arena_1" && MainMenuManager.manage.isArena1)
+        {
+            
+            energy = Random.Range(100, 150);
+            print(energy);
         }
-        private void OnTriggerEnter(Collider other)
+
+    }
+
+    private void Update()
+    {
+        c += 1;
+        if (c == 1)
+        {
+            HP1 = GameObject.Find("LifeCar1");
+            lbHP1 = GameObject.Find("carLbl");
+            HP1.GetComponent<Text>().text = energy.ToString();
+        }
+    }
+    private void OnTriggerEnter(Collider other)
         {
         if (!CarDamage.manage.isDead)
         {
-            if (other.CompareTag("Car") || other.CompareTag("Player"))
+            if (other.CompareTag("Car") || other.CompareTag("Player")) //|| other.CompareTag("baseball_bat"))
             {
-                if (MainMenuManager.manage.isAllvsYou || MainMenuManager.manage.isFreerideActive || MainMenuManager.manage.isTopSpeedActive)
+                if (MainMenuManager.manage.isAllvsYou || MainMenuManager.manage.isFreerideActive || MainMenuManager.manage.isTopSpeedActive || MainMenuManager.manage.isArena1)
                 {
-                    HP1 = GameObject.Find("LifeCar1");
-                    lbHP1 = GameObject.Find("carLbl");
-                    HP1.GetComponent<Text>().text = energy.ToString();
+                    //print("PlayerDetect");
+                    //if (baseball_b.manage.isAiCarDetect)
+                    //{
+                    //   energy -= PlayerPrefs.GetInt("damageAi");
+                    //   print("baseball_kick" + PlayerPrefs.GetInt("damageAi"));
+                    //  print(energy);
+                    //   if (energy <= 0 && !CarDamage.manage.AiIsDead)
+                    //   {
+                    //       energy = 0;
+                    //       GetComponent<RCC_CarControllerV3>().KillEngine();
+                    //      Blow.SetActive(true);
+                    //      PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 500f);
+                    //      coin += 500;
+                    //      Amplitude.Instance.logEvent("Bot1Crashed90KMH");
+                    //   }
+                    //}
+
+                    
                     if (GetComponent<RCC_CarControllerV3>().speed > 90)
                     {
                         PlayerPrefs.SetInt("damage", 10);

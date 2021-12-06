@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class blk3_left : MonoBehaviour
 {
@@ -18,14 +19,15 @@ public class blk3_left : MonoBehaviour
     [SerializeField] GameObject Small_city1;
     [SerializeField] GameObject Small_city2;
     [SerializeField] GameObject Small_city3;
+    [SerializeField] GameObject block1;
+    [SerializeField] GameObject block2;
+    [SerializeField] GameObject block3;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            _main.SetActive(false);
-            _block3_1.SetActive(true);
-            _block3_2.SetActive(true);
+            
             people.SetActive(true);
             _crossroad1.SetActive(false);
             _crossroad2.SetActive(false);
@@ -33,10 +35,20 @@ public class blk3_left : MonoBehaviour
             _crossroad4.SetActive(true);
             _crossroad5.SetActive(true);
             Amplitude.Instance.logEvent("block3_left");
-            Small_city.SetActive(false);
-            Small_city1.SetActive(false);
-            Small_city2.SetActive(false);
-            Small_city3.SetActive(false);
+            
+            if (SceneManager.GetActiveScene().name == "city_single")
+            {
+                _main.SetActive(false);
+                _block3_1.SetActive(true);
+                _block3_2.SetActive(true);
+                Small_city.SetActive(false);
+                Small_city1.SetActive(false);
+                Small_city2.SetActive(false);
+                Small_city3.SetActive(false);
+                block1.SetActive(false);
+                block2.SetActive(false);
+                block3.SetActive(false);
+            }
         }
     }
 
@@ -44,19 +56,27 @@ public class blk3_left : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            _main.SetActive(false);
-            _block3_1.SetActive(true);
-            _block3_2.SetActive(true);
+            
             people.SetActive(true);
             _crossroad1.SetActive(false);
             _crossroad2.SetActive(false);
             _crossroad3.SetActive(false);
             _crossroad4.SetActive(true);
             _crossroad5.SetActive(true);
-            Small_city.SetActive(false);
-            Small_city1.SetActive(false);
-            Small_city2.SetActive(false);
-            Small_city3.SetActive(false);
+
+            if (SceneManager.GetActiveScene().name == "city_single")
+            {
+                _main.SetActive(false);
+                _block3_1.SetActive(true);
+                _block3_2.SetActive(true);
+                Small_city.SetActive(false);
+                Small_city1.SetActive(false);
+                Small_city2.SetActive(false);
+                Small_city3.SetActive(false);
+                block1.SetActive(false);
+                block2.SetActive(false);
+                block3.SetActive(false);
+            }
         }
     }
 
@@ -70,18 +90,26 @@ public class blk3_left : MonoBehaviour
 
     void Latency()
     {
-        _main.SetActive(true);
-        _block3_1.SetActive(false);
-        _block3_2.SetActive(false);
+        
         people.SetActive(false);
         _crossroad1.SetActive(true);
         _crossroad2.SetActive(true);
         _crossroad3.SetActive(false);
         _crossroad4.SetActive(false);
         _crossroad5.SetActive(false);
-        Small_city.SetActive(false);
-        Small_city1.SetActive(true);
-        Small_city2.SetActive(true);
-        Small_city3.SetActive(true);
+        
+        if (SceneManager.GetActiveScene().name == "city_single")
+        {
+            _main.SetActive(true);
+            _block3_1.SetActive(false);
+            _block3_2.SetActive(false);
+            Small_city.SetActive(false);
+            Small_city1.SetActive(true);
+            Small_city2.SetActive(true);
+            Small_city3.SetActive(true);
+            block1.SetActive(false);
+            block2.SetActive(false);
+            block3.SetActive(false);
+        }
     }
 }

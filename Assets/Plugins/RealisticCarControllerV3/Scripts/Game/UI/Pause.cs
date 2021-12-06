@@ -31,15 +31,40 @@ public class Pause : MonoBehaviour
         Steeringwheel.isOn = (PlayerPrefs.GetInt("SteeringWheel") == 0) ? true : false;
         buttonControltgl.isOn = (PlayerPrefs.GetInt("ButtonMode") == 0) ? true : false;
         musicToggle.isOn = (PlayerPrefs.GetInt("Soundtrack") == 0) ? true : false;
-        if (SceneManager.GetActiveScene().name == "battle_online" || SceneManager.GetActiveScene().name == "city_single" || SceneManager.GetActiveScene().name == "city_online")
+        if (SceneManager.GetActiveScene().name == "battle_online")
         {
-            traff.isOn = (PlayerPrefs.GetInt("Traffic") == 0) ? true : false;
+            Traffic.SetActive(true);
+            traff.isOn = true;
+            traff.interactable = false;
+            //traff.isOn = (PlayerPrefs.GetInt("Traffic") == 0) ? true : false;
+            people.isOn = (PlayerPrefs.GetInt("PeopleAI") == 0) ? true : false;
+        }
+
+        if (SceneManager.GetActiveScene().name == "city_single")
+        {
+            print("PauseCitySingle");
+            Traffic.SetActive(true);
+            traff.isOn = true;
+            traff.interactable = false;
+            people.isOn = (PlayerPrefs.GetInt("PeopleAI") == 0) ? true : false;
+        }
+
+        if (SceneManager.GetActiveScene().name == "city_online")
+        {
+            Traffic.SetActive(false);
+            traff.interactable = false;
+            //traff.isOn = (PlayerPrefs.GetInt("Traffic") == 0) ? true : false;
+            traff.isOn = false;
             people.isOn = (PlayerPrefs.GetInt("PeopleAI") == 0) ? true : false;
         }
 
         if (SceneManager.GetActiveScene().name == "level_top_speed_test")
         {
-            traff.isOn = (PlayerPrefs.GetInt("Traffic") == 0) ? true : false;
+            Traffic.SetActive(true);
+            traff.isOn = true;
+            traff.interactable = false;
+            people.isOn = (PlayerPrefs.GetInt("PeopleAI") == 0) ? true : false;
+            //traff.isOn = (PlayerPrefs.GetInt("Traffic") == 0) ? true : false;
         }
             
     }
@@ -48,7 +73,6 @@ public class Pause : MonoBehaviour
     {
 
         _blur = FindObjectOfType<CameraMotionBlur>();
-        print(PlayerPrefs.GetInt("Soundtrack"));
         if (PlayerPrefs.GetInt("Soundtrack") == 0)
         {
             tracks[Random.Range(0, 14)].Play();
@@ -93,21 +117,11 @@ public class Pause : MonoBehaviour
 
     public void PausePressed()
     {
-        //if (MainMenuManager.manage.isCity)
-        //{
-        //    PausePanelSingle.SetActive(true);
-        //    Time.timeScale = 0f;
-        //    AudioListener.pause = true;
-        //    Amplitude.Instance.logEvent("PauseNetworkMode");
-       // }
-       // else
-       // {
+
             PausePanel.SetActive(true);
             Time.timeScale = 0f;
             AudioListener.pause = true;
             Amplitude.Instance.logEvent("PauseSingleMode");
-       // }
-        
         
     }
 
@@ -118,7 +132,6 @@ public class Pause : MonoBehaviour
         Time.timeScale = 1f;
         AudioListener.pause = false;
         Amplitude.Instance.logEvent("Resume");
-
         if (PlayerPrefs.GetInt("Soundtrack") == 1)
         {
             tracks[0].Stop();

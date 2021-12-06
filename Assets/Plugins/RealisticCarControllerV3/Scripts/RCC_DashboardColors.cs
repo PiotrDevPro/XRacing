@@ -38,11 +38,11 @@ public class RCC_DashboardColors : MonoBehaviour {
 		if(hudColor_R && hudColor_G && hudColor_B)
 			hudColor = new Color(hudColor_R.value, hudColor_G.value, hudColor_B.value);
 
-		for (int i = 0; i < huds.Length; i++) {
+		//for (int i = 0; i < huds.Length; i++) {
 
-			huds[i].color = new Color(hudColor.r, hudColor.g, hudColor.b, huds[i].color.a);
+		//	huds[i].color = new Color(hudColor.r, hudColor.g, hudColor.b, huds[i].color.a);
 
-		}
+		//}
 	
 	}
 

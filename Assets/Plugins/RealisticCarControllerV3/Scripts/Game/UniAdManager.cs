@@ -5,40 +5,43 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-public class UniAdManager : MonoBehaviour
+public class UniAdManager : MonoBehaviour, IUnityAdsListener
 {
     public static UniAdManager manage;
-
+#if UNITY_IOS || UNITY_IPHONE
+    private string APP_KEY = "4107004";
+#else
+    private string APP_KEY = "4107005";
+#endif
     private bool isAdsShop = false;
     private bool isAds25Sec = false;
     private bool isAdsEnergy = false;
+    private bool isAdsEnergyArena = false;
     private bool isAdsEnergyInShop = false;
     private bool isAdsForCarCrashed = false;
     private void Awake()
     {
         manage = this;
-        Advertisement.Initialize("4107005", false);
+        Advertisement.Initialize("4107005", true);
     }
 
-    private void Update()
-    {
-        
-    }
 
     private void Start()
     {
+        print(APP_KEY);
+        Advertisement.AddListener(this);
         if (PlayerPrefs.GetInt("NoAds") != 1)
         {
-            ShowBanner();
+            //ShowBanner();
         }
     }
 
     public void ShowBanner()
     {
 
-                StartCoroutine(ShowBannerMainMenu());
-                print("showBanner");
-                Amplitude.Instance.logEvent("showBanner");
+                //StartCoroutine(ShowBannerMainMenu());
+                //print("showBanner");
+                //Amplitude.Instance.logEvent("showBanner");
     }
 
     IEnumerator ShowBannerMainMenu()
@@ -56,6 +59,7 @@ public class UniAdManager : MonoBehaviour
     {
         if (Advertisement.IsReady() && Advertisement.isInitialized)
         {
+            print("ShowAdShop");
             Advertisement.Show("rewardedVideo", new ShowOptions() { resultCallback = HandleAdResult });
             isAdsShop = true;
         }
@@ -67,6 +71,15 @@ public class UniAdManager : MonoBehaviour
         {
             Advertisement.Show("rewardedVideo", new ShowOptions() { resultCallback = HandleAdResult });
             isAdsEnergy = true;
+        }
+    }
+
+    public void ShowAdForEnergyArena()
+    {
+        if (Advertisement.IsReady() && Advertisement.isInitialized)
+        {
+            Advertisement.Show("rewardedVideo", new ShowOptions() { resultCallback = HandleAdResult });
+            isAdsEnergyArena = true;
         }
     }
 
@@ -188,6 +201,41 @@ public class UniAdManager : MonoBehaviour
                     DPTrunkTwo.manage.wheels2col.gameObject.SetActive(true);
                     Amplitude.Instance.logEvent("OnRewardedVideoForEnergy");
                 }
+
+                if (isAdsEnergyArena)
+                {
+                    CarDamage.manage.energy = CarDamage.manage.energy + 25;
+                    CarDamage.manage.energyBarProgress.GetComponent<Text>().text = CarDamage.manage.energy.ToString();
+                    CarDamage.manage.StartEngine();
+                    CarDamage.manage.isDead = false;
+                    ArenaManager.manage.lose.SetActive(false);
+                    if (PlayerPrefs.GetInt("Soundtrack") == 0)
+                    {
+                        Pause.manage.StartSoundtrack();
+                    }
+                    isAdsEnergyArena = false;
+                    RCC_CarControllerV3.manage.ResetCarForCoin();
+                    DamagePartsHood.manage.wheels1.gameObject.SetActive(true);
+                    DamagePartsHood.manage.wheels2.gameObject.SetActive(true);
+                    DamagePartsHood.manage.wheels1col.gameObject.SetActive(true);
+                    DamagePartsHood.manage.wheels2col.gameObject.SetActive(true);
+                    DamagePartsHood.manage.blow.SetActive(false);
+                    DamagePartsHood.manage.point = 50;
+                    DPTrunk.manage.wheels1.gameObject.SetActive(true);
+                    DPTrunk.manage.wheels2.gameObject.SetActive(true);
+                    DPTrunk.manage.wheels1col.gameObject.SetActive(true);
+                    DPTrunk.manage.wheels2col.gameObject.SetActive(true);
+                    DPTrunk.manage.point = 50;
+                    DPTrunkTwo.manage.point = 50;
+                    DPTrunkTwo.manage.wheels1.gameObject.SetActive(true);
+                    DPTrunkTwo.manage.wheels2.gameObject.SetActive(true);
+                    DPTrunkTwo.manage.wheels1col.gameObject.SetActive(true);
+                    DPTrunkTwo.manage.wheels2col.gameObject.SetActive(true);
+                    Amplitude.Instance.logEvent("OnRewardedVideoForEnergyArena");
+                    //ArenaManager.manage.InstantiatedCar1.GetComponentInChildren<AICarBehaiovour>().StartEngine();
+                    //ArenaManager.manage.InstantiatedCar2.GetComponentInChildren<AICarBehaiovour>().StartEngine();
+
+                }
                 if (isAdsForCarCrashed)
                 {
                     CarDamage.manage.StartEngine();
@@ -241,12 +289,14 @@ public class UniAdManager : MonoBehaviour
                 isAdsForCarCrashed = false;
                 isAds25Sec = false;
                 isAdsEnergyInShop = false;
+                isAdsEnergyArena = false;
                 break;
             case ShowResult.Failed:
                 isAdsShop = false;
                 isAdsForCarCrashed = false;
                 isAds25Sec = false;
                 isAdsEnergyInShop = false;
+                isAdsEnergyArena = false;
                 break;
         }
     }
@@ -289,6 +339,26 @@ public class UniAdManager : MonoBehaviour
     {
         PlayerPrefs.SetFloat("DriftCoin", PlayerPrefs.GetFloat("DriftCoin") + 3500f);
         Amplitude.Instance.logEvent("3500$ - OnRewardedVideoFinished");
+    }
+
+    public void OnUnityAdsReady(string placementId)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnUnityAdsDidError(string message)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnUnityAdsDidStart(string placementId)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
+    {
+        throw new System.NotImplementedException();
     }
     #endregion
 }

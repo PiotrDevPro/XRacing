@@ -74,6 +74,8 @@ public class RCC_DetachablePart : MonoBehaviour{
 
 	}
 
+	
+
 	/// <summary>
 	/// Locks the parts.
 	/// </summary>
@@ -103,6 +105,8 @@ public class RCC_DetachablePart : MonoBehaviour{
 
 	void Update(){
 
+		//print(broken);
+		//print(strength);
 		// If part is broken, return.
 		if (broken)
 			return;
@@ -114,6 +118,7 @@ public class RCC_DetachablePart : MonoBehaviour{
 			rigid.AddRelativeTorque (new Vector3(addTorqueAfterLoose.x * speed, addTorqueAfterLoose.y * speed, addTorqueAfterLoose.z * speed));
 
 		}
+
 
 	}
 
@@ -160,8 +165,10 @@ public class RCC_DetachablePart : MonoBehaviour{
 
 				broken = true;
 				Destroy (detachableJoint.joint);
-				transform.SetParent (null);
-				Destroy(gameObject, 3f);
+				transform.SetParent(null);
+				gameObject.AddComponent<MeshCollider>().convex = true;
+				//gameObject.SetActive(false);
+				//Destroy(gameObject, 3f);
 
 			}
 

@@ -175,13 +175,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             createRoomCity.interactable = false;
             loadingPanel.SetActive(true);
-            isCityOnline = true;
-            print(PhotonNetwork.CurrentRoom);
-            PhotonNetwork.LoadLevel("city_online");
-            LoadAssetsBundle.manage.loadingPanel.SetActive(false);
             MainMenuManager.manage.LoadEngineUpgradeOnSelectedCar();
             MainMenuManager.manage.LoadHandlingOnSelectedCar();
             MainMenuManager.manage.LoadBrakeOnSelectedCar();
+            isCityOnline = true;
+            print(PhotonNetwork.CurrentRoom);
+            LoadAssetsBundle.manage.loadingPanel.SetActive(false);
+            PhotonNetwork.LoadLevel("city_online");
+
         }
 
         Time.timeScale = 1;

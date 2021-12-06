@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class activeBlock1 : MonoBehaviour
 {
@@ -29,13 +30,16 @@ public class activeBlock1 : MonoBehaviour
             _crossroad3.SetActive(false);
             _crossroad4.SetActive(false);
             _crossroad5.SetActive(false);
-            _block3_1.SetActive(false);
-            _block3_2.SetActive(false);
-            _block3_3.SetActive(false);
-            Amplitude.Instance.logEvent("fromStreets");
-            main_city_block_1.SetActive(false);
-            main_city_block_2.SetActive(false);
-            main_city_block_3.SetActive(false);
+            if (SceneManager.GetActiveScene().name == "city_single")
+            {
+                _block3_1.SetActive(false);
+                _block3_2.SetActive(false);
+                _block3_3.SetActive(false);
+                Amplitude.Instance.logEvent("fromStreets");
+                main_city_block_1.SetActive(false);
+                main_city_block_2.SetActive(false);
+                main_city_block_3.SetActive(false);
+            }
         }
     }
 
@@ -48,12 +52,15 @@ public class activeBlock1 : MonoBehaviour
             _crossroad3.SetActive(false);
             _crossroad4.SetActive(false);
             _crossroad5.SetActive(false);
-            _block3_1.SetActive(false);
-            _block3_2.SetActive(false);
-            _block3_3.SetActive(false);
-            main_city_block_1.SetActive(false);
-            main_city_block_2.SetActive(false);
-            main_city_block_3.SetActive(false);
+            if (SceneManager.GetActiveScene().name == "city_single")
+            {
+                _block3_1.SetActive(false);
+                _block3_2.SetActive(false);
+                _block3_3.SetActive(false);
+                main_city_block_1.SetActive(false);
+                main_city_block_2.SetActive(false);
+                main_city_block_3.SetActive(false);
+            }
         }
     }
 
@@ -66,12 +73,15 @@ public class activeBlock1 : MonoBehaviour
             _crossroad3.SetActive(false);
             _crossroad4.SetActive(false);
             _crossroad5.SetActive(false);
-            _block3_1.SetActive(false);
-            _block3_2.SetActive(false);
-            _block3_3.SetActive(false);
-            main_city_block_1.SetActive(false);
-            main_city_block_2.SetActive(true);
-            main_city_block_3.SetActive(true);
+            if (SceneManager.GetActiveScene().name == "city_single")
+            {
+                _block3_1.SetActive(false);
+                _block3_2.SetActive(false);
+                _block3_3.SetActive(false);
+                main_city_block_1.SetActive(false);
+                main_city_block_2.SetActive(true);
+                main_city_block_3.SetActive(true);
+            }
         }
     }
 }

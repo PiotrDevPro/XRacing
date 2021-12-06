@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class blk2 : MonoBehaviour
 {
@@ -18,15 +19,19 @@ public class blk2 : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            _main.SetActive(true);
-            _block3_2.SetActive(false);
+            
             people1.SetActive(true);
             people2.SetActive(true);
             _crossroad1.SetActive(false);
             _crossroad2.SetActive(false);
             _crossroad3.SetActive(true);
             Amplitude.Instance.logEvent("center2");
-            from_main_block.SetActive(false);
+            if (SceneManager.GetActiveScene().name == "city_single")
+            {
+                from_main_block.SetActive(false);
+                _main.SetActive(true);
+                _block3_2.SetActive(false);
+            }
         }
     }
 
@@ -34,14 +39,18 @@ public class blk2 : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            _main.SetActive(true);
-            _block3_2.SetActive(false);
+            
             people1.SetActive(true);
             people2.SetActive(true);
             _crossroad1.SetActive(false);
             _crossroad2.SetActive(false);
             _crossroad3.SetActive(true);
-            from_main_block.SetActive(false);
+            if (SceneManager.GetActiveScene().name == "city_single")
+            {
+                from_main_block.SetActive(false);
+                _main.SetActive(true);
+                _block3_2.SetActive(false);
+            }
             //   print("OnTriggerStay");
         }
     }
@@ -50,14 +59,18 @@ public class blk2 : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            _main.SetActive(true);
-            _block3_2.SetActive(false);
+            
             people1.SetActive(false);
             people2.SetActive(false);
             _crossroad1.SetActive(false);
             _crossroad2.SetActive(false);
             _crossroad3.SetActive(false);
-            from_main_block.SetActive(false);
+            if (SceneManager.GetActiveScene().name == "city_single")
+            {
+                from_main_block.SetActive(false);
+                _main.SetActive(true);
+                _block3_2.SetActive(false);
+            }
             //  print("OnTriggerExit");
         }
     }

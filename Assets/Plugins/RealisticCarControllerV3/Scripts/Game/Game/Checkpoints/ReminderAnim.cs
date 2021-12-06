@@ -11,7 +11,7 @@ public class ReminderAnim : MonoBehaviour
     [Header("Res")]
     [SerializeField] GameObject ReminderSound;
     [Header("Object")]
-    [SerializeField] GameObject taskPanel;
+    [SerializeField] GameObject sms_reminder_;
     [Header("Tasks_city")]
     [SerializeField] GameObject task1_need_car;
     [SerializeField] GameObject task1;
@@ -27,30 +27,32 @@ public class ReminderAnim : MonoBehaviour
 
     void Start()
     {
-        taskPanel.SetActive(false);
         _anim = GetComponentInChildren<Animator>();
         if (SceneManager.GetActiveScene().name == "city_online" || SceneManager.GetActiveScene().name == "city_single")
         {
-
-            task1.SetActive(true);
+            
             task1_1.SetActive(false);
             task1_2.SetActive(false);
             task1_failed.SetActive(false);
             task1_need_car.SetActive(false);
+            
             Invoke("show", 0.8f);
             Invoke("showSMS", 1.2f);
+            Invoke("showSMSonStart", 1.2f);
             Invoke("hide", 3.2f);
             Invoke("hideSMS", 5.2f);
         }
         if (SceneManager.GetActiveScene().name == "battle_online")
         {
-            task1_start_highway.SetActive(true);
+            
             task1.SetActive(false);
             task1_1.SetActive(false);
             task1_2.SetActive(false);
             task1_failed.SetActive(false);
+            
             Invoke("show", 0.8f);
             Invoke("showSMS", 1.2f);
+            Invoke("showSMSonStart", 1.2f);
             Invoke("hide", 3.2f);
             Invoke("hideSMS", 5.2f);
         }
@@ -138,11 +140,24 @@ public class ReminderAnim : MonoBehaviour
 
     void showSMS()
     {
-        taskPanel.SetActive(true);
+        sms_reminder_.SetActive(true);
     }
 
     void hideSMS()
     {
-        taskPanel.SetActive(false);
+        sms_reminder_.SetActive(false);
+    }
+
+    void showSMSonStart()
+    {
+        if (SceneManager.GetActiveScene().name == "city_online" || SceneManager.GetActiveScene().name == "city_single")
+        {
+            task1.SetActive(true);
+        }
+
+        if (SceneManager.GetActiveScene().name == "battle_online")
+        {
+            task1_start_highway.SetActive(true);
+        }
     }
 }
